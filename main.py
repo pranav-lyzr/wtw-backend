@@ -294,7 +294,7 @@ def create_pension_prompt(user_message: str, user_profile: dict):
       "chart_data": null or {{"type": "pension_data", "data": [ {{ "age": number, "Social Security": number, "Pension": number, "401k": number, "Other": number, "Defined Benefit": number }}, ... ]}},
       "contains_chart": true or false
     }}
-    
+
     **Instructions for Chart Updates:**
 
     - Set "contains_chart" to true only if the user's question implies a need to visualize data or update the chart (e.g., for investment options, income projections, or scenario analysis).
@@ -478,12 +478,18 @@ async def generate_personalized_suggestions(user_id: str, session_id: str, user_
         5. Ask Questions
         
         Make the suggestions specific to this user's profile and chat history. Format as JSON with structure:
-        [{"title": "", "description": "", "questions": ["", "", ""]}]
+        [
+            {{"icon": "calculator", "title": "Optimize Retirement Plan", "description": "...", "questions": ["...", "...", "..."]}},
+            {{"icon": "trending-up", "title": "Investment Recommendations", "description": "...", "questions": ["...", "...", "..."]}},
+            {{"icon": "lightbulb", "title": "Smart Insights", "description": "...", "questions": ["...", "...", "..."]}},
+            {{"icon": "file-text", "title": "Generate Report", "description": "...", "questions": ["...", "...", "..."]}},
+            {{"icon": "help-circle", "title": "Ask Questions", "description": "...", "questions": ["...", "...", "..."]}}
+        ]
         """
         
         # Call the AI agent to generate suggestions
         api_response = await call_lyzr_api(
-            agent_id="684a8fcfe5203d8a7b64825e",  # Your agent ID
+            agent_id="684a8fcfe5203d8a7b64825e",
             session_id=session_id,
             user_id=user_id,
             message=prompt
@@ -491,21 +497,12 @@ async def generate_personalized_suggestions(user_id: str, session_id: str, user_
         
         # Parse the response and create suggestions
         try:
-            suggestions_data = api_response.get("response", "[]")
-            print("suggestions",suggestions_data);
+            suggestions_data = json.loads(api_response.get("response", "[]"))
             suggestions = []
-            
-            icon_map = {
-                "Optimize Retirement Plan": "calculator",
-                "Investment Recommendations": "trending-up", 
-                "Smart Insights": "lightbulb",
-                "Generate Report": "file-text",
-                "Ask Questions": "help-circle"
-            }
             
             for suggestion in suggestions_data:
                 suggestions.append(AISuggestion(
-                    icon=icon_map.get(suggestion.get("title", ""), "help-circle"),
+                    icon=suggestion.get("icon", "help-circle"),
                     title=suggestion.get("title", ""),
                     description=suggestion.get("description", ""),
                     questions=suggestion.get("questions", [])
@@ -513,14 +510,14 @@ async def generate_personalized_suggestions(user_id: str, session_id: str, user_
             
             return suggestions
             
-        except json.JSONDecodeError:
-            logger.error("Failed to parse AI suggestions response")
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse AI suggestions response: {str(e)}")
             return get_default_suggestions()
             
     except Exception as e:
         logger.error(f"Error generating personalized suggestions: {str(e)}")
         return get_default_suggestions()
-
+    
 def get_default_suggestions() -> List[AISuggestion]:
     """Return default suggestions if personalized generation fails"""
     return [
