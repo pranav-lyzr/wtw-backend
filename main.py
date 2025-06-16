@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, validator
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Union
 import httpx
 import json
 from datetime import datetime
@@ -13,6 +13,8 @@ import os
 import logging
 from logging.handlers import RotatingFileHandler
 import sys
+from bson import ObjectId
+
 
 # Configure logging
 logging.basicConfig(
@@ -55,7 +57,7 @@ class MessageResponse(BaseModel):
     session_id: str
     user_message: str
     ai_response: str
-    chart_data: Optional[Dict[str, Any]] = None
+    chart_data: Optional[Union[Dict[str, Any], List[Dict[str, Any]]]] = None
     contains_chart: bool = False
     timestamp: datetime
 
@@ -78,32 +80,48 @@ class UserProfile(BaseModel):
 class UserProfileCreate(BaseModel):
     name: str
     email: Optional[str] = None
-    current_age: int = Field(..., ge=18, le=100)  # Age between 18 and 100
-    retirement_age: int = Field(..., ge=50, le=80)  # Retirement age between 50 and 80
-    income: float = Field(..., ge=0)  # Non-negative income
-    salary_growth: float = Field(0.02, ge=0, le=0.1)  # 0-10%
-    investment_return: float = Field(0.05, ge=0, le=0.15)  # 0-15%
-    contribution_rate: float = Field(0.1, ge=0, le=1.0)  # 0-100%
-    pension_multiplier: float = Field(0.015, ge=0, le=0.05)  # 0-5%
-    end_age: int = Field(90, ge=70, le=120)  # Life expectancy 70-120
-    social_security_base: float = Field(18000.0, ge=0, le=60000.0)  # Max SS benefit ~$58,476 in 2025
-    pension_base: float = Field(8000.0, ge=0)
-    four01k_base: float = Field(10000.0, ge=0)
-    other_base: float = Field(4000.0, ge=0)
-    defined_benefit_base: float = Field(14000.0, ge=0)
-    defined_benefit_yearly_increase: float = Field(300.0, ge=0, le=1000.0)
-    inflation: float = Field(0.02, ge=0, le=0.1)  # 0-10%
-    beneficiary_included: bool = False
+    current_age: int = Field(..., ge=18, le=100)
+    current_age: int
+    income: float 
+    retirement_age: int
+    salary_growth: float
+    investment_return: float 
+    contribution_rate: float 
+    pension_multiplier: float 
+    end_age: int 
+    social_security_base: float 
+    pension_base: float 
+    four01k_base: float 
+    other_base: float 
+    defined_benefit_base: float 
+    defined_benefit_yearly_increase: float 
+    inflation: float 
+    beneficiary_included: bool 
+    beneficiary_life_expectancy: Optional[int]  
+
+
+class UserProfileUpdate(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    current_age: Optional[int] = Field(default=None, ge=18)
+    retirement_age: Optional[int] = None
+    income: Optional[float] = None
+    salary_growth: Optional[float] = None
+    investment_return: Optional[float] = None
+    contribution_rate: Optional[float] = None
+    pension_multiplier: Optional[float] = None
+    end_age: Optional[int] = None
+    social_security_base: Optional[float] = None
+    pension_base: Optional[float] = None
+    four01k_base: Optional[float] = None
+    other_base: Optional[float] = None
+    defined_benefit_base: Optional[float] = None
+    defined_benefit_yearly_increase: Optional[float] = None
+    inflation: Optional[float] = None
+    beneficiary_included: Optional[bool] = None
     beneficiary_life_expectancy: Optional[int] = None
 
-    @validator('beneficiary_life_expectancy')
-    def validate_beneficiary_life_expectancy(cls, v, values):
-        if values.get('beneficiary_included') and v is None:
-            raise ValueError('Beneficiary life expectancy must be provided if beneficiary is included')
-        if v is not None and (v < 70 or v > 120):
-            raise ValueError('Beneficiary life expectancy must be between 70 and 120')
-        return v
-
+    
 class UserProfileResponse(BaseModel):
     user_id: str
     name: str
@@ -151,7 +169,7 @@ class UserInfo(BaseModel):
 class LyzrChatRequest(BaseModel):
     user_id: str
     session_id: str
-    prompt_data: dict  # This should contain your structured AI-vs-user data to embed in the message
+    prompt_data: dict
 
 class ChatCompResponse(BaseModel):
     session_id: str
@@ -195,6 +213,27 @@ LYZR_BASE_URL = "https://agent-prod.studio.lyzr.ai/v3/inference/chat/"
 PENSION_AGENT_ID = "6846d83862d8a0cca7618626"
 RETIREMENT_AGENT_ID = "6846d27f62d8a0cca7618607"
 logger.info("External API configuration loaded")
+
+
+def convert_object_ids(data):
+    """Recursively convert all ObjectId instances to strings within the dict."""
+    if isinstance(data, dict):
+        return {k: convert_object_ids(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [convert_object_ids(item) for item in data]
+    elif isinstance(data, ObjectId):
+        return str(data)
+    return data 
+
+def convert_datetimes(data):
+    """Recursively convert all datetime instances to ISO 8601 strings within the dict."""
+    if isinstance(data, dict):
+        return {k: convert_datetimes(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [convert_datetimes(item) for item in data]
+    elif isinstance(data, datetime):
+        return data.isoformat()
+    return data 
 
 async def call_lyzr_api(agent_id: str, session_id: str, user_id: str, message: str) -> dict:
     """Call the Lyzr API"""
@@ -319,7 +358,6 @@ def create_pension_prompt(user_message: str, user_profile: dict):
         "salaryGrowth": user_profile['salary_growth'],
         "investmentReturn": user_profile['investment_return'],
         "inflation": user_profile['inflation'],
-        # Add other relevant fields as needed
     }
     
     # Get existing pension data from profile
@@ -379,14 +417,11 @@ def create_pension_prompt(user_message: str, user_profile: dict):
 
     **Instructions for Chart Updates:**
 
-    - Set "contains_chart" to true only if the user's question implies a need to visualize data or update the chart (e.g., for investment options, income projections, or scenario analysis).
-    - If "contains_chart" is true, "chart_data" must be a JSON string containing the chart data in the specified format and the complete chart data for all years in the specified format..
+    - Set "contains_chart" to true only if the user's question implies a need to visualize data or update the chart.
+    - If "contains_chart" is true, "chart_data" must be a JSON string containing the chart data in the specified format.
     - If "contains_chart" is false, set "chart_data" to null.
-    - "text_response" which will have reasoning response to user query
-    - Do not include any text or formatting outside of this JSON object.
-
-    
-    """
+    - Provide a "text_response" with reasoning to user query.
+    """ 
     
     logger.info(f"Pension prompt created, total length: {len(prompt)}")
     return prompt
@@ -408,7 +443,6 @@ async def save_ai_retirement_data(user_id: str, ai_retirement_data: List[Dict]):
             logger.info(f"AI retirement data saved successfully for user: {user_id}")
         else:
             logger.warning(f"No document updated for user: {user_id}")
-            
     except Exception as e:
         logger.error(f"Error saving AI retirement data: {str(e)}")
         raise
@@ -437,11 +471,10 @@ async def save_message(session_id: str, user_message: str, ai_response: str, cha
         logger.info(f"Message saved successfully with MongoDB ID: {result.inserted_id}")
         
         return message_doc
-        
     except Exception as e:
         logger.error(f"Failed to save message to database: {str(e)}")
         raise
-    
+
 def estimate_ss(income):
     monthly = income / 12
     AIME = min(monthly, 11300)
@@ -455,7 +488,6 @@ def estimate_ss(income):
     return PIA * 12
 
 def calculate_ss(age, base_ss, FRA=67):
-    print("base ss",base_ss)
     if age < 62:
         return 0
     if age < FRA:
@@ -474,7 +506,7 @@ def calculate_401k_balance(age, income, contribution_rate, investment_return, re
             balance *= (1 + investment_return)
     return balance
 
-def calculate_other_investments(age, investment_return, retirement_age, base=20000):
+def calculate_other_investments(age, investment_return, retirement_age, base=200):
     if age < retirement_age:
         return base * pow(1 + investment_return, age - 25)
     else:
@@ -491,55 +523,56 @@ def generate_retirement_data(user_profile: dict):
     """Generate retirement data matching prompt formulas"""
     years = list(range(user_profile['retirement_age'], user_profile['end_age'] + 1))
     retirement_data = []
-    max_ss_benefit = 58476.0  # Maximum SS benefit in 2025
+    max_ss_benefit = 58476.0  
 
     for age in years:
-        # Social Security calculation
-        ss_value = 0
-        if age >= 62:
-            try:
+        try:
+            # Social Security calculation
+            ss_value = 0
+            if age >= 62:
                 ss_value = user_profile['social_security_base'] * (1 + user_profile['inflation']) ** (age - 62)
                 if math.isinf(ss_value) or math.isnan(ss_value):
                     ss_value = max_ss_benefit
-                ss_value = min(ss_value, max_ss_benefit)  # Cap at max benefit
-            except (OverflowError, ValueError):
-                ss_value = max_ss_benefit
+                ss_value = min(ss_value, max_ss_benefit)
 
-        # Pension calculation
-        pension_value = user_profile['pension_base'] * \
-                       (1 + user_profile['salary_growth']) ** (age - user_profile['retirement_age'])
+            # Pension calculation
+            pension_value = user_profile['pension_base'] * \
+                        (1 + user_profile['salary_growth']) ** (age - user_profile['retirement_age'])
 
-        # 401k calculation
-        four01k_value = 0
-        if age >= 58:
-            if age <= 65:
-                four01k_value = user_profile['four01k_base'] * \
-                               (1 + user_profile['investment_return']) ** (age - 58)
-            else:
-                base_at_65 = user_profile['four01k_base'] * \
-                            (1 + user_profile['investment_return']) ** (65 - 58)
-                four01k_value = base_at_65 * (0.95) ** (age - 65)
+            # 401k calculation
+            four01k_value = 0
+            if age >= 58:
+                if age <= 65:
+                    four01k_value = user_profile['four01k_base'] * \
+                                (1 + user_profile['investment_return']) ** (age - 58)
+                else:
+                    base_at_65 = user_profile['four01k_base'] * \
+                                (1 + user_profile['investment_return']) ** (65 - 58)
+                    four01k_value = base_at_65 * (0.95) ** (age - 65)
 
-        # Other calculation
-        other_value = 0
-        if age >= 58:
-            other_value = user_profile['other_base'] * \
-                         (1 + user_profile['investment_return']) ** (age - 58)
+            # Other calculation
+            other_value = 0
+            if age >= 58:
+                other_value = user_profile['other_base'] * \
+                            (1 + user_profile['investment_return']) ** (age - 58)
 
-        # Defined Benefit calculation
-        defined_benefit_value = 0
-        if age >= 62:
-            defined_benefit_value = user_profile['defined_benefit_base'] + \
-                                   user_profile['defined_benefit_yearly_increase'] * (age - 62)
+            # Defined Benefit calculation
+            defined_benefit_value = 0
+            if age >= 62:
+                defined_benefit_value = user_profile['defined_benefit_base'] + \
+                                    user_profile['defined_benefit_yearly_increase'] * (age - 62)
 
-        retirement_data.append({
-            "age": age,
-            "Social Security": round(ss_value, 2),
-            "Pension": round(pension_value, 2),
-            "401k": round(four01k_value, 2),
-            "Other": round(other_value, 2),
-            "Defined Benefit": round(defined_benefit_value, 2)
-        })
+            retirement_data.append({
+                "age": age,
+                "Social Security": round(ss_value, 2),
+                "Pension": round(pension_value, 2),
+                "401k": round(four01k_value, 2),
+                "Other": round(other_value, 2),
+                "Defined Benefit": round(defined_benefit_value, 2)
+            })
+        except (OverflowError, ValueError) as e:
+            logger.error(f"Error in generating retirement data: {e}")
+            continue
 
     return retirement_data
 
@@ -548,7 +581,7 @@ async def get_user_chat_history(user_id: str, session_id: str) -> str:
     try:
         cursor = messages_collection.find({
             "session_id": session_id
-        }).sort("timestamp", 1).limit(10)  # Get last 10 messages
+        }).sort("timestamp", 1).limit(10)
         
         chat_history = []
         async for message in cursor:
@@ -574,7 +607,7 @@ async def generate_personalized_suggestions(user_id: str, session_id: str, user_
         - Name: {user_profile.get('name', 'User')}
         - Current Age: {user_profile.get('current_age', 30)}
         - Retirement Age: {user_profile.get('retirement_age', 65)}
-        - Current Income: ${user_profile.get('income', 70000):,}
+        - Current Income: ${user_profile.get('income', 700):,}
         - Investment Return Rate: {user_profile.get('investment_return', 0.06)*100}%
         - Contribution Rate: {user_profile.get('contribution_rate', 0.1)*100}%
         
@@ -582,11 +615,11 @@ async def generate_personalized_suggestions(user_id: str, session_id: str, user_
         {chat_history}
         
         Generate personalized suggestions with titles, descriptions, and 3 specific questions for each category:
-        1. Optimize Retirement Plan
-        2. Investment Recommendations
-        3. Smart Insights
-        4. Generate Report
-        5. Ask Questions
+       1. Optimize Retirement Plan
+       2. Investment Recommendations
+       3. Smart Insights
+       4. Generate Report
+       5. Ask Questions
         
         Make the suggestions specific to this user's profile and chat history. Format as JSON with structure:
         [
@@ -624,7 +657,6 @@ async def generate_personalized_suggestions(user_id: str, session_id: str, user_
         except json.JSONDecodeError as e:
             logger.error(f"Failed to parse AI suggestions response: {str(e)}")
             return get_default_suggestions()
-            
     except Exception as e:
         logger.error(f"Error generating personalized suggestions: {str(e)}")
         return get_default_suggestions()
@@ -644,7 +676,7 @@ def get_default_suggestions() -> List[AISuggestion]:
         ),
         AISuggestion(
             icon="trending-up",
-            title="Investment Recommendations", 
+            title="Investment Recommendations",
             description="Discover better investment options based on your profile",
             questions=[
                 "Based on my retirement planning data, what investment strategies would you recommend to maximize my retirement income?",
@@ -683,6 +715,17 @@ def get_default_suggestions() -> List[AISuggestion]:
             ]
         )
     ]
+
+def sanitize_response_data(data):
+    """Recursively sanitize all out-of-range float values in the data."""
+    if isinstance(data, dict):
+        return {k: sanitize_response_data(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [sanitize_response_data(item) for item in data]
+    elif isinstance(data, float):
+        if math.isnan(data) or math.isinf(data):
+            return None  # or 0, depending on your application's needs
+    return data
 
 # API Routes
 
@@ -858,10 +901,9 @@ async def chat_pension(request: ChatRequest):
             chart_data=chart_data,
             contains_chart=contains_chart
         )
-        
+
         logger.info("Pension chat request completed successfully")
         return response
-        
     except HTTPException as http_error:
         logger.error(f"HTTP exception in pension chat: {http_error.detail}")
         raise
@@ -873,7 +915,7 @@ def generate_comparison_prompt(data: dict) -> str:
     """Creates the final AI prompt based on structured user and AI data"""
     try:
         # Ensure the data can be serialized to JSON
-        json_data = json.dumps(data, indent=2, default=str)  # default=str handles non-serializable objects
+        json_data = json.dumps(data, indent=2, default=str)
         return f"""
         {json_data}
         """.strip()
@@ -901,13 +943,10 @@ async def compare_retirement_projection(request: LyzrChatRequest):
         if 'updated_at' in user_profile and isinstance(user_profile['updated_at'], datetime):
             user_profile['updated_at'] = user_profile['updated_at'].isoformat()
         
-        # Log user profile for debugging (redacted for security)
         logger.debug(f"User profile retrieved for user: {user_profile.get('name', 'Unknown')}")
 
-        # Create the prompt - fix the data structure issue
+        # Create the prompt
         logger.info("Creating prompt")
-        
-        # Use the prompt_data from the request if provided, otherwise use user_profile
         if hasattr(request, 'prompt_data') and request.prompt_data:
             prompt_data = request.prompt_data
             logger.info("Using prompt_data from request")
@@ -918,9 +957,9 @@ async def compare_retirement_projection(request: LyzrChatRequest):
         prompt = generate_comparison_prompt(prompt_data)
         logger.debug(f"Generated prompt length: {len(prompt)}")
 
-        # Prepare payload for Lyzr - fix the hardcoded values
+        # Prepare payload for Lyzr
         lyzr_payload = {
-            "user_id": request.user_id,  # Use actual user_id instead of hardcoded email
+            "user_id": request.user_id,
             "agent_id": "684be1140a55475675b60d0b",
             "session_id": request.session_id,
             "message": prompt
@@ -940,7 +979,6 @@ async def compare_retirement_projection(request: LyzrChatRequest):
                 
                 logger.info(f"Lyzr API response status: {response.status_code}")
                 
-                # Log response content for debugging
                 if response.status_code != 200:
                     logger.error(f"Lyzr API error response: {response.text}")
                 
@@ -975,14 +1013,12 @@ async def compare_retirement_projection(request: LyzrChatRequest):
             except json.JSONDecodeError as e:
                 logger.warning(f"Failed to decode structured JSON from markdown: {str(e)}")
         else:
-            # Try to parse the entire response as JSON
             try:
                 structured_data = json.loads(raw_response)
                 logger.info("Successfully parsed entire response as JSON")
             except json.JSONDecodeError:
                 logger.info("Response is not JSON format, treating as plain text")
 
-        # Save the interaction to database
         try:
             await save_message(
                 session_id=request.session_id,
@@ -994,21 +1030,17 @@ async def compare_retirement_projection(request: LyzrChatRequest):
             logger.info("Comparison interaction saved to database")
         except Exception as save_error:
             logger.warning(f"Failed to save message to database: {str(save_error)}")
-            # Don't fail the whole request if saving fails
 
         return ChatCompResponse(
             session_id=request.session_id,
-            # response=raw_response,
             structured_data=structured_data
         )
-
     except HTTPException as http_error:
         logger.error(f"HTTP exception in compare retirement: {http_error.detail}")
         raise
     except Exception as e:
         logger.error(f"Unexpected error in compare retirement: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
-
 
 @app.post("/chat-news", response_model=ChatResponse)
 async def chat_retirement(request: ChatRequest):
@@ -1025,12 +1057,12 @@ async def chat_retirement(request: ChatRequest):
         
         # Create personalized prompt with user details
         logger.info("Creating personalized prompt with user details")
-        prompt = f"""     
+        prompt = f"""
         User Profile:
         - Name: {user_profile.get('name', 'User')}
         - Current Age: {user_profile.get('current_age', 30)}
         - Retirement Age: {user_profile.get('retirement_age', 65)}
-        - Current Income: ${user_profile.get('income', 70000):,}
+        - Current Income: ${user_profile.get('income', 700):,}
         - Salary Growth Rate: {user_profile.get('salary_growth', 0.02)*100}%
         - Investment Return Rate: {user_profile.get('investment_return', 0.05)*100}%
         - Contribution Rate: {user_profile.get('contribution_rate', 0.1)*100}%
@@ -1038,9 +1070,9 @@ async def chat_retirement(request: ChatRequest):
         - Beneficiary Included: {user_profile.get('beneficiary_included', False)}
         - Beneficiary Life Expectancy: {user_profile.get('beneficiary_life_expectancy', 'Not specified')}
         - Social Security Base: ${user_profile.get('social_security_base', 18000):,}
-        - Pension Base: ${user_profile.get('pension_base', 8000):,}
-        - 401k Base: ${user_profile.get('four01k_base', 10000):,}
-        - Other Investments Base: ${user_profile.get('other_base', 4000):,}
+        - Pension Base: ${user_profile.get('pension_base', 800):,}
+        - 401k Base: ${user_profile.get('four01k_base', 100):,}
+        - Other Investments Base: ${user_profile.get('other_base', 400):,}
         - Defined Benefit Base: ${user_profile.get('defined_benefit_base', 14000):,}
         - Defined Benefit Yearly Increase: ${user_profile.get('defined_benefit_yearly_increase', 300):,}
         
@@ -1049,7 +1081,6 @@ async def chat_retirement(request: ChatRequest):
         Provide a detailed and personalized response based on the user's profile. Ensure the response is relevant to their retirement planning needs.
         """
         
-        # Call Lyzr API for retirement with personalized prompt
         logger.info("Calling Lyzr API for retirement planning")
         async with httpx.AsyncClient() as client:
             try:
@@ -1064,9 +1095,6 @@ async def chat_retirement(request: ChatRequest):
                     "x-api-key": LYZR_API_KEY
                 }
                 logger.info(f"Making HTTP request with payload: {payload}")
-                
-                logger.info(f"Making HTTP request to: {LYZR_BASE_URL}")
-                logger.debug(f"Request payload keys: {list(payload.keys())}")
                 
                 response = await client.post(
                     LYZR_BASE_URL,
@@ -1094,7 +1122,6 @@ async def chat_retirement(request: ChatRequest):
                 logger.error(f"Unexpected error in Lyzr API call: {str(e)}")
                 raise HTTPException(status_code=500, detail=str(e))
         
-        # Save message to database
         logger.info("Saving retirement message to database")
         await save_message(
             session_id=request.session_id,
@@ -1112,7 +1139,6 @@ async def chat_retirement(request: ChatRequest):
         
         logger.info("Retirement chat request completed successfully")
         return response
-        
     except HTTPException as http_error:
         logger.error(f"HTTP exception in retirement chat: {http_error.detail}")
         raise
@@ -1136,12 +1162,12 @@ async def chat_retirement_stream(request: ChatRequest):
         
         # Create personalized prompt with user details
         logger.info("Creating personalized prompt with user details")
-        prompt = f"""       
+        prompt = f"""
         User Profile:
         - Name: {user_profile.get('name', 'User')}
         - Current Age: {user_profile.get('current_age', 30)}
         - Retirement Age: {user_profile.get('retirement_age', 65)}
-        - Current Income: ${user_profile.get('income', 70000):,}
+        - Current Income: ${user_profile.get('income', 700):,}
         - Salary Growth Rate: {user_profile.get('salary_growth', 0.02)*100}%
         - Investment Return Rate: {user_profile.get('investment_return', 0.05)*100}%
         - Contribution Rate: {user_profile.get('contribution_rate', 0.1)*100}%
@@ -1149,9 +1175,9 @@ async def chat_retirement_stream(request: ChatRequest):
         - Beneficiary Included: {user_profile.get('beneficiary_included', False)}
         - Beneficiary Life Expectancy: {user_profile.get('beneficiary_life_expectancy', 'Not specified')}
         - Social Security Base: ${user_profile.get('social_security_base', 18000):,}
-        - Pension Base: ${user_profile.get('pension_base', 8000):,}
-        - 401k Base: ${user_profile.get('four01k_base', 10000):,}
-        - Other Investments Base: ${user_profile.get('other_base', 4000):,}
+        - Pension Base: ${user_profile.get('pension_base', 800):,}
+        - 401k Base: ${user_profile.get('four01k_base', 100):,}
+        - Other Investments Base: ${user_profile.get('other_base', 400):,}
         - Defined Benefit Base: ${user_profile.get('defined_benefit_base', 14000):,}
         - Defined Benefit Yearly Increase: ${user_profile.get('defined_benefit_yearly_increase', 300):,}
         
@@ -1160,7 +1186,6 @@ async def chat_retirement_stream(request: ChatRequest):
         Provide a detailed and personalized response based on the user's profile. Ensure the response is relevant to their retirement planning needs.
         """
         
-        # Define streaming generator
         async def stream_response():
             logger.info("Starting to stream response from Lyzr API")
             response_text = ""
@@ -1175,7 +1200,6 @@ async def chat_retirement_stream(request: ChatRequest):
             
             logger.info(f"Streamed response collected, total length: {len(response_text)}")
             
-            # Save message to database
             logger.info("Saving retirement stream message to database")
             await save_message(
                 session_id=request.session_id,
@@ -1191,7 +1215,6 @@ async def chat_retirement_stream(request: ChatRequest):
             content=stream_response(),
             media_type="text/plain"
         )
-        
     except HTTPException as http_error:
         logger.error(f"HTTP exception in retirement stream chat: {http_error.detail}")
         raise
@@ -1205,7 +1228,6 @@ async def create_session(request: SessionCreate):
     logger.info(f"Creating new session for user ID: {request.user_id}")
     
     try:
-        # Create new session
         session_id = str(uuid.uuid4())
         session_name = request.session_name or f"Session {datetime.now().strftime('%Y-%m-%d %H:%M')}"
         
@@ -1220,7 +1242,6 @@ async def create_session(request: SessionCreate):
         result = await sessions_collection.insert_one(session_doc)
         logger.info(f"Created new session: {session_id}")
         return SessionResponse(**session_doc)
-        
     except Exception as e:
         logger.error(f"Error creating session: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -1246,7 +1267,6 @@ async def get_all_sessions(user_id: Optional[str] = None):
         
         logger.info(f"Retrieved {session_count} sessions")
         return sessions
-        
     except Exception as e:
         logger.error(f"Error retrieving sessions: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -1262,15 +1282,18 @@ async def get_session_messages(session_id: str):
         
         message_count = 0
         async for message in cursor:
+            # Convert chart_data from list to a suitable dictionary structure if necessary
+            if isinstance(message['chart_data'], list):
+                message['chart_data'] = {"type": "chart_data", "data": message['chart_data']} # Or another suitable conversion
+
             messages.append(MessageResponse(**message))
             message_count += 1
         
         logger.info(f"Retrieved {message_count} messages for session {session_id}")
         return messages
-        
     except Exception as e:
         logger.error(f"Error retrieving messages for session {session_id}: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) 
 
 @app.delete("/session/{session_id}")
 async def delete_session(session_id: str):
@@ -1278,12 +1301,10 @@ async def delete_session(session_id: str):
     logger.info(f"Deleting session and messages for session ID: {session_id}")
     
     try:
-        # Delete messages first
         logger.info("Deleting messages for session")
         message_result = await messages_collection.delete_many({"session_id": session_id})
         logger.info(f"Deleted {message_result.deleted_count} messages")
         
-        # Delete session
         logger.info("Deleting session document")
         session_result = await sessions_collection.delete_one({"session_id": session_id})
         
@@ -1293,7 +1314,6 @@ async def delete_session(session_id: str):
         
         logger.info(f"Session {session_id} deleted successfully")
         return {"message": "Session deleted successfully"}
-        
     except HTTPException as http_error:
         logger.error(f"HTTP exception in delete session: {http_error.detail}")
         raise
@@ -1307,7 +1327,6 @@ async def create_user_profile(request: UserProfileCreate):
     logger.info(f"Creating user profile for: {request.name}, email: {request.email}")
     
     try:
-        # Check for existing user with the same email
         if request.email:
             existing_user = await user_profiles_collection.find_one({"email": request.email})
             if existing_user:
@@ -1335,8 +1354,8 @@ async def create_user_profile(request: UserProfileCreate):
             "defined_benefit_base": request.defined_benefit_base,
             "defined_benefit_yearly_increase": request.defined_benefit_yearly_increase,
             "inflation": request.inflation,
-            "beneficiary_included": request.beneficiary_included,  # Fixed: Use request value
-            "beneficiary_life_expectancy": request.beneficiary_life_expectancy,  # Fixed: Use request value
+            "beneficiary_included": request.beneficiary_included,
+            "beneficiary_life_expectancy": request.beneficiary_life_expectancy,
             "created_at": datetime.utcnow(),
             "updated_at": datetime.utcnow(),
             "retirement_data": [],
@@ -1349,7 +1368,6 @@ async def create_user_profile(request: UserProfileCreate):
         await calculate_retirement_data(user_id)
         
         return UserProfileResponse(**user_doc)
-        
     except HTTPException:
         raise
     except Exception as e:
@@ -1357,51 +1375,37 @@ async def create_user_profile(request: UserProfileCreate):
         raise HTTPException(status_code=500, detail=str(e))
         
 @app.put("/user-profile/{user_id}", response_model=UserProfileResponse)
-async def update_user_profile(user_id: str, request: UserProfileCreate):
+async def update_user_profile(user_id: str, request: UserProfileUpdate):
     """Update user profile"""
     logger.info(f"Updating user profile for ID: {user_id}")
     
     try:
-        update_doc = {
-            "name": request.name,
-            "email": request.email,
-            "current_age": request.current_age,
-            "retirement_age": request.retirement_age,
-            "income": request.income,
-            "salary_growth": request.salary_growth,
-            "investment_return": request.investment_return,
-            "contribution_rate": request.contribution_rate,
-            "pension_multiplier": request.pension_multiplier,
-            "end_age": request.end_age,
-            "social_security_base": request.social_security_base,
-            "pension_base": request.pension_base,
-            "four01k_base": request.four01k_base,
-            "other_base": request.other_base,
-            "defined_benefit_base": request.defined_benefit_base,
-            "defined_benefit_yearly_increase": request.defined_benefit_yearly_increase,
-            "inflation": request.inflation,
-            "beneficiary_included": request.beneficiary_included,  # Fixed: Use request value
-            "beneficiary_life_expectancy": request.beneficiary_life_expectancy,  # Fixed: Use request value
-            "updated_at": datetime.utcnow()
-        }
+        # Create an update document with only the fields provided
+        update_data = {k: v for k, v in request.dict(exclude_unset=True).items()}
         
+        if not update_data:
+            raise HTTPException(status_code=400, detail="No valid fields provided for update")
+        
+        update_data["updated_at"] = datetime.utcnow()
+
         result = await user_profiles_collection.update_one(
             {"user_id": user_id},
-            {"$set": update_doc}
+            {"$set": update_data}
         )
         
         if result.matched_count == 0:
             raise HTTPException(status_code=404, detail="User profile not found")
         
         updated_doc = await user_profiles_collection.find_one({"user_id": user_id})
-        return UserProfileResponse(**updated_doc)
-        
-    except HTTPException:
+
+        return UserProfileResponse(**convert_object_ids(updated_doc))
+    except HTTPException as http_error:
+        logger.error(f"HTTP exception: {http_error.detail}")
         raise
     except Exception as e:
         logger.error(f"Error updating user profile: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
-    
+        
 @app.get("/ai-retirement-data/{user_id}")
 async def get_ai_retirement_data(user_id: str):
     """Get AI-generated retirement data for a user"""
@@ -1423,24 +1427,11 @@ async def get_ai_retirement_data(user_id: str):
             "has_ai_data": bool(ai_retirement_data),
             "latest_data_source": "ai" if ai_retirement_data else "manual"
         }
-        
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Error retrieving AI retirement data: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
-
-
-def sanitize_response_data(data):
-    """Recursively sanitize all out-of-range float values in the data."""
-    if isinstance(data, dict):
-        return {k: sanitize_response_data(v) for k, v in data.items()}
-    elif isinstance(data, list):
-        return [sanitize_response_data(item) for item in data]
-    elif isinstance(data, float):
-        if math.isnan(data) or math.isinf(data):
-            return None  # or 0, depending on your application's needs
-    return data
 
 @app.get("/user-profile/{user_id}", response_model=UserProfileResponse)
 async def get_user_profile(user_id: str):
@@ -1453,30 +1444,28 @@ async def get_user_profile(user_id: str):
         if not user_doc:
             raise HTTPException(status_code=404, detail="User profile not found")
 
-        # Sanitize user_doc before it's serialized to JSON
-        sanitized_user_doc = sanitize_response_data(user_doc)
+        # Convert ObjectId in the document to String
+        sanitized_user_doc = convert_object_ids(user_doc)
+        sanitized_user_doc = convert_datetimes(sanitized_user_doc)
         
         return JSONResponse(content=sanitized_user_doc)
-        
-    except HTTPException:
+    except HTTPException as http_error:
+        logger.error(f"HTTP exception: {http_error.detail}")
         raise
     except Exception as e:
         logger.error(f"Error retrieving user profile: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e)) 
-
+    
 @app.get("/retirement-calculation/{user_id}")
 async def calculate_retirement_data(user_id: str):
     """Calculate and store retirement data"""
     try:
-        # Get user profile
         user_doc = await user_profiles_collection.find_one({"user_id": user_id})
         if not user_doc:
             raise HTTPException(status_code=404, detail="User profile not found")
         
-        # Generate data
         retirement_data = generate_retirement_data(user_doc)
         
-        # Update profile with new data
         update_result = await user_profiles_collection.update_one(
             {"user_id": user_id},
             {"$set": {
@@ -1492,7 +1481,6 @@ async def calculate_retirement_data(user_id: str):
             "user_id": user_id,
             "retirement_data": retirement_data
         }
-        
     except Exception as e:
         logger.error(f"Retirement calculation error: {str(e)}")
         raise
@@ -1503,7 +1491,6 @@ async def create_user_session(user_id: str, session_name: Optional[str] = None):
     logger.info(f"Creating session for user ID: {user_id}")
     
     try:
-        # Verify user exists
         user_doc = await user_profiles_collection.find_one({"user_id": user_id})
         if not user_doc:
             raise HTTPException(status_code=404, detail="User not found")
@@ -1514,7 +1501,6 @@ async def create_user_session(user_id: str, session_name: Optional[str] = None):
         )
         
         return await create_session(session_request)
-        
     except HTTPException:
         raise
     except Exception as e:
@@ -1527,13 +1513,11 @@ async def get_ai_preferences(request: AIPreferencesRequest):
     logger.info(f"Getting AI preferences for user: {request.user_id}, session: {request.session_id}")
     
     try:
-        # Get user profile
         user_doc = await user_profiles_collection.find_one({"user_id": request.user_id})
         
         if not user_doc:
             raise HTTPException(status_code=404, detail="User profile not found")
         
-        # Generate personalized suggestions
         suggestions = await generate_personalized_suggestions(
             request.user_id, 
             request.session_id, 
@@ -1541,7 +1525,6 @@ async def get_ai_preferences(request: AIPreferencesRequest):
         )
         
         return AIPreferencesResponse(suggestions=suggestions)
-        
     except HTTPException:
         raise
     except Exception as e:
@@ -1564,18 +1547,16 @@ async def get_all_users():
         
         logger.info(f"Retrieved {user_count} users")
         return users
-        
     except Exception as e:
         logger.error(f"Error retrieving users: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
-    
+
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
     logger.info("Health check endpoint accessed")
     
     try:
-        # Test database connection
         logger.info("Testing database connection")
         await db.command("ping")
         logger.info("Database connection successful")
@@ -1583,7 +1564,6 @@ async def health_check():
         result = {"status": "healthy", "database": "connected"}
         logger.info("Health check completed successfully")
         return result
-        
     except Exception as e:
         logger.error(f"Health check failed: {str(e)}")
         result = {"status": "unhealthy", "database": "disconnected", "error": str(e)}
@@ -1592,4 +1572,4 @@ async def health_check():
 if __name__ == "__main__":
     logger.info("Starting application server")
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=800) 
