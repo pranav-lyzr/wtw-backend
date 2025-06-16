@@ -7,6 +7,7 @@ import json
 from datetime import datetime
 import uuid
 from motor.motor_asyncio import AsyncIOMotorClient
+from fastapi.responses import StreamingResponse
 import os
 import logging
 from logging.handlers import RotatingFileHandler
@@ -235,6 +236,54 @@ async def call_lyzr_api(agent_id: str, session_id: str, user_id: str, message: s
             logger.error(f"Unexpected error in Lyzr API call: {str(e)}")
             raise
 
+async def stream_lyzr_api(agent_id: str, session_id: str, user_id: str, message: str):
+    """Stream response from Lyzr API"""
+    logger.info(f"Starting Lyzr API stream - Agent ID: {agent_id}, Session ID: {session_id}, User ID: {user_id}")
+    logger.debug(f"Message content: {message[:100]}..." if len(message) > 100 else f"Message content: {message}")
+    
+    LYZR_STREAM_URL = "https://agent-prod.studio.lyzr.ai/v3/inference/stream/"
+    
+    async with httpx.AsyncClient() as client:
+        try:
+            payload = {
+                "agent_id": agent_id,
+                "session_id": session_id,
+                "user_id": user_id,
+                "message": message,
+            }
+            headers = {
+                "Content-Type": "application/json",
+                "x-api-key": LYZR_API_KEY,
+            }
+            
+            logger.info(f"Making streaming HTTP request to: {LYZR_STREAM_URL}")
+            logger.debug(f"Request payload keys: {list(payload.keys())}")
+            
+            async with client.stream(
+                "POST",
+                LYZR_STREAM_URL,
+                json=payload,
+                headers=headers,
+                timeout=600.0
+            ) as response:
+                logger.info(f"Received streaming response with status code: {response.status_code}")
+                response.raise_for_status()
+                
+                async for chunk in response.aiter_text():
+                    if chunk:
+                        logger.debug(f"Received stream chunk: {chunk[:100]}...")
+                        yield chunk
+                        
+        except httpx.RequestError as e:
+            logger.error(f"HTTP request error in Lyzr API stream: {str(e)}")
+            raise HTTPException(status_code=500, detail=f"API request failed: {str(e)}")
+        except httpx.HTTPStatusError as e:
+            logger.error(f"HTTP status error in Lyzr API stream: {e.response.status_code} - {str(e)}")
+            raise HTTPException(status_code=e.response.status_code, detail=f"API error: {str(e)}")
+        except Exception as e:
+            logger.error(f"Unexpected error in Lyzr API stream: {str(e)}")
+            raise HTTPException(status_code=500, detail=str(e))
+        
 def get_latest_retirement_data(user_profile: dict) -> List[Dict]:
     """Get the latest retirement data (AI-generated if available, otherwise manual)"""
     ai_data = user_profile.get('ai_retirement_data', [])
@@ -1055,6 +1104,85 @@ async def chat_retirement(request: ChatRequest):
         logger.error(f"Unexpected error in retirement chat: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
+@app.post("/chat-news-stream")
+async def chat_retirement_stream(request: ChatRequest):
+    """Streaming chat endpoint for retirement planning"""
+    logger.info(f"Retirement stream chat request received - Session ID: {request.session_id}, User ID: {request.user_id}")
+    logger.debug(f"Message: {request.message[:100]}..." if len(request.message) > 100 else f"Message: {request.message}")
+    
+    try:
+        # Retrieve user profile
+        logger.info("Retrieving user profile")
+        user_profile = await user_profiles_collection.find_one({"user_id": request.user_id})
+        if not user_profile:
+            raise HTTPException(status_code=404, detail="User profile not found")
+        
+        # Create personalized prompt with user details
+        logger.info("Creating personalized prompt with user details")
+        prompt = f"""       
+        User Profile:
+        - Name: {user_profile.get('name', 'User')}
+        - Current Age: {user_profile.get('current_age', 30)}
+        - Retirement Age: {user_profile.get('retirement_age', 65)}
+        - Current Income: ${user_profile.get('income', 70000):,}
+        - Salary Growth Rate: {user_profile.get('salary_growth', 0.02)*100}%
+        - Investment Return Rate: {user_profile.get('investment_return', 0.05)*100}%
+        - Contribution Rate: {user_profile.get('contribution_rate', 0.1)*100}%
+        - Inflation Rate: {user_profile.get('inflation', 0.02)*100}%
+        - Beneficiary Included: {user_profile.get('beneficiary_included', False)}
+        - Beneficiary Life Expectancy: {user_profile.get('beneficiary_life_expectancy', 'Not specified')}
+        - Social Security Base: ${user_profile.get('social_security_base', 18000):,}
+        - Pension Base: ${user_profile.get('pension_base', 8000):,}
+        - 401k Base: ${user_profile.get('four01k_base', 10000):,}
+        - Other Investments Base: ${user_profile.get('other_base', 4000):,}
+        - Defined Benefit Base: ${user_profile.get('defined_benefit_base', 14000):,}
+        - Defined Benefit Yearly Increase: ${user_profile.get('defined_benefit_yearly_increase', 300):,}
+        
+        User Question: {request.message}
+        
+        Provide a detailed and personalized response based on the user's profile. Ensure the response is relevant to their retirement planning needs.
+        """
+        
+        # Define streaming generator
+        async def stream_response():
+            logger.info("Starting to stream response from Lyzr API")
+            response_text = ""
+            async for chunk in stream_lyzr_api(
+                agent_id="684adedfaa4e01a01dd89a72",
+                session_id=request.session_id,
+                user_id=request.user_id,
+                message=prompt
+            ):
+                response_text += chunk
+                yield chunk
+            
+            logger.info(f"Streamed response collected, total length: {len(response_text)}")
+            
+            # Save message to database
+            logger.info("Saving retirement stream message to database")
+            await save_message(
+                session_id=request.session_id,
+                user_message=request.message,
+                ai_response=response_text,
+                chart_data=None,
+                contains_chart=False
+            )
+            logger.info("Retirement stream message saved successfully")
+        
+        logger.info("Returning streaming response")
+        return StreamingResponse(
+            content=stream_response(),
+            media_type="text/plain"
+        )
+        
+    except HTTPException as http_error:
+        logger.error(f"HTTP exception in retirement stream chat: {http_error.detail}")
+        raise
+    except Exception as e:
+        logger.error(f"Unexpected error in retirement stream chat: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+    
 @app.post("/session", response_model=SessionResponse)
 async def create_session(request: SessionCreate):
     """Create a new session"""
