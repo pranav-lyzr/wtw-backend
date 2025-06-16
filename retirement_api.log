@@ -1620,3 +1620,21 @@ NameError: name 'user_id' is not defined
 2025-06-16 13:29:03,085 - main - INFO - MongoDB client initialized successfully
 2025-06-16 13:29:03,086 - main - INFO - MongoDB collections configured
 2025-06-16 13:29:03,088 - main - INFO - External API configuration loaded
+2025-06-16 13:34:09,027 - main - INFO - FastAPI application initialized
+2025-06-16 13:34:09,032 - main - INFO - CORS middleware configured
+2025-06-16 13:34:09,038 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 13:34:09,078 - main - INFO - MongoDB client initialized successfully
+2025-06-16 13:34:09,080 - main - INFO - MongoDB collections configured
+2025-06-16 13:34:09,090 - main - INFO - External API configuration loaded
+2025-06-16 13:51:39,464 - main - INFO - FastAPI application initialized
+2025-06-16 13:51:39,465 - main - INFO - CORS middleware configured
+2025-06-16 13:51:39,467 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 13:51:39,480 - main - INFO - MongoDB client initialized successfully
+2025-06-16 13:51:39,481 - main - INFO - MongoDB collections configured
+2025-06-16 13:51:39,482 - main - INFO - External API configuration loaded
+2025-06-16 13:51:48,040 - main - INFO - FastAPI application initialized
+2025-06-16 13:51:48,042 - main - INFO - CORS middleware configured
+2025-06-16 13:51:48,043 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 13:51:48,059 - main - INFO - MongoDB client initialized successfully
+2025-06-16 13:51:48,063 - main - INFO - MongoDB collections configured
+2025-06-16 13:51:48,065 - main - INFO - External API configuration loaded

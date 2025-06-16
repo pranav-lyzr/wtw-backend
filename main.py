@@ -258,7 +258,7 @@ async def call_lyzr_api(agent_id: str, session_id: str, user_id: str, message: s
                 LYZR_BASE_URL,
                 json=payload,
                 headers=headers,
-                timeout=180.0
+                timeout=600.0
             )
             
             logger.info(f"Received response with status code: {response.status_code}")
@@ -1247,7 +1247,7 @@ async def compare_retirement_projection(request: LyzrChatRequest):
         logger.info(f"Making request to Lyzr API with agent_id: {lyzr_payload['agent_id']}")
 
         # Call Lyzr with proper error handling
-        async with httpx.AsyncClient(timeout=180.0) as client:
+        async with httpx.AsyncClient(timeout=600.0) as client:
             try:
                 response = await client.post(LYZR_BASE_URL, headers=headers, json=lyzr_payload)
                 
