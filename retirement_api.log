@@ -1484,3 +1484,65 @@ chart_data
 2025-06-16 11:34:03,954 - main - INFO - Making streaming HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/stream/
 2025-06-16 11:34:05,734 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/stream/ "HTTP/1.1 200 OK"
 2025-06-16 11:34:05,738 - main - INFO - Received streaming response with status code: 200
+2025-06-16 11:34:52,061 - main - INFO - Streamed response collected, total length: 7065
+2025-06-16 11:34:52,062 - main - INFO - Saving retirement stream message to database
+2025-06-16 11:34:52,063 - main - INFO - Saving message to database - Session ID: f984323e-2347-4b04-9475-58916d992f28
+2025-06-16 11:34:52,067 - main - INFO - Message saved successfully with MongoDB ID: 6850015c1bd95d4f374a2358
+2025-06-16 11:34:52,068 - main - INFO - Retirement stream message saved successfully
+2025-06-16 11:51:30,849 - main - INFO - FastAPI application initialized
+2025-06-16 11:51:30,851 - main - INFO - CORS middleware configured
+2025-06-16 11:51:30,852 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 11:51:30,867 - main - INFO - MongoDB client initialized successfully
+2025-06-16 11:51:30,869 - main - INFO - MongoDB collections configured
+2025-06-16 11:51:30,870 - main - INFO - External API configuration loaded
+2025-06-16 11:51:41,940 - main - INFO - FastAPI application initialized
+2025-06-16 11:51:41,941 - main - INFO - CORS middleware configured
+2025-06-16 11:51:41,943 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 11:51:41,957 - main - INFO - MongoDB client initialized successfully
+2025-06-16 11:51:41,959 - main - INFO - MongoDB collections configured
+2025-06-16 11:51:41,961 - main - INFO - External API configuration loaded
+2025-06-16 11:52:46,054 - main - INFO - FastAPI application initialized
+2025-06-16 11:52:46,055 - main - INFO - CORS middleware configured
+2025-06-16 11:52:46,057 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 11:52:46,073 - main - INFO - MongoDB client initialized successfully
+2025-06-16 11:52:46,075 - main - INFO - MongoDB collections configured
+2025-06-16 11:52:46,077 - main - INFO - External API configuration loaded
+2025-06-16 12:25:55,891 - main - INFO - FastAPI application initialized
+2025-06-16 12:25:55,893 - main - INFO - CORS middleware configured
+2025-06-16 12:25:55,896 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 12:25:55,913 - main - INFO - MongoDB client initialized successfully
+2025-06-16 12:25:55,915 - main - INFO - MongoDB collections configured
+2025-06-16 12:25:55,917 - main - INFO - External API configuration loaded
+2025-06-16 12:26:17,200 - main - INFO - FastAPI application initialized
+2025-06-16 12:26:17,201 - main - INFO - CORS middleware configured
+2025-06-16 12:26:17,203 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 12:26:17,219 - main - INFO - MongoDB client initialized successfully
+2025-06-16 12:26:17,220 - main - INFO - MongoDB collections configured
+2025-06-16 12:26:17,223 - main - INFO - External API configuration loaded
+2025-06-16 12:26:41,271 - main - INFO - FastAPI application initialized
+2025-06-16 12:26:41,273 - main - INFO - CORS middleware configured
+2025-06-16 12:26:41,275 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 12:26:41,288 - main - INFO - MongoDB client initialized successfully
+2025-06-16 12:26:41,290 - main - INFO - MongoDB collections configured
+2025-06-16 12:26:41,292 - main - INFO - External API configuration loaded
+2025-06-16 12:27:19,275 - main - INFO - Retrieving all users
+2025-06-16 12:27:19,321 - main - INFO - Retrieved 4 users
+2025-06-16 12:27:36,286 - main - INFO - Comparison request from user: c4c0a923-9e81-41d8-ad60-3ce3897f38c7
+2025-06-16 12:27:36,287 - main - INFO - Retrieving user profile
+2025-06-16 12:27:36,292 - main - INFO - Extracting retirement data
+2025-06-16 12:27:36,295 - main - ERROR - Unexpected error in compare retirement: name 'user_id' is not defined
+Traceback (most recent call last):
+  File "/app/main.py", line 965, in compare_retirement_projection
+    "session_id": user_id,  # Generate a new session ID if not provided
+                  ^^^^^^^
+NameError: name 'user_id' is not defined
+2025-06-16 12:28:19,178 - main - INFO - FastAPI application initialized
+2025-06-16 12:28:19,179 - main - INFO - CORS middleware configured
+2025-06-16 12:28:19,182 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 12:28:19,195 - main - INFO - MongoDB client initialized successfully
+2025-06-16 12:28:19,196 - main - INFO - MongoDB collections configured
+2025-06-16 12:28:19,199 - main - INFO - External API configuration loaded
+2025-06-16 12:28:22,394 - main - INFO - Comparison request from user: c4c0a923-9e81-41d8-ad60-3ce3897f38c7
+2025-06-16 12:28:22,396 - main - INFO - Retrieving user profile
+2025-06-16 12:28:22,411 - main - INFO - Extracting retirement data
+2025-06-16 12:28:22,414 - main - INFO - Making request to Lyzr API with agent_id: 684be1140a55475675b60d0b

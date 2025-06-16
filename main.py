@@ -167,8 +167,6 @@ class UserInfo(BaseModel):
 
 class LyzrChatRequest(BaseModel):
     user_id: str
-    session_id: str
-    prompt_data: dict
 
 class ChatCompResponse(BaseModel):
     session_id: str
@@ -925,7 +923,7 @@ def generate_comparison_prompt(data: dict) -> str:
 @app.post("/compare-retirement", response_model=ChatCompResponse)
 async def compare_retirement_projection(request: LyzrChatRequest):
     """Compare user-calculated vs AI-generated retirement data using Lyzr"""
-    logger.info(f"Comparison request from user: {request.user_id}, session: {request.session_id}")
+    logger.info(f"Comparison request from user: {request.user_id}")
 
     try:
         # Retrieve user profile
@@ -935,33 +933,37 @@ async def compare_retirement_projection(request: LyzrChatRequest):
             raise HTTPException(status_code=404, detail="User profile not found")
         
         # Convert ObjectId to string and datetime to ISO format string for JSON serialization
-        if '_id' in user_profile:
-            user_profile['_id'] = str(user_profile['_id'])
-        if 'created_at' in user_profile and isinstance(user_profile['created_at'], datetime):
-            user_profile['created_at'] = user_profile['created_at'].isoformat()
-        if 'updated_at' in user_profile and isinstance(user_profile['updated_at'], datetime):
-            user_profile['updated_at'] = user_profile['updated_at'].isoformat()
+        user_profile = convert_object_ids(user_profile)
+        user_profile = convert_datetimes(user_profile)
         
         logger.debug(f"User profile retrieved for user: {user_profile.get('name', 'Unknown')}")
 
-        # Create the prompt
-        logger.info("Creating prompt")
-        if hasattr(request, 'prompt_data') and request.prompt_data:
-            prompt_data = request.prompt_data
-            logger.info("Using prompt_data from request")
-        else:
-            prompt_data = user_profile
-            logger.info("Using user_profile as prompt data")
+        # Extract retirement data
+        logger.info("Extracting retirement data")
+        retirement_data = user_profile.get('retirement_data', [])
+        ai_retirement_data = user_profile.get('ai_retirement_data', [])
         
-        prompt = generate_comparison_prompt(prompt_data)
-        logger.debug(f"Generated prompt length: {len(prompt)}")
+        # Prepare data for Lyzr API
+        prompt_data = {
+            "user_id": request.user_id,
+            "retirement_data": retirement_data,
+            "ai_retirement_data": ai_retirement_data
+        }
+        
+        # Serialize data to JSON for the message field
+        try:
+            message = json.dumps(prompt_data, indent=2, default=str)
+            logger.debug(f"Serialized message length: {len(message)}")
+        except Exception as e:
+            logger.error(f"Error serializing retirement data: {str(e)}")
+            raise HTTPException(status_code=500, detail="Failed to serialize retirement data")
 
         # Prepare payload for Lyzr
         lyzr_payload = {
             "user_id": request.user_id,
             "agent_id": "684be1140a55475675b60d0b",
-            "session_id": request.session_id,
-            "message": prompt
+            "session_id": request.user_id,  # Generate a new session ID if not provided
+            "message": message
         }
 
         headers = {
@@ -1020,7 +1022,7 @@ async def compare_retirement_projection(request: LyzrChatRequest):
 
         try:
             await save_message(
-                session_id=request.session_id,
+                session_id=lyzr_payload['session_id'],
                 user_message="Compare retirement projections",
                 ai_response=raw_response,
                 chart_data=structured_data,
@@ -1031,7 +1033,7 @@ async def compare_retirement_projection(request: LyzrChatRequest):
             logger.warning(f"Failed to save message to database: {str(save_error)}")
 
         return ChatCompResponse(
-            session_id=request.session_id,
+            session_id=lyzr_payload['session_id'],
             structured_data=structured_data
         )
     except HTTPException as http_error:
