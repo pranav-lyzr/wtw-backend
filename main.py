@@ -205,10 +205,11 @@ user_profiles_collection = db.user_profiles
 logger.info("MongoDB collections configured")
 
 # External API configuration
-LYZR_API_KEY = "sk-default-OtrntyKynW1jJaFWjmLbAWpMaXCS3XOM"
+LYZR_API_KEY = "sk-default-MynmtavBq234dgMhix3UlMno90YHlKJX"
 LYZR_BASE_URL = "https://agent-prod.studio.lyzr.ai/v3/inference/chat/"
-PENSION_AGENT_ID = "6846d83862d8a0cca7618626"
+PENSION_AGENT_ID = "6850133251da0258f4744a30"
 RETIREMENT_AGENT_ID = "6846d27f62d8a0cca7618607"
+USER_ID = "pranav@lyzr.ai"
 logger.info("External API configuration loaded")
 
 
@@ -242,7 +243,7 @@ async def call_lyzr_api(agent_id: str, session_id: str, user_id: str, message: s
             payload = {
                 "agent_id": agent_id,
                 "session_id": session_id,
-                "user_id": user_id,
+                "user_id": USER_ID,
                 "message": message,
             }
             headers = {
@@ -724,6 +725,57 @@ def sanitize_response_data(data):
             return None  # or 0, depending on your application's needs
     return data
 
+def create_master_prompt(user_message: str, user_profile: dict):
+    """Create master prompt for the parent agent"""
+    logger.info("Creating master prompt with user profile data")
+    
+    # Prepare form data for prompt
+    form_data = {
+        "name": user_profile.get('name', 'User'),
+        "current_age": user_profile.get('current_age', 30),
+        "retirement_age": user_profile.get('retirement_age', 65),
+        "life_expectancy": user_profile.get('end_age', 85),
+        "income": user_profile.get('income', 70000),
+        "salary_growth": user_profile.get('salary_growth', 0.02),
+        "investment_return": user_profile.get('investment_return', 0.05),
+        "inflation": user_profile.get('inflation', 0.02),
+        "beneficiary_included": user_profile.get('beneficiary_included', False),
+        "beneficiary_life_expectancy": user_profile.get('beneficiary_life_expectancy', 'Not specified'),
+    }
+    
+    # Get existing pension data from profile
+    latest_retirement_data = get_latest_retirement_data(user_profile)
+    
+    prompt = f"""
+You are a Parent Agent for retirement planning. Analyze the user query and provide appropriate response coordination.
+
+**User Profile:**
+- Form data: {json.dumps(form_data)}
+- Pension data: {json.dumps(latest_retirement_data)}
+
+**User Question:** {user_message}
+
+**Response Requirements:**
+Respond with ONLY this JSON structure:
+{{
+  "text_response": "Your detailed answer here with proper disclaimers and source citations if needed",
+  "chart_data": null or {{"type": "pension_data", "data": [{{"age": number, "Social Security": number, "Pension": number, "401k": number, "Other": number, "Defined Benefit": number}}, ...]}},
+  "contains_chart": true or false
+}}
+
+**Instructions:**
+1. Analyze if query needs visualization (income projections, comparisons) → set contains_chart to true
+2. For WTW Advisor responses: Include banner "⚠️ *Educational only – not WTW advice*" and cite sources
+3. For News/Market queries: Provide complete chart data when applicable
+4. Personalize response based on user profile (age: {form_data['current_age']}, retirement age: {form_data['retirement_age']})
+5. Use pension calculations from provided data for accuracy
+6. Keep response clear, concise, and professionally formatted
+"""
+    
+    logger.info(f"Master prompt created, total length: {len(prompt)}")
+    return prompt
+
+
 # API Routes
 
 @app.get("/")
@@ -731,7 +783,228 @@ async def root():
     logger.info("Root endpoint accessed")
     return {"message": "Retirement Planning API"}
 
+
 @app.post("/chat", response_model=ChatResponse)
+async def chat_retirement_unified(request: ChatRequest):
+    """Unified chat endpoint for retirement planning - routes to appropriate specialized agents"""
+    logger.info(f"Unified retirement chat request - Session ID: {request.session_id}, User ID: {request.user_id}")
+    logger.debug(f"Message: {request.message[:100]}..." if len(request.message) > 100 else f"Message: {request.message}")
+    
+    try:
+        # Retrieve user profile
+        logger.info("Retrieving user profile")
+        user_profile = await user_profiles_collection.find_one({"user_id": request.user_id})
+        if not user_profile:
+            raise HTTPException(status_code=404, detail="User profile not found")
+        
+        # Prepare form data for context
+        form_data = {
+            "retireAge": user_profile.get('retirement_age', 65),
+            "lifeExpectancy": user_profile.get('end_age', 85),
+            "beneficiaryIncluded": user_profile.get('beneficiary_included', False),
+            "beneficiaryLifeExpectancy": user_profile.get('beneficiary_life_expectancy', "Not specified"),
+            "salaryGrowth": user_profile.get('salary_growth', 0.02),
+            "investmentReturn": user_profile.get('investment_return', 0.05),
+            "inflation": user_profile.get('inflation', 0.02),
+        }
+        
+        # Get latest retirement data
+        latest_retirement_data = get_latest_retirement_data(user_profile)
+        
+        # Create master prompt for parent agent
+        master_prompt = f"""
+        You are a Parent Agent coordinating retirement planning queries. Route to appropriate specialized agents and return structured responses.
+
+        **USER PROFILE:**
+        - Name: {user_profile.get('name', 'User')}
+        - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
+        - Income: ${user_profile.get('income', 70000):,} | Growth: {user_profile.get('salary_growth', 0.02)*100}%
+        - Investment Return: {user_profile.get('investment_return', 0.05)*100}% | Inflation: {user_profile.get('inflation', 0.02)*100}%
+        - Social Security: ${user_profile.get('social_security_base', 18000):,} | Pension: ${user_profile.get('pension_base', 800):,}
+        - 401k: ${user_profile.get('four01k_base', 100):,} | Other: ${user_profile.get('other_base', 400):,}
+        - Defined Benefit: ${user_profile.get('defined_benefit_base', 14000):,} (+${user_profile.get('defined_benefit_yearly_increase', 300):,}/year)
+
+        **CURRENT CONTEXT:**
+        - Form Data: {json.dumps(form_data)}
+        - Pension Data: {json.dumps(latest_retirement_data)}
+
+        **USER QUESTION:** {request.message}
+
+        **INSTRUCTIONS:**
+        1. Analyze query type: News/Policy (Agent 1), Planning/Benefits (Agent 2), Guidelines (Agent 3)
+        2. Route to appropriate agent(s) and coordinate response
+        3. For Agent 2 responses: Include source links with ⚠️ *Educational only – not WTW advice* banner
+        4. For Agent 1 responses: Provide complete graph JSON if visualization needed
+        5. Use TRM API for calculations, LLM only for explanations
+        6. Build user persona and personalize response tone/complexity
+
+        **RESPONSE FORMAT (JSON only):**
+        {{
+          "text_response": "Your answer with proper disclaimers and citations",
+          "chart_data": null or {{"type": "pension_data", "data": [{{"age": number, "Social Security": number, "Pension": number, "401k": number, "Other": number, "Defined Benefit": number}}, ...]}},
+          "contains_chart": true/false
+        }}
+
+        **CHART RULES:**
+        - Set contains_chart=true for: income projections, investment comparisons, benefit breakdowns
+        - Set contains_chart=false for: general advice, policy explanations, simple calculations
+        - Chart calculations based on user profile values and form assumptions above
+        """
+        
+        logger.info("Calling master agent via Lyzr API")
+        api_response = await call_lyzr_api(
+            agent_id="684a8322e5203d8a7b6481f5",  # Master agent ID
+            session_id=request.session_id,
+            user_id=request.user_id,
+            message=master_prompt
+        )
+        logger.info("Master agent API call completed successfully")
+        
+        # Parse the structured response
+        logger.info("Parsing structured response from master agent")
+        text_response = ""
+        chart_data_raw = None
+        contains_chart = False
+
+        try:
+            # First attempt to parse the entire response as JSON
+            structured_response = json.loads(api_response["response"])
+            logger.info("Successfully parsed JSON response directly")
+            text_response = structured_response.get("text_response", "")
+            chart_data_raw = structured_response.get("chart_data")
+            contains_chart = structured_response.get("contains_chart", False)
+        except json.JSONDecodeError as json_error:
+            logger.warning(f"Initial JSON parse failed: {str(json_error)}, trying to extract from markdown")
+            # Try to extract JSON from markdown code block
+            import re
+            json_match = re.search(r'```json\s*([\s\S]*?)\s*```', api_response["response"])
+            if json_match:
+                logger.info("Found JSON in markdown code block")
+                try:
+                    structured_response = json.loads(json_match.group(1).strip())
+                    logger.info("Successfully parsed JSON from markdown")
+                    
+                    text_response = structured_response.get("text_response", "")
+                    
+                    # If text_response is empty in JSON, look for text outside JSON blocks
+                    if not text_response:
+                        text_before_json = api_response["response"].split('```json')[0].strip()
+                        if text_before_json:
+                            text_response = text_before_json
+                        else:
+                            parts = api_response["response"].split('```')
+                            if len(parts) > 2:
+                                text_after_json = parts[2].strip()
+                                if text_after_json:
+                                    text_response = text_after_json
+                    
+                    chart_data_raw = structured_response.get("chart_data")
+                    contains_chart = structured_response.get("contains_chart", False)
+                    
+                except json.JSONDecodeError as markdown_json_error:
+                    logger.error(f"Failed to parse JSON from markdown: {str(markdown_json_error)}")
+                    text_response = api_response["response"].split('```json')[0].strip()
+            else:
+                logger.warning("No JSON found in markdown, using raw response")
+                text_response = api_response["response"].strip()
+
+        # Default response if parsing failed
+        if not text_response and not contains_chart:
+            text_response = "I understand your retirement planning question. Let me help you with that based on your profile."
+            logger.info("Using default text response as parsed response was empty")
+
+        logger.info(f"Parsed response - Text length: {len(text_response)}, Contains chart: {contains_chart}")
+        
+        # Handle chart data
+        chart_data = None
+        if contains_chart and chart_data_raw:
+            logger.info("Processing chart data from response")
+            try:
+                # Parse chart_data_raw if it's a string
+                if isinstance(chart_data_raw, str):
+                    parsed_chart_data = json.loads(chart_data_raw)
+                else:
+                    parsed_chart_data = chart_data_raw
+                
+                logger.info(f"Chart data parsed successfully, type: {type(parsed_chart_data)}")
+                
+                # Save AI-generated retirement data
+                if isinstance(parsed_chart_data, dict) and parsed_chart_data.get("type") == "pension_data":
+                    ai_retirement_data = parsed_chart_data.get("data", [])
+                    if ai_retirement_data:
+                        logger.info("Saving AI-generated retirement data")
+                        await save_ai_retirement_data(request.user_id, ai_retirement_data)
+                elif isinstance(parsed_chart_data, list):
+                    logger.info("Saving AI-generated retirement data (list format)")
+                    await save_ai_retirement_data(request.user_id, parsed_chart_data)
+                
+                # Format chart data for response
+                if isinstance(parsed_chart_data, list):
+                    chart_data = {
+                        "data": parsed_chart_data,
+                        "type": "line_chart",
+                        "title": "Retirement Income Projection"
+                    }
+                    logger.info(f"Converted list chart data to dict format with {len(parsed_chart_data)} records")
+                elif isinstance(parsed_chart_data, dict):
+                    chart_data = parsed_chart_data
+                    logger.info("Using chart data as dict directly")
+                else:
+                    logger.warning(f"Unexpected chart data type: {type(parsed_chart_data)}")
+                    chart_data = None
+                    contains_chart = False
+                    
+            except json.JSONDecodeError as chart_error:
+                logger.error(f"Failed to parse chart data: {str(chart_error)}")
+                chart_data = None
+                contains_chart = False
+            except Exception as chart_parse_error:
+                logger.error(f"Unexpected error parsing chart data: {str(chart_parse_error)}")
+                chart_data = None
+                contains_chart = False
+        
+        # Save message to database
+        logger.info("Saving message to database")
+        database_chart_data = None
+        if contains_chart and chart_data_raw:
+            try:
+                if isinstance(chart_data_raw, str):
+                    database_chart_data = json.loads(chart_data_raw)
+                else:
+                    database_chart_data = chart_data_raw
+            except Exception as db_chart_error:
+                logger.error(f"Error preparing chart data for database: {str(db_chart_error)}")
+                database_chart_data = None
+        
+        await save_message(
+            session_id=request.session_id,
+            user_message=request.message,
+            ai_response=text_response,
+            chart_data=database_chart_data,
+            contains_chart=contains_chart
+        )
+        logger.info("Message saved successfully")
+        
+        # Create final response
+        response = ChatResponse(
+            response=text_response,
+            session_id=request.session_id,
+            chart_data=chart_data,
+            contains_chart=contains_chart
+        )
+
+        logger.info("Unified retirement chat request completed successfully")
+        return response
+        
+    except HTTPException as http_error:
+        logger.error(f"HTTP exception in unified retirement chat: {http_error.detail}")
+        raise
+    except Exception as e:
+        logger.error(f"Unexpected error in unified retirement chat: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+    
+
+@app.post("/chat_2", response_model=ChatResponse)
 async def chat_pension(request: ChatRequest):
     """Chat endpoint for pension planning"""
     logger.info(f"Pension chat request received - Session ID: {request.session_id}, User ID: {request.user_id}")
