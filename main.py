@@ -1,13 +1,14 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, validator
 from typing import Optional, List, Dict, Any
 import httpx
 import json
 from datetime import datetime
 import uuid
 from motor.motor_asyncio import AsyncIOMotorClient
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, JSONResponse
+import math
 import os
 import logging
 from logging.handlers import RotatingFileHandler
@@ -77,23 +78,31 @@ class UserProfile(BaseModel):
 class UserProfileCreate(BaseModel):
     name: str
     email: Optional[str] = None
-    current_age: int
-    retirement_age: int
-    income: float
-    salary_growth: float = 0.02
-    investment_return: float = 0.05
-    contribution_rate: float = 0.1
-    pension_multiplier: float = 0.015
-    end_age: int = 90
-    social_security_base: float = 18000.0
-    pension_base: float = 8000.0
-    four01k_base: float = 10000.0
-    other_base: float = 4000.0
-    defined_benefit_base: float = 14000.0
-    defined_benefit_yearly_increase: float = 300.0
-    inflation: float = 0.02  # New field for inflation rate
-    beneficiary_included: bool = False  # New field
+    current_age: int = Field(..., ge=18, le=100)  # Age between 18 and 100
+    retirement_age: int = Field(..., ge=50, le=80)  # Retirement age between 50 and 80
+    income: float = Field(..., ge=0)  # Non-negative income
+    salary_growth: float = Field(0.02, ge=0, le=0.1)  # 0-10%
+    investment_return: float = Field(0.05, ge=0, le=0.15)  # 0-15%
+    contribution_rate: float = Field(0.1, ge=0, le=1.0)  # 0-100%
+    pension_multiplier: float = Field(0.015, ge=0, le=0.05)  # 0-5%
+    end_age: int = Field(90, ge=70, le=120)  # Life expectancy 70-120
+    social_security_base: float = Field(18000.0, ge=0, le=60000.0)  # Max SS benefit ~$58,476 in 2025
+    pension_base: float = Field(8000.0, ge=0)
+    four01k_base: float = Field(10000.0, ge=0)
+    other_base: float = Field(4000.0, ge=0)
+    defined_benefit_base: float = Field(14000.0, ge=0)
+    defined_benefit_yearly_increase: float = Field(300.0, ge=0, le=1000.0)
+    inflation: float = Field(0.02, ge=0, le=0.1)  # 0-10%
+    beneficiary_included: bool = False
     beneficiary_life_expectancy: Optional[int] = None
+
+    @validator('beneficiary_life_expectancy')
+    def validate_beneficiary_life_expectancy(cls, v, values):
+        if values.get('beneficiary_included') and v is None:
+            raise ValueError('Beneficiary life expectancy must be provided if beneficiary is included')
+        if v is not None and (v < 70 or v > 120):
+            raise ValueError('Beneficiary life expectancy must be between 70 and 120')
+        return v
 
 class UserProfileResponse(BaseModel):
     user_id: str
@@ -482,17 +491,24 @@ def generate_retirement_data(user_profile: dict):
     """Generate retirement data matching prompt formulas"""
     years = list(range(user_profile['retirement_age'], user_profile['end_age'] + 1))
     retirement_data = []
-    
+    max_ss_benefit = 58476.0  # Maximum SS benefit in 2025
+
     for age in years:
         # Social Security calculation
         ss_value = 0
         if age >= 62:
-            ss_value = user_profile['social_security_base'] * ((1 + 0.02) ** (age - 62))
-        
+            try:
+                ss_value = user_profile['social_security_base'] * (1 + user_profile['inflation']) ** (age - 62)
+                if math.isinf(ss_value) or math.isnan(ss_value):
+                    ss_value = max_ss_benefit
+                ss_value = min(ss_value, max_ss_benefit)  # Cap at max benefit
+            except (OverflowError, ValueError):
+                ss_value = max_ss_benefit
+
         # Pension calculation
         pension_value = user_profile['pension_base'] * \
                        (1 + user_profile['salary_growth']) ** (age - user_profile['retirement_age'])
-        
+
         # 401k calculation
         four01k_value = 0
         if age >= 58:
@@ -503,19 +519,19 @@ def generate_retirement_data(user_profile: dict):
                 base_at_65 = user_profile['four01k_base'] * \
                             (1 + user_profile['investment_return']) ** (65 - 58)
                 four01k_value = base_at_65 * (0.95) ** (age - 65)
-        
+
         # Other calculation
         other_value = 0
         if age >= 58:
             other_value = user_profile['other_base'] * \
                          (1 + user_profile['investment_return']) ** (age - 58)
-        
+
         # Defined Benefit calculation
         defined_benefit_value = 0
         if age >= 62:
             defined_benefit_value = user_profile['defined_benefit_base'] + \
                                    user_profile['defined_benefit_yearly_increase'] * (age - 62)
-        
+
         retirement_data.append({
             "age": age,
             "Social Security": round(ss_value, 2),
@@ -524,7 +540,7 @@ def generate_retirement_data(user_profile: dict):
             "Other": round(other_value, 2),
             "Defined Benefit": round(defined_benefit_value, 2)
         })
-    
+
     return retirement_data
 
 async def get_user_chat_history(user_id: str, session_id: str) -> str:
@@ -1451,6 +1467,18 @@ async def update_user_profile(user_id: str, request: UserProfileCreate):
         logger.error(f"Error updating user profile: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
+def sanitize_response_data(data):
+    """Recursively sanitize all out-of-range float values in the data."""
+    if isinstance(data, dict):
+        return {k: sanitize_response_data(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [sanitize_response_data(item) for item in data]
+    elif isinstance(data, float):
+        if math.isnan(data) or math.isinf(data):
+            return None  # or 0, depending on your application's needs
+    return data
+
 @app.get("/user-profile/{user_id}", response_model=UserProfileResponse)
 async def get_user_profile(user_id: str):
     """Get user profile by ID"""
@@ -1461,14 +1489,17 @@ async def get_user_profile(user_id: str):
         
         if not user_doc:
             raise HTTPException(status_code=404, detail="User profile not found")
+
+        # Sanitize user_doc before it's serialized to JSON
+        sanitized_user_doc = sanitize_response_data(user_doc)
         
-        return UserProfileResponse(**user_doc)
+        return JSONResponse(content=sanitized_user_doc)
         
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Error retrieving user profile: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) 
 
 @app.get("/retirement-calculation/{user_id}")
 async def calculate_retirement_data(user_id: str):

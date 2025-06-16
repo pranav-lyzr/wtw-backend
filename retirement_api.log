@@ -1107,3 +1107,63 @@ chart_data
 2025-06-16 08:35:44,254 - main - INFO - MongoDB client initialized successfully
 2025-06-16 08:35:44,256 - main - INFO - MongoDB collections configured
 2025-06-16 08:35:44,258 - main - INFO - External API configuration loaded
+2025-06-16 09:57:24,575 - main - INFO - FastAPI application initialized
+2025-06-16 09:57:24,577 - main - INFO - CORS middleware configured
+2025-06-16 09:57:24,579 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 09:57:24,593 - main - INFO - MongoDB client initialized successfully
+2025-06-16 09:57:24,594 - main - INFO - MongoDB collections configured
+2025-06-16 09:57:24,597 - main - INFO - External API configuration loaded
+2025-06-16 09:58:03,442 - main - INFO - FastAPI application initialized
+2025-06-16 09:58:03,445 - main - INFO - CORS middleware configured
+2025-06-16 09:58:03,447 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 09:58:03,463 - main - INFO - MongoDB client initialized successfully
+2025-06-16 09:58:03,466 - main - INFO - MongoDB collections configured
+2025-06-16 09:58:03,468 - main - INFO - External API configuration loaded
+2025-06-16 09:58:43,383 - main - INFO - FastAPI application initialized
+2025-06-16 09:58:43,385 - main - INFO - CORS middleware configured
+2025-06-16 09:58:43,387 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 09:58:43,406 - main - INFO - MongoDB client initialized successfully
+2025-06-16 09:58:43,408 - main - INFO - MongoDB collections configured
+2025-06-16 09:58:43,410 - main - INFO - External API configuration loaded
+2025-06-16 09:59:15,521 - main - INFO - FastAPI application initialized
+2025-06-16 09:59:15,523 - main - INFO - CORS middleware configured
+2025-06-16 09:59:15,525 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 09:59:15,550 - main - INFO - MongoDB client initialized successfully
+2025-06-16 09:59:15,553 - main - INFO - MongoDB collections configured
+2025-06-16 09:59:15,558 - main - INFO - External API configuration loaded
+2025-06-16 10:00:07,538 - main - INFO - FastAPI application initialized
+2025-06-16 10:00:07,539 - main - INFO - CORS middleware configured
+2025-06-16 10:00:07,540 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 10:00:07,558 - main - INFO - MongoDB client initialized successfully
+2025-06-16 10:00:07,559 - main - INFO - MongoDB collections configured
+2025-06-16 10:00:07,561 - main - INFO - External API configuration loaded
+2025-06-16 10:00:10,448 - main - INFO - FastAPI application initialized
+2025-06-16 10:00:10,450 - main - INFO - CORS middleware configured
+2025-06-16 10:00:10,451 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 10:00:10,467 - main - INFO - MongoDB client initialized successfully
+2025-06-16 10:00:10,468 - main - INFO - MongoDB collections configured
+2025-06-16 10:00:10,470 - main - INFO - External API configuration loaded
+2025-06-16 10:06:20,257 - main - INFO - FastAPI application initialized
+2025-06-16 10:06:20,260 - main - INFO - CORS middleware configured
+2025-06-16 10:06:20,263 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 10:06:20,280 - main - INFO - MongoDB client initialized successfully
+2025-06-16 10:06:20,282 - main - INFO - MongoDB collections configured
+2025-06-16 10:06:20,284 - main - INFO - External API configuration loaded
+2025-06-16 10:06:35,508 - main - INFO - FastAPI application initialized
+2025-06-16 10:06:35,510 - main - INFO - CORS middleware configured
+2025-06-16 10:06:35,512 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 10:06:35,534 - main - INFO - MongoDB client initialized successfully
+2025-06-16 10:06:35,536 - main - INFO - MongoDB collections configured
+2025-06-16 10:06:35,538 - main - INFO - External API configuration loaded
+2025-06-16 10:06:45,424 - main - INFO - FastAPI application initialized
+2025-06-16 10:06:45,425 - main - INFO - CORS middleware configured
+2025-06-16 10:06:45,426 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 10:06:45,437 - main - INFO - MongoDB client initialized successfully
+2025-06-16 10:06:45,439 - main - INFO - MongoDB collections configured
+2025-06-16 10:06:45,440 - main - INFO - External API configuration loaded
+2025-06-16 10:06:54,817 - main - INFO - FastAPI application initialized
+2025-06-16 10:06:54,820 - main - INFO - CORS middleware configured
+2025-06-16 10:06:54,821 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 10:06:54,839 - main - INFO - MongoDB client initialized successfully
+2025-06-16 10:06:54,840 - main - INFO - MongoDB collections configured
+2025-06-16 10:06:54,842 - main - INFO - External API configuration loaded
