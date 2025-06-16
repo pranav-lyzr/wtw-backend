@@ -80,24 +80,23 @@ class UserProfile(BaseModel):
 class UserProfileCreate(BaseModel):
     name: str
     email: Optional[str] = None
-    current_age: int = Field(..., ge=18, le=100)
     current_age: int
-    income: float 
     retirement_age: int
-    salary_growth: float
-    investment_return: float 
-    contribution_rate: float 
-    pension_multiplier: float 
-    end_age: int 
-    social_security_base: float 
-    pension_base: float 
-    four01k_base: float 
-    other_base: float 
-    defined_benefit_base: float 
-    defined_benefit_yearly_increase: float 
-    inflation: float 
-    beneficiary_included: bool 
-    beneficiary_life_expectancy: Optional[int]  
+    income: float
+    salary_growth: float = 0.02
+    investment_return: float = 0.05
+    contribution_rate: float = 0.1
+    pension_multiplier: float = 0.015
+    end_age: int = 90
+    social_security_base: float = 18000.0
+    pension_base: float = 8000.0
+    four01k_base: float = 10000.0
+    other_base: float = 4000.0
+    defined_benefit_base: float = 14000.0
+    defined_benefit_yearly_increase: float = 300.0
+    inflation: float = 0.02  # New field for inflation rate
+    beneficiary_included: bool = False  # New field
+    beneficiary_life_expectancy: Optional[int] = None
 
 
 class UserProfileUpdate(BaseModel):
