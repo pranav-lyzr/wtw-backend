@@ -1451,6 +1451,25 @@ async def update_user_profile(user_id: str, request: UserProfileCreate):
         logger.error(f"Error updating user profile: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/user-profile/{user_id}", response_model=UserProfileResponse)
+async def get_user_profile(user_id: str):
+    """Get user profile by ID"""
+    logger.info(f"Retrieving user profile for ID: {user_id}")
+    
+    try:
+        user_doc = await user_profiles_collection.find_one({"user_id": user_id})
+        
+        if not user_doc:
+            raise HTTPException(status_code=404, detail="User profile not found")
+        
+        return UserProfileResponse(**user_doc)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error retrieving user profile: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.get("/retirement-calculation/{user_id}")
 async def calculate_retirement_data(user_id: str):
     """Calculate and store retirement data"""
