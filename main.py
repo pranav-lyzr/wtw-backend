@@ -813,8 +813,6 @@ async def chat_retirement_unified(request: ChatRequest):
         
         # Create master prompt for parent agent
         master_prompt = f"""
-        You are a Parent Agent coordinating retirement planning queries. Route to appropriate specialized agents and return structured responses.
-
         **USER PROFILE:**
         - Name: {user_profile.get('name', 'User')}
         - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
@@ -830,25 +828,7 @@ async def chat_retirement_unified(request: ChatRequest):
 
         **USER QUESTION:** {request.message}
 
-        **INSTRUCTIONS:**
-        1. Analyze query type: News/Policy (Agent 1), Planning/Benefits (Agent 2), Guidelines (Agent 3)
-        2. Route to appropriate agent(s) and coordinate response
-        3. For Agent 2 responses: Include source links with ⚠️ *Educational only – not WTW advice* banner
-        4. For Agent 1 responses: Provide complete graph JSON if visualization needed
-        5. Use TRM API for calculations, LLM only for explanations
-        6. Build user persona and personalize response tone/complexity
-
-        **RESPONSE FORMAT (JSON only):**
-        {{
-          "text_response": "Your answer with proper disclaimers and citations",
-          "chart_data": null or {{"type": "pension_data", "data": [{{"age": number, "Social Security": number, "Pension": number, "401k": number, "Other": number, "Defined Benefit": number}}, ...]}},
-          "contains_chart": true/false
-        }}
-
-        **CHART RULES:**
-        - Set contains_chart=true for: income projections, investment comparisons, benefit breakdowns
-        - Set contains_chart=false for: general advice, policy explanations, simple calculations
-        - Chart calculations based on user profile values and form assumptions above
+        Use user data to get more personalised response 
         """
         
         logger.info("Calling master agent via Lyzr API")
