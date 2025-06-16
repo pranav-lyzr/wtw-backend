@@ -1429,43 +1429,6 @@ async def get_ai_retirement_data(user_id: str):
     except Exception as e:
         logger.error(f"Error retrieving AI retirement data: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
-    
-@app.put("/user-profile/{user_id}", response_model=UserProfileResponse)
-async def update_user_profile(user_id: str, request: UserProfileCreate):
-    """Update user profile"""
-    logger.info(f"Updating user profile for ID: {user_id}")
-    
-    try:
-        update_doc = {
-            "name": request.name,
-            "email": request.email,
-            "current_age": request.current_age,
-            "retirement_age": request.retirement_age,
-            "income": request.income,
-            "salary_growth": request.salary_growth,
-            "investment_return": request.investment_return,
-            "contribution_rate": request.contribution_rate,
-            "pension_multiplier": request.pension_multiplier,
-            "end_age": request.end_age,
-            "updated_at": datetime.utcnow()
-        }
-        
-        result = await user_profiles_collection.update_one(
-            {"user_id": user_id},
-            {"$set": update_doc}
-        )
-        
-        if result.matched_count == 0:
-            raise HTTPException(status_code=404, detail="User profile not found")
-        
-        updated_doc = await user_profiles_collection.find_one({"user_id": user_id})
-        return UserProfileResponse(**updated_doc)
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error updating user profile: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 def sanitize_response_data(data):
