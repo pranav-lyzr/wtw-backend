@@ -1319,12 +1319,12 @@ async def create_user_profile(request: UserProfileCreate):
             "defined_benefit_base": request.defined_benefit_base,
             "defined_benefit_yearly_increase": request.defined_benefit_yearly_increase,
             "inflation": request.inflation,
-            "beneficiary_included": request.beneficiary_included,
-            "beneficiary_life_expectancy": request.beneficiary_life_expectancy,
+            "beneficiary_included": request.beneficiary_included,  # Fixed: Use request value
+            "beneficiary_life_expectancy": request.beneficiary_life_expectancy,  # Fixed: Use request value
             "created_at": datetime.utcnow(),
             "updated_at": datetime.utcnow(),
             "retirement_data": [],
-            "ai_retirement_data": None  # Initialize as None
+            "ai_retirement_data": None
         }
         
         result = await user_profiles_collection.insert_one(user_doc)
@@ -1339,26 +1339,53 @@ async def create_user_profile(request: UserProfileCreate):
     except Exception as e:
         logger.error(f"Error creating user profile: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
-    
-@app.get("/user-profile/{user_id}", response_model=UserProfileResponse)
-async def get_user_profile(user_id: str):
-    """Get user profile by ID"""
-    logger.info(f"Retrieving user profile for ID: {user_id}")
+        
+@app.put("/user-profile/{user_id}", response_model=UserProfileResponse)
+async def update_user_profile(user_id: str, request: UserProfileCreate):
+    """Update user profile"""
+    logger.info(f"Updating user profile for ID: {user_id}")
     
     try:
-        user_doc = await user_profiles_collection.find_one({"user_id": user_id})
+        update_doc = {
+            "name": request.name,
+            "email": request.email,
+            "current_age": request.current_age,
+            "retirement_age": request.retirement_age,
+            "income": request.income,
+            "salary_growth": request.salary_growth,
+            "investment_return": request.investment_return,
+            "contribution_rate": request.contribution_rate,
+            "pension_multiplier": request.pension_multiplier,
+            "end_age": request.end_age,
+            "social_security_base": request.social_security_base,
+            "pension_base": request.pension_base,
+            "four01k_base": request.four01k_base,
+            "other_base": request.other_base,
+            "defined_benefit_base": request.defined_benefit_base,
+            "defined_benefit_yearly_increase": request.defined_benefit_yearly_increase,
+            "inflation": request.inflation,
+            "beneficiary_included": request.beneficiary_included,  # Fixed: Use request value
+            "beneficiary_life_expectancy": request.beneficiary_life_expectancy,  # Fixed: Use request value
+            "updated_at": datetime.utcnow()
+        }
         
-        if not user_doc:
+        result = await user_profiles_collection.update_one(
+            {"user_id": user_id},
+            {"$set": update_doc}
+        )
+        
+        if result.matched_count == 0:
             raise HTTPException(status_code=404, detail="User profile not found")
         
-        return UserProfileResponse(**user_doc)
+        updated_doc = await user_profiles_collection.find_one({"user_id": user_id})
+        return UserProfileResponse(**updated_doc)
         
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error retrieving user profile: {str(e)}")
+        logger.error(f"Error updating user profile: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
-
+    
 @app.get("/ai-retirement-data/{user_id}")
 async def get_ai_retirement_data(user_id: str):
     """Get AI-generated retirement data for a user"""
