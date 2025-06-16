@@ -952,19 +952,51 @@ async def chat_retirement(request: ChatRequest):
     logger.debug(f"Message: {request.message[:100]}..." if len(request.message) > 100 else f"Message: {request.message}")
     
     try:
-        # Call Lyzr API for retirement with the specified API call
+        # Retrieve user profile
+        logger.info("Retrieving user profile")
+        user_profile = await user_profiles_collection.find_one({"user_id": request.user_id})
+        if not user_profile:
+            raise HTTPException(status_code=404, detail="User profile not found")
+        
+        # Create personalized prompt with user details
+        logger.info("Creating personalized prompt with user details")
+        prompt = f"""     
+        User Profile:
+        - Name: {user_profile.get('name', 'User')}
+        - Current Age: {user_profile.get('current_age', 30)}
+        - Retirement Age: {user_profile.get('retirement_age', 65)}
+        - Current Income: ${user_profile.get('income', 70000):,}
+        - Salary Growth Rate: {user_profile.get('salary_growth', 0.02)*100}%
+        - Investment Return Rate: {user_profile.get('investment_return', 0.05)*100}%
+        - Contribution Rate: {user_profile.get('contribution_rate', 0.1)*100}%
+        - Inflation Rate: {user_profile.get('inflation', 0.02)*100}%
+        - Beneficiary Included: {user_profile.get('beneficiary_included', False)}
+        - Beneficiary Life Expectancy: {user_profile.get('beneficiary_life_expectancy', 'Not specified')}
+        - Social Security Base: ${user_profile.get('social_security_base', 18000):,}
+        - Pension Base: ${user_profile.get('pension_base', 8000):,}
+        - 401k Base: ${user_profile.get('four01k_base', 10000):,}
+        - Other Investments Base: ${user_profile.get('other_base', 4000):,}
+        - Defined Benefit Base: ${user_profile.get('defined_benefit_base', 14000):,}
+        - Defined Benefit Yearly Increase: ${user_profile.get('defined_benefit_yearly_increase', 300):,}
+        
+        User Question: {request.message}
+        
+        Provide a detailed and personalized response based on the user's profile. Ensure the response is relevant to their retirement planning needs.
+        """
+        
+        # Call Lyzr API for retirement with personalized prompt
         logger.info("Calling Lyzr API for retirement planning")
         async with httpx.AsyncClient() as client:
             try:
                 payload = {
-                    "user_id": "pranav@lyzr.ai",
+                    "user_id": request.user_id,
                     "agent_id": "684adedfaa4e01a01dd89a72",
                     "session_id": request.session_id,
-                    "message": request.message
+                    "message": prompt
                 }
                 headers = {
                     "Content-Type": "application/json",
-                    "x-api-key": "sk-default-MynmtavBq234dgMhix3UlMno90YHlKJX"
+                    "x-api-key": LYZR_API_KEY
                 }
                 logger.info(f"Making HTTP request with payload: {payload}")
                 
@@ -1026,18 +1058,9 @@ async def chat_retirement(request: ChatRequest):
 @app.post("/session", response_model=SessionResponse)
 async def create_session(request: SessionCreate):
     """Create a new session"""
-    logger.info(f"Creating/getting session for user ID: {request.user_id}")
+    logger.info(f"Creating new session for user ID: {request.user_id}")
     
     try:
-        # Check for existing session
-        existing_session = await sessions_collection.find_one(
-            {"user_id": request.user_id}
-        )
-        
-        if existing_session:
-            logger.info(f"Returning existing session: {existing_session['session_id']}")
-            return SessionResponse(**existing_session)
-        
         # Create new session
         session_id = str(uuid.uuid4())
         session_name = request.session_name or f"Session {datetime.now().strftime('%Y-%m-%d %H:%M')}"
