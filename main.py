@@ -445,7 +445,7 @@ def estimate_ss(income):
         PIA = 1174 * 0.9 + (7078 - 1174) * 0.32 + (AIME - 7078) * 0.15
     return PIA * 12
 
-def calculate_ss(age, base_ss, FRA=67):
+def calculate_ss(age, base_ss, inflation=0.02, FRA=67):
     if age < 62:
         return 0
     if age < FRA:
@@ -455,7 +455,7 @@ def calculate_ss(age, base_ss, FRA=67):
         increase = 0.08 * (age - FRA)
         return base_ss * (1 + increase)
     else:
-        return base_ss * 1.32
+        return base_ss * 1.24 * (1 + inflation) ** (age - 70)
 
 def calculate_401k_balance(age, income, contribution_rate, investment_return, retirement_age, balance=0):
     for a in range(25, age):

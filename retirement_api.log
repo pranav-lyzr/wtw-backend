@@ -1046,3 +1046,28 @@ chart_data
 2025-06-12 12:32:51,240 - main - INFO - Message saved successfully with MongoDB ID: 684ac8f3e43f778f7c0cfbc0
 2025-06-12 12:32:51,242 - main - INFO - Message saved successfully
 2025-06-12 12:32:51,246 - main - INFO - Pension chat request completed successfully
+2025-06-16 08:02:52,544 - main - INFO - FastAPI application initialized
+2025-06-16 08:02:52,546 - main - INFO - CORS middleware configured
+2025-06-16 08:02:52,549 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 08:02:52,578 - main - INFO - MongoDB client initialized successfully
+2025-06-16 08:02:52,580 - main - INFO - MongoDB collections configured
+2025-06-16 08:02:52,582 - main - INFO - External API configuration loaded
+2025-06-16 08:03:43,258 - main - INFO - Retrieving user profile for ID: 79d33198-3e35-4abb-bcbb-d51757924d2f
+2025-06-16 08:22:09,525 - main - INFO - FastAPI application initialized
+2025-06-16 08:22:09,526 - main - INFO - CORS middleware configured
+2025-06-16 08:22:09,528 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 08:22:09,554 - main - INFO - MongoDB client initialized successfully
+2025-06-16 08:22:09,557 - main - INFO - MongoDB collections configured
+2025-06-16 08:22:09,561 - main - INFO - External API configuration loaded
+2025-06-16 08:22:11,489 - main - INFO - FastAPI application initialized
+2025-06-16 08:22:11,490 - main - INFO - CORS middleware configured
+2025-06-16 08:22:11,491 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 08:22:11,503 - main - INFO - MongoDB client initialized successfully
+2025-06-16 08:22:11,504 - main - INFO - MongoDB collections configured
+2025-06-16 08:22:11,505 - main - INFO - External API configuration loaded
+2025-06-16 08:22:15,801 - main - INFO - FastAPI application initialized
+2025-06-16 08:22:15,802 - main - INFO - CORS middleware configured
+2025-06-16 08:22:15,803 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-16 08:22:15,815 - main - INFO - MongoDB client initialized successfully
+2025-06-16 08:22:15,817 - main - INFO - MongoDB collections configured
+2025-06-16 08:22:15,819 - main - INFO - External API configuration loaded
