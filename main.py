@@ -1004,7 +1004,7 @@ async def chat_retirement_unified(request: ChatRequest):
         raise HTTPException(status_code=500, detail=str(e))
     
 
-@app.post("/chat_2", response_model=ChatResponse)
+@app.post("/chat_pension", response_model=ChatResponse)
 async def chat_pension(request: ChatRequest):
     """Chat endpoint for pension planning"""
     logger.info(f"Pension chat request received - Session ID: {request.session_id}, User ID: {request.user_id}")
