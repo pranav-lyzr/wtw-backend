@@ -420,6 +420,11 @@ def create_pension_prompt(user_message: str, user_profile: dict):
     - If "contains_chart" is false, set "chart_data" to null.
     - Provide a "text_response" with reasoning to user query.
     """ 
+
+    prompt = append_persona_instructions(
+        user_profile.get('email'),
+        prompt
+    )
     
     logger.info(f"Pension prompt created, total length: {len(prompt)}")
     return prompt
@@ -1361,6 +1366,12 @@ async def chat_retirement(request: ChatRequest):
         
         Provide a detailed and personalized response based on the user's profile. Ensure the response is relevant to their retirement planning needs.
         """
+
+        # In the /chat-news endpoint, replace the existing append_persona_instructions call
+        prompt = append_persona_instructions(
+            user_profile.get('email'),
+            prompt
+        )
         
         logger.info("Calling Lyzr API for retirement planning")
         async with httpx.AsyncClient() as client:
@@ -1467,6 +1478,11 @@ async def chat_retirement_stream(request: ChatRequest):
         Provide a detailed and personalized response based on the user's profile. Ensure the response is relevant to their retirement planning needs.
         """
         
+        prompt = append_persona_instructions(
+            user_profile.get('email'),
+            prompt
+        )
+                
         async def stream_response():
             logger.info("Starting to stream response from Lyzr API")
             response_text = ""

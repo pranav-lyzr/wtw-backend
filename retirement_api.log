@@ -1732,3 +1732,161 @@ NameError: name 'user_id' is not defined
 2025-06-17 08:18:11,417 - main - INFO - MongoDB client initialized successfully
 2025-06-17 08:18:11,420 - main - INFO - MongoDB collections configured
 2025-06-17 08:18:11,423 - main - INFO - External API configuration loaded
+2025-06-17 08:26:22,829 - main - INFO - FastAPI application initialized
+2025-06-17 08:26:22,830 - main - INFO - CORS middleware configured
+2025-06-17 08:26:22,832 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-17 08:26:22,845 - main - INFO - MongoDB client initialized successfully
+2025-06-17 08:26:22,846 - main - INFO - MongoDB collections configured
+2025-06-17 08:26:22,847 - main - INFO - External API configuration loaded
+2025-06-17 08:40:47,870 - main - INFO - Retrieving all users
+2025-06-17 08:40:47,932 - main - INFO - Retrieved 5 users
+2025-06-17 08:40:59,814 - main - INFO - Retrieving sessions, user_id filter: c4c0a923-9e81-41d8-ad60-3ce3897f38c7
+2025-06-17 08:40:59,858 - main - INFO - Retrieved 1 sessions
+2025-06-17 08:41:45,590 - main - INFO - Unified retirement chat request - Session ID: f984323e-2347-4b04-9475-58916d992f28, User ID: c4c0a923-9e81-41d8-ad60-3ce3897f38c7
+2025-06-17 08:41:45,592 - main - INFO - Retrieving user profile
+2025-06-17 08:41:45,599 - main - INFO - Using AI-generated retirement data
+2025-06-17 08:41:45,601 - main - INFO - Appending persona instructions for email: test@gmail.com
+2025-06-17 08:41:45,602 - main - INFO - Calling master agent via Lyzr API
+2025-06-17 08:41:45,603 - main - INFO - Starting Lyzr API call - Agent ID: 685123c5e8762a5908ab1d33, Session ID: f984323e-2347-4b04-9475-58916d992f28, User ID: c4c0a923-9e81-41d8-ad60-3ce3897f38c7
+2025-06-17 08:41:45,703 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-06-17 08:43:13,720 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-06-17 08:43:13,726 - main - INFO - Received response with status code: 200
+2025-06-17 08:43:13,732 - main - INFO - Received response: {'response': '{\n  "text_response": "**Managing Your Finances While Facing Cancer and Preparing for Retirement**\\n\\nFacing a serious health condition like cancer, along with concerns that your insurance may not be sufficient for retirement, requires a proactive approach to safeguard both your short-term and long-term financial security.\\n\\n**Immediate Steps for Medical and Financial Protection**\\n- **Healthcare Coverage**: Research eligibility for programs like Medicaid (https://www.medicaid.gov/) or ACA Marketplace subsidies (https://www.healthcare.gov/) to secure better medical coverage beyond your current policy. Hospitals and cancer centers may also offer financial assistance programs—contact their billing department or a social worker for guidance.\\n- **Emergency Fund**: Build or maintain an emergency reserve with at least 6-12 months of living and medical expenses to buffer against unexpected costs.\\n- **Asset Protection**: Avoid retirement account withdrawals before age 59½ if possible, to prevent penalties. Some hardship withdrawals for medical expenses may be penalty-free—consult a financial advisor for IRS rules.\\n- **Health Savings Account (HSA)**: If eligible, maximize contributions for future tax-free medical spending.\\n\\n**Maximizing Retirement Security and Income**\\n- **Social Security**: Consider claiming benefits at age 62 if your health condition may impact your long-term earnings. If health stabilizes and you can delay, waiting can increase your monthly benefit. Explore options like Social Security Disability Insurance (SSDI) if you are unable to work (https://www.ssa.gov/benefits/disability/).\\n- **Pension & 401(k)/IRA Withdrawals**: Plan withdrawals efficiently, prioritizing accounts for necessary living expenses after maximizing available medical and government support programs. Coordinate withdrawals to minimize tax liabilities—seek professional tax advice.\\n\\n**Supplemental Income and Support**\\n- **Disability & Support Programs**: If unable to work, apply for SSDI, which may provide income and expedited Medicare eligibility. Seek local/state aid, patient assistance, and charitable programs focused on cancer support.\\n- **Estate Planning**: Review and update your will, health care proxy, and power of attorney.\\n\\n**Projected Retirement Income for Ages 65–69**\\nHere is your estimated annual income breakdown by source, helping you visualize your long-term retirement outlook and guide financial decisions for the years ahead:\\n",\n  "chart_data": {\n    "type": "pension_data",\n    "data": [\n      { "age": 65, "Social Security": 19101.74, "Pension": 9373.28, "401k": 14071.0, "Other": 5628.4, "Defined Benefit": 14900.0 },\n      { "age": 66, "Social Security": 19483.78, "Pension": 9560.74, "401k": 13367.45, "Other": 5909.82, "Defined Benefit": 15200.0 },\n      { "age": 67, "Social Security": 19873.45, "Pension": 9751.96, "401k": 12699.08, "Other": 6205.31, "Defined Benefit": 15500.0 },\n      { "age": 68, "Social Security": 20270.92, "Pension": 9946.99, "401k": 12064.13, "Other": 6515.58, "Defined Benefit": 15800.0 },\n      { "age": 69, "Social Security": 20676.34, "Pension": 10145.93, "401k": 11460.92, "Other": 6841.36, "Defined Benefit": 16100.0 }\n    ]\n  },\n  "contains_chart": true\n}', 'module_outputs': {}}
+2025-06-17 08:43:13,736 - main - INFO - Successfully parsed JSON response from Lyzr API
+2025-06-17 08:43:13,741 - main - INFO - Master agent API call completed successfully
+2025-06-17 08:43:13,742 - main - INFO - Parsing structured response from master agent
+2025-06-17 08:43:13,744 - main - INFO - Successfully parsed JSON response directly
+2025-06-17 08:43:13,747 - main - INFO - Parsed response - Text length: 2434, Contains chart: True
+2025-06-17 08:43:13,748 - main - INFO - Processing chart data from response
+2025-06-17 08:43:13,749 - main - INFO - Chart data parsed successfully, type: <class 'dict'>
+2025-06-17 08:43:13,751 - main - INFO - Saving AI-generated retirement data
+2025-06-17 08:43:13,753 - main - INFO - Saving AI retirement data for user: c4c0a923-9e81-41d8-ad60-3ce3897f38c7
+2025-06-17 08:43:13,795 - main - INFO - AI retirement data saved successfully for user: c4c0a923-9e81-41d8-ad60-3ce3897f38c7
+2025-06-17 08:43:13,798 - main - INFO - Using chart data as dict directly
+2025-06-17 08:43:13,800 - main - INFO - Saving message to database
+2025-06-17 08:43:13,802 - main - INFO - Saving message to database - Session ID: f984323e-2347-4b04-9475-58916d992f28
+2025-06-17 08:43:13,816 - main - INFO - Message saved successfully with MongoDB ID: 68512aa18cafc6189bba9718
+2025-06-17 08:43:13,819 - main - INFO - Message saved successfully
+2025-06-17 08:43:13,820 - main - INFO - Unified retirement chat request completed successfully
+2025-06-17 08:47:36,468 - main - INFO - Unified retirement chat request - Session ID: f984323e-2347-4b04-9475-58916d992f28, User ID: c4c0a923-9e81-41d8-ad60-3ce3897f38c7
+2025-06-17 08:47:36,470 - main - INFO - Retrieving user profile
+2025-06-17 08:47:36,477 - main - INFO - Using AI-generated retirement data
+2025-06-17 08:47:36,478 - main - INFO - Appending persona instructions for email: test@gmail.com
+2025-06-17 08:47:36,480 - main - INFO - Calling master agent via Lyzr API
+2025-06-17 08:47:36,481 - main - INFO - Starting Lyzr API call - Agent ID: 685123c5e8762a5908ab1d33, Session ID: f984323e-2347-4b04-9475-58916d992f28, User ID: c4c0a923-9e81-41d8-ad60-3ce3897f38c7
+2025-06-17 08:47:36,549 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-06-17 08:48:53,899 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-06-17 08:48:53,903 - main - INFO - Received response with status code: 200
+2025-06-17 08:48:53,905 - main - INFO - Received response: {'response': '```json\n{\n  "text_response": "**Latest Social Security Updates for Your Retirement Planning**\\n\\nAs you prepare for retirement, here are the most relevant recent developments regarding Social Security that could impact your financial future:\\n\\n**1. 2024 Cost-of-Living Adjustment (COLA):**\\n- Social Security benefits will increase by 3.2% in 2024, beginning with payments in January. This adjustment ensures that benefits keep pace with inflation, helping maintain your purchasing power over time. [SSA Announcement](https://www.ssa.gov/news/press/releases/2023/)\\n\\n**2. Trust Fund Projections & Inflation:**\\n- The Social Security trust fund is now projected to be depleted by 2034 if no legislative changes occur. Continued COLA increases help cushion the effect of inflation, but ongoing high inflation could accelerate fund depletion. This highlights the importance of diversifying your retirement income sources. [CBPP Report](https://www.cbpp.org/research/social-security/social-security-dashboard)\\n\\n**3. Demographic Trends:**\\n- Surveys show nearly 50% of retirees rely on Social Security for at least 70% of their income. Maintaining a mix of income streams (like pension, 401k, and defined benefit plans) provides greater long-term financial security. [NRPC Survey](https://www.retirementplanningcoalition.org/research/)\\n\\n**Takeaway:**\\n- It’s crucial to stay updated on Social Security changes and continue strengthening your diversified retirement income for a resilient future.\\n\\n⚠️ *Educational only – not WTW advice*",\n  "chart_data": null,\n  "contains_chart": false\n}\n```', 'module_outputs': {}}
+2025-06-17 08:48:53,907 - main - INFO - Successfully parsed JSON response from Lyzr API
+2025-06-17 08:48:53,909 - main - INFO - Master agent API call completed successfully
+2025-06-17 08:48:53,911 - main - INFO - Parsing structured response from master agent
+2025-06-17 08:48:53,913 - main - WARNING - Initial JSON parse failed: Expecting value: line 1 column 1 (char 0), trying to extract from markdown
+2025-06-17 08:48:53,916 - main - INFO - Found JSON in markdown code block
+2025-06-17 08:48:53,918 - main - INFO - Successfully parsed JSON from markdown
+2025-06-17 08:48:53,920 - main - INFO - Parsed response - Text length: 1492, Contains chart: False
+2025-06-17 08:48:53,922 - main - INFO - Saving message to database
+2025-06-17 08:48:53,923 - main - INFO - Saving message to database - Session ID: f984323e-2347-4b04-9475-58916d992f28
+2025-06-17 08:48:53,929 - main - INFO - Message saved successfully with MongoDB ID: 68512bf58cafc6189bba9719
+2025-06-17 08:48:53,930 - main - INFO - Message saved successfully
+2025-06-17 08:48:53,932 - main - INFO - Unified retirement chat request completed successfully
+2025-06-17 08:49:58,396 - main - INFO - Unified retirement chat request - Session ID: f984323e-2347-4b04-9475-58916d992f28, User ID: c4c0a923-9e81-41d8-ad60-3ce3897f38c7
+2025-06-17 08:49:58,397 - main - INFO - Retrieving user profile
+2025-06-17 08:49:58,400 - main - INFO - Using AI-generated retirement data
+2025-06-17 08:49:58,405 - main - INFO - Appending persona instructions for email: test@gmail.com
+2025-06-17 08:49:58,406 - main - INFO - Calling master agent via Lyzr API
+2025-06-17 08:49:58,408 - main - INFO - Starting Lyzr API call - Agent ID: 685123c5e8762a5908ab1d33, Session ID: f984323e-2347-4b04-9475-58916d992f28, User ID: c4c0a923-9e81-41d8-ad60-3ce3897f38c7
+2025-06-17 08:49:58,481 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-06-17 08:50:56,165 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-06-17 08:50:56,169 - main - INFO - Received response with status code: 200
+2025-06-17 08:50:56,171 - main - INFO - Received response: {'response': '{\n  "text_response": "**Comprehensive Strategy for Retirement Planning and Medical Challenges**\\n\\n**1. Immediate Financial & Healthcare Steps**\\n- **Healthcare Coverage:** Explore ACA Marketplace (https://www.healthcare.gov/) and Medicaid options if income drops. Apply for state, hospital, or cancer foundation support for medical bills—most hospitals have counselors for this.\\n- **Critical Illness and Disability Insurance:** Investigate if any existing employer or private supplemental coverage can be activated for your diagnosis.\\n\\n**2. Asset & Medical Cost Protection**\\n- **Emergency Fund:** Prioritize building or maintaining an emergency fund covering 6–12 months of expenses to cushion against medical shocks.\\n- **HSA Use:** Max out Health Savings Account contributions if eligible—distributions are tax-free for qualified medical expenses.\\n- **Minimize Early Withdrawals:** If withdrawals from retirement accounts are unavoidable (before age 59½), document unreimbursed medical expenses. Such withdrawals may be exempt from penalties if they exceed 7.5% of your adjusted gross income.\\n\\n**3. Maximizing Retirement Security**\\n- **Social Security Timing:** If your health outlook is limited, consider claiming benefits at 62. If your prognosis improves, delay to 67+ for higher benefits. Consider Social Security Disability Insurance (SSDI) if work is not possible (https://www.ssa.gov/benefits/disability/). SSDI gives monthly income and, after 24 months, access to Medicare before age 65.\\n- **Pension/401k Withdrawal Strategy:** Plan to draw first from taxable accounts, then tax-deferred (401k/IRA) as needed. Maximize catch-up contributions if still working. Withdraw conservatively (3–4% per year), and coordinate pension receipt and Social Security for income stability.\\n- **Defined Benefit & Other Income:** Leverage defined benefit payments starting at age 62. Use “other” income sources as a buffer for unexpected expenses.\\n\\n**4. Supplemental Income & Safety Nets**\\n- **Government/Charitable Programs:** Apply for SSDI if disabled; look into state-run support for healthcare, utilities, housing, and food. Nonprofit organizations (like the American Cancer Society: https://www.cancer.org/) may provide grants or direct aid.\\n\\n**5. Protecting Your Family & Estate**\\n- **Legal Updates:** Update your will, healthcare power of attorney, and financial directives to reflect current wishes and beneficiary designations.\\n\\n**Actionable Summary:**\\n- Secure all insurance and public assistance available.\\n- Protect a cash cushion for emergencies and medical needs.\\n- Claim Social Security and retirement benefits with timing tailored to your health prospects.\\n- Use hardship withdrawal rules prudently for medical costs.\\n- Tap government assistance and nonprofit support as needed.\\n- Review and update all estate documents with a professional.\\n\\n**Projected Retirement Income (Ages 65–69):**\\nHere is your estimated annual income by source, useful for planning and peace of mind:\\n",\n  "chart_data": {\n    "type": "pension_data",\n    "data": [\n      { "age": 65, "Social Security": 19101.74, "Pension": 9373.28, "401k": 14071.0, "Other": 5628.4, "Defined Benefit": 14900.0 },\n      { "age": 66, "Social Security": 19483.78, "Pension": 9560.74, "401k": 13367.45, "Other": 5909.82, "Defined Benefit": 15200.0 },\n      { "age": 67, "Social Security": 19873.45, "Pension": 9751.96, "401k": 12699.08, "Other": 6205.31, "Defined Benefit": 15500.0 },\n      { "age": 68, "Social Security": 20270.92, "Pension": 9946.99, "401k": 12064.13, "Other": 6515.58, "Defined Benefit": 15800.0 },\n      { "age": 69, "Social Security": 20676.34, "Pension": 10145.93, "401k": 11460.92, "Other": 6841.36, "Defined Benefit": 16100.0 }\n    ]\n  },\n  "contains_chart": true\n}', 'module_outputs': {}}
+2025-06-17 08:50:56,172 - main - INFO - Successfully parsed JSON response from Lyzr API
+2025-06-17 08:50:56,174 - main - INFO - Master agent API call completed successfully
+2025-06-17 08:50:56,176 - main - INFO - Parsing structured response from master agent
+2025-06-17 08:50:56,178 - main - INFO - Successfully parsed JSON response directly
+2025-06-17 08:50:56,180 - main - INFO - Parsed response - Text length: 2959, Contains chart: True
+2025-06-17 08:50:56,183 - main - INFO - Processing chart data from response
+2025-06-17 08:50:56,184 - main - INFO - Chart data parsed successfully, type: <class 'dict'>
+2025-06-17 08:50:56,188 - main - INFO - Saving AI-generated retirement data
+2025-06-17 08:50:56,190 - main - INFO - Saving AI retirement data for user: c4c0a923-9e81-41d8-ad60-3ce3897f38c7
+2025-06-17 08:50:56,195 - main - INFO - AI retirement data saved successfully for user: c4c0a923-9e81-41d8-ad60-3ce3897f38c7
+2025-06-17 08:50:56,197 - main - INFO - Using chart data as dict directly
+2025-06-17 08:50:56,200 - main - INFO - Saving message to database
+2025-06-17 08:50:56,207 - main - INFO - Saving message to database - Session ID: f984323e-2347-4b04-9475-58916d992f28
+2025-06-17 08:50:56,213 - main - INFO - Message saved successfully with MongoDB ID: 68512c708cafc6189bba971a
+2025-06-17 08:50:56,215 - main - INFO - Message saved successfully
+2025-06-17 08:50:56,218 - main - INFO - Unified retirement chat request completed successfully
+2025-06-17 08:54:29,553 - main - INFO - Unified retirement chat request - Session ID: f984323e-2347-4b04-9475-58916d992f28, User ID: c4c0a923-9e81-41d8-ad60-3ce3897f38c7
+2025-06-17 08:54:29,556 - main - INFO - Retrieving user profile
+2025-06-17 08:54:29,565 - main - INFO - Using AI-generated retirement data
+2025-06-17 08:54:29,567 - main - INFO - Appending persona instructions for email: test@gmail.com
+2025-06-17 08:54:29,568 - main - INFO - Calling master agent via Lyzr API
+2025-06-17 08:54:29,569 - main - INFO - Starting Lyzr API call - Agent ID: 685123c5e8762a5908ab1d33, Session ID: f984323e-2347-4b04-9475-58916d992f28, User ID: c4c0a923-9e81-41d8-ad60-3ce3897f38c7
+2025-06-17 08:54:29,643 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-06-17 08:56:21,736 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-06-17 08:56:21,739 - main - INFO - Received response with status code: 200
+2025-06-17 08:56:21,740 - main - INFO - Received response: {'response': '{\n  "text_response": "**WTW’s Personalized Retirement Planning Recommendations**\\n\\n**Profile Overview:**\\n- Current Age: 43 | Target Retirement: 57 (early retirement)\\n- Current Income: $180,000 (2% annual growth)\\n- Investment Return Assumption: 5% | Inflation: 2%\\n- Projected Retirement Income Sources: Social Security ($18,000), Pension ($8,000), 401k ($10,000), Other ($4,000), Defined Benefit ($14,000 + $300/year)\\n\\n**1. Optimal Asset Allocation**\\n- **Ages 43–52:** Focus on growth-oriented investing with a moderate-to-high equity allocation. Suggested mix: **60-70% equities, 25-35% bonds, 5-10% cash**. This balances long-term growth with risk control.\\n- **Ages 53–57 (pre-retirement transition):** Gradually de-risk your portfolio to prepare for withdrawals. Adjust toward **45-55% equities, 40-50% bonds, 5-10% cash**.\\n- **Withdrawal Phase (post-57):** Use a “bucket” system—allocate 2–3 years of withdrawals to cash/short bonds for liquidity, keep the remainder diversified for growth and inflation protection. Maintain at least **30-40% equities** to offset inflation over a long retirement horizon.\\n\\n**2. Smart Withdrawal Strategies**\\n- **Early Retirement (57–62):** Bridge the gap until Social Security and defined benefits start using pension, 401k, and ‘Other’ income. Withdraw conservatively (3-3.5% of initial retirement portfolio) to preserve principal.\\n- **Post-62 (after Social Security and Defined Benefit activate):** Integrate Social Security and defined benefit payments to reduce stress on investment assets. Withdraw from taxable accounts first, then traditional IRA/401k, and Roth assets last for tax efficiency.\\n- **Review Annually:** Adjust withdrawal amounts to reflect changes in expenses, market returns, and updated life expectancy.\\n\\n**3. Risk Management Recommendations**\\n- **Longevity Risk:** Plan for a 90+ lifespan. Use conservative withdrawal rates and consider future annuitization or longevity insurance if longevity risk increases.\\n- **Inflation Risk:** Equities and inflation-protected bonds (TIPS) help mitigate the erosive effects of inflation over time. Rebalance annually to maintain allocation targets.\\n- **Healthcare Risk:** Build in extra savings or consider Health Savings Accounts (HSA) for pre-Medicare medical expenses. Plan for higher medical costs between retirement and age 65 (Medicare eligibility).\\n- **Market Risk:** Gradually reduce equity exposure as you approach and enter retirement. Keep 1–3 years’ expenses in safer, liquid assets to avoid selling investments during downturns.\\n\\n**4. Ongoing Planning & Professional Support**\\n- Conduct an annual review with WTW-advised tools or advisors to adjust for any lifestyle, legislative, or market changes.\\n- Use WTW calculators/scenario modeling to test “what if” events (high inflation, market shocks, healthcare emergencies).\\n- Coordinate timing of Social Security and pension elections to optimize benefits.\\n\\n**Summary Table**\\n| Age Range       | Equities | Bonds | Cash | Strategy                      |\\n|-----------------|----------|-------|------|-------------------------------|\\n| 43–52           | 60–70%   | 25–35%| 5–10%| Growth focus, risk managed    |\\n| 53–57           | 45–55%   | 40–50%| 5–10%| Gradually reduce risk         |\\n| 57–65+          | 30–40%   | 55–65%| 5–10%| Diversified income & liquidity|\\n\\n**Action Steps:**\\n- Max out tax-advantaged savings (401k, IRA, HSA).\\n- Project cash flow needs, especially before Social Security starts.\\n- Periodically rebalance and stress test your plan as you near retirement.\\n- Consult with WTW or a qualified advisor annually to update your plan.\\n\\n**Source URLs:**\\n- [WTW Investment Philosophy](https://www.wtwco.com/en-US/Insights/2022/01/portfolio-structure-and-investment-philosophy)\\n- [WTW Retirement Solutions](https://www.wtwco.com/en-US/Solutions/services/defined-contribution)\\n- [WTW Retirement Plan Tools](https://www.wtwco.com/en-US/Solutions/services/global-retirement-management)"\n,\n  "chart_data": null,\n  "contains_chart": false\n}', 'module_outputs': {}}
+2025-06-17 08:56:21,741 - main - INFO - Successfully parsed JSON response from Lyzr API
+2025-06-17 08:56:21,742 - main - INFO - Master agent API call completed successfully
+2025-06-17 08:56:21,743 - main - INFO - Parsing structured response from master agent
+2025-06-17 08:56:21,744 - main - INFO - Successfully parsed JSON response directly
+2025-06-17 08:56:21,745 - main - INFO - Parsed response - Text length: 3933, Contains chart: False
+2025-06-17 08:56:21,746 - main - INFO - Saving message to database
+2025-06-17 08:56:21,747 - main - INFO - Saving message to database - Session ID: f984323e-2347-4b04-9475-58916d992f28
+2025-06-17 08:56:21,750 - main - INFO - Message saved successfully with MongoDB ID: 68512db58cafc6189bba971b
+2025-06-17 08:56:21,751 - main - INFO - Message saved successfully
+2025-06-17 08:56:21,752 - main - INFO - Unified retirement chat request completed successfully
+2025-06-17 10:21:46,034 - main - INFO - FastAPI application initialized
+2025-06-17 10:21:46,036 - main - INFO - CORS middleware configured
+2025-06-17 10:21:46,038 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-17 10:21:46,069 - main - INFO - MongoDB client initialized successfully
+2025-06-17 10:21:46,071 - main - INFO - MongoDB collections configured
+2025-06-17 10:21:46,074 - main - INFO - External API configuration loaded
+2025-06-17 10:22:03,538 - main - INFO - FastAPI application initialized
+2025-06-17 10:22:03,540 - main - INFO - CORS middleware configured
+2025-06-17 10:22:03,542 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-17 10:22:03,559 - main - INFO - MongoDB client initialized successfully
+2025-06-17 10:22:03,561 - main - INFO - MongoDB collections configured
+2025-06-17 10:22:03,564 - main - INFO - External API configuration loaded
+2025-06-17 10:22:39,577 - main - INFO - FastAPI application initialized
+2025-06-17 10:22:39,579 - main - INFO - CORS middleware configured
+2025-06-17 10:22:39,581 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-17 10:22:39,612 - main - INFO - MongoDB client initialized successfully
+2025-06-17 10:22:39,615 - main - INFO - MongoDB collections configured
+2025-06-17 10:22:39,625 - main - INFO - External API configuration loaded
+2025-06-17 10:22:51,243 - main - INFO - FastAPI application initialized
+2025-06-17 10:22:51,245 - main - INFO - CORS middleware configured
+2025-06-17 10:22:51,248 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-17 10:22:51,273 - main - INFO - MongoDB client initialized successfully
+2025-06-17 10:22:51,276 - main - INFO - MongoDB collections configured
+2025-06-17 10:22:51,286 - main - INFO - External API configuration loaded
+2025-06-17 10:23:07,388 - main - INFO - FastAPI application initialized
+2025-06-17 10:23:07,390 - main - INFO - CORS middleware configured
+2025-06-17 10:23:07,394 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-17 10:23:07,426 - main - INFO - MongoDB client initialized successfully
+2025-06-17 10:23:07,429 - main - INFO - MongoDB collections configured
+2025-06-17 10:23:07,431 - main - INFO - External API configuration loaded
+2025-06-17 10:23:10,005 - main - INFO - FastAPI application initialized
+2025-06-17 10:23:10,007 - main - INFO - CORS middleware configured
+2025-06-17 10:23:10,008 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-17 10:23:10,032 - main - INFO - MongoDB client initialized successfully
+2025-06-17 10:23:10,034 - main - INFO - MongoDB collections configured
+2025-06-17 10:23:10,036 - main - INFO - External API configuration loaded
+2025-06-17 10:23:11,941 - main - INFO - FastAPI application initialized
+2025-06-17 10:23:11,943 - main - INFO - CORS middleware configured
+2025-06-17 10:23:11,945 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-17 10:23:11,964 - main - INFO - MongoDB client initialized successfully
+2025-06-17 10:23:11,967 - main - INFO - MongoDB collections configured
+2025-06-17 10:23:11,970 - main - INFO - External API configuration loaded
+2025-06-17 10:23:14,560 - main - INFO - FastAPI application initialized
+2025-06-17 10:23:14,561 - main - INFO - CORS middleware configured
+2025-06-17 10:23:14,563 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-17 10:23:14,580 - main - INFO - MongoDB client initialized successfully
+2025-06-17 10:23:14,621 - main - INFO - MongoDB collections configured
+2025-06-17 10:23:14,624 - main - INFO - External API configuration loaded
+2025-06-17 10:23:18,410 - main - INFO - FastAPI application initialized
+2025-06-17 10:23:18,412 - main - INFO - CORS middleware configured
+2025-06-17 10:23:18,414 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-17 10:23:18,429 - main - INFO - MongoDB client initialized successfully
+2025-06-17 10:23:18,431 - main - INFO - MongoDB collections configured
+2025-06-17 10:23:18,433 - main - INFO - External API configuration loaded
