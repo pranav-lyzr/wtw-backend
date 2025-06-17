@@ -853,7 +853,7 @@ async def chat_retirement_unified(request: ChatRequest):
 
         **USER QUESTION:** {request.message}
 
-        Use user data to get more personalised response 
+        Use user data to get more personalised response    
         """
 
         master_prompt = append_persona_instructions(user_profile.get('email'), master_prompt)
