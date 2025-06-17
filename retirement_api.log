@@ -1638,3 +1638,97 @@ NameError: name 'user_id' is not defined
 2025-06-16 13:51:48,059 - main - INFO - MongoDB client initialized successfully
 2025-06-16 13:51:48,063 - main - INFO - MongoDB collections configured
 2025-06-16 13:51:48,065 - main - INFO - External API configuration loaded
+2025-06-17 06:08:48,053 - main - INFO - FastAPI application initialized
+2025-06-17 06:08:48,054 - main - INFO - CORS middleware configured
+2025-06-17 06:08:48,056 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-17 06:08:48,073 - main - INFO - MongoDB client initialized successfully
+2025-06-17 06:08:48,075 - main - INFO - MongoDB collections configured
+2025-06-17 06:08:48,076 - main - INFO - External API configuration loaded
+2025-06-17 06:18:28,081 - main - INFO - Retrieving all users
+2025-06-17 06:18:28,119 - main - INFO - Retrieved 4 users
+2025-06-17 06:19:05,666 - main - INFO - Creating user profile for: test user 1, email: smallresponse@gmail.com
+2025-06-17 06:19:05,704 - main - INFO - User profile created with ID: 71f94c51-aec1-4707-b04e-6805f1608f83
+2025-06-17 06:19:19,474 - main - INFO - Creating new session for user ID: 71f94c51-aec1-4707-b04e-6805f1608f83
+2025-06-17 06:19:19,491 - main - INFO - Created new session: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-06-17 06:20:43,459 - main - INFO - Unified retirement chat request - Session ID: a989c248-f442-4d1c-98a5-45c75e4ba846, User ID: 71f94c51-aec1-4707-b04e-6805f1608f83
+2025-06-17 06:20:43,461 - main - INFO - Retrieving user profile
+2025-06-17 06:20:43,464 - main - INFO - Using manually calculated retirement data
+2025-06-17 06:20:43,465 - main - INFO - Appending persona instructions for email: smallresponse@gmail.com
+2025-06-17 06:20:43,467 - main - INFO - Calling master agent via Lyzr API
+2025-06-17 06:20:43,469 - main - INFO - Starting Lyzr API call - Agent ID: 684a8322e5203d8a7b6481f5, Session ID: a989c248-f442-4d1c-98a5-45c75e4ba846, User ID: 71f94c51-aec1-4707-b04e-6805f1608f83
+2025-06-17 06:20:43,553 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-06-17 06:22:00,857 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-06-17 06:22:00,860 - main - INFO - Received response with status code: 200
+2025-06-17 06:22:00,861 - main - INFO - Received response: {'response': '{\n  "text_response": "**Increasing Your Pension Income by 10%**\\n\\n- To boost your pension by 10%, target an annual pension of $8,800 (up from $8,000) at age 65, maintaining the existing $300/year increment.\\n- You can achieve this by making additional voluntary contributions (if your plan allows) or by working extra years to accrue higher benefits.\\n- The chart below compares your projected annual retirement income at your current pension and with a 10% pension increase for a clear year-by-year view.",\n  "chart_data": {\n    "type": "pension_data",\n    "data": [\n      {"age": 65, "Social Security": 19101.74, "Pension": 8800.0, "401k": 14071.0, "Other": 5628.4, "Defined Benefit": 14900.0},\n      {"age": 66, "Social Security": 19483.78, "Pension": 8976.0, "401k": 13367.45, "Other": 5909.82, "Defined Benefit": 15200.0},\n      {"age": 67, "Social Security": 19873.45, "Pension": 9155.52, "401k": 12699.08, "Other": 6205.31, "Defined Benefit": 15500.0},\n      {"age": 68, "Social Security": 20270.92, "Pension": 9338.63, "401k": 12064.13, "Other": 6515.58, "Defined Benefit": 15800.0},\n      {"age": 69, "Social Security": 20676.34, "Pension": 9525.41, "401k": 11460.92, "Other": 6841.36, "Defined Benefit": 16100.0},\n      {"age": 70, "Social Security": 21089.87, "Pension": 9715.91, "401k": 10887.87, "Other": 7183.43, "Defined Benefit": 16400.0},\n      {"age": 71, "Social Security": 21511.67, "Pension": 9910.23, "401k": 10343.48, "Other": 7542.6, "Defined Benefit": 16700.0},\n      {"age": 72, "Social Security": 21941.9, "Pension": 10108.43, "401k": 9826.31, "Other": 7919.73, "Defined Benefit": 17000.0},\n      {"age": 73, "Social Security": 22380.74, "Pension": 10310.61, "401k": 9334.99, "Other": 8315.71, "Defined Benefit": 17300.0},\n      {"age": 74, "Social Security": 22828.35, "Pension": 10516.81, "401k": 8868.24, "Other": 8731.5, "Defined Benefit": 17600.0},\n      {"age": 75, "Social Security": 23284.92, "Pension": 10727.16, "401k": 8424.83, "Other": 9168.07, "Defined Benefit": 17900.0},\n      {"age": 76, "Social Security": 23750.62, "Pension": 10941.69, "401k": 8003.59, "Other": 9626.48, "Defined Benefit": 18200.0},\n      {"age": 77, "Social Security": 24225.63, "Pension": 11160.52, "401k": 7603.41, "Other": 10107.8, "Defined Benefit": 18500.0},\n      {"age": 78, "Social Security": 24710.14, "Pension": 11383.74, "401k": 7223.24, "Other": 10613.19, "Defined Benefit": 18800.0},\n      {"age": 79, "Social Security": 25204.35, "Pension": 11611.42, "401k": 6862.08, "Other": 11143.85, "Defined Benefit": 19100.0},\n      {"age": 80, "Social Security": 25708.43, "Pension": 11843.67, "401k": 6518.97, "Other": 11701.04, "Defined Benefit": 19400.0},\n      {"age": 81, "Social Security": 26222.6, "Pension": 12080.51, "401k": 6193.02, "Other": 12286.1, "Defined Benefit": 19700.0},\n      {"age": 82, "Social Security": 26747.05, "Pension": 12322.12, "401k": 5883.37, "Other": 12900.4, "Defined Benefit": 20000.0},\n      {"age": 83, "Social Security": 27281.99, "Pension": 12568.57, "401k": 5589.2, "Other": 13545.42, "Defined Benefit": 20300.0},\n      {"age": 84, "Social Security": 27827.63, "Pension": 12819.94, "401k": 5309.74, "Other": 14222.69, "Defined Benefit": 20600.0},\n      {"age": 85, "Social Security": 28384.19, "Pension": 13076.33, "401k": 5044.26, "Other": 14933.83, "Defined Benefit": 20900.0},\n      {"age": 86, "Social Security": 28951.87, "Pension": 13337.86, "401k": 4792.04, "Other": 15680.52, "Defined Benefit": 21200.0},\n      {"age": 87, "Social Security": 29530.91, "Pension": 13604.62, "401k": 4552.44, "Other": 16464.54, "Defined Benefit": 21500.0},\n      {"age": 88, "Social Security": 30121.53, "Pension": 13876.71, "401k": 4324.82, "Other": 17287.77, "Defined Benefit": 21800.0},\n      {"age": 89, "Social Security": 30723.96, "Pension": 14154.25, "401k": 4108.58, "Other": 18152.16, "Defined Benefit": 22100.0},\n      {"age": 90, "Social Security": 31338.44, "Pension": 14437.34, "401k": 3903.15, "Other": 19059.77, "Defined Benefit": 22400.0}\n    ]\n  },\n  "contains_chart": true\n}', 'module_outputs': {}}
+2025-06-17 06:22:00,862 - main - INFO - Successfully parsed JSON response from Lyzr API
+2025-06-17 06:22:00,864 - main - INFO - Master agent API call completed successfully
+2025-06-17 06:22:00,865 - main - INFO - Parsing structured response from master agent
+2025-06-17 06:22:00,866 - main - INFO - Successfully parsed JSON response directly
+2025-06-17 06:22:00,867 - main - INFO - Parsed response - Text length: 480, Contains chart: True
+2025-06-17 06:22:00,868 - main - INFO - Processing chart data from response
+2025-06-17 06:22:00,869 - main - INFO - Chart data parsed successfully, type: <class 'dict'>
+2025-06-17 06:22:00,870 - main - INFO - Saving AI-generated retirement data
+2025-06-17 06:22:00,870 - main - INFO - Saving AI retirement data for user: 71f94c51-aec1-4707-b04e-6805f1608f83
+2025-06-17 06:22:00,873 - main - INFO - AI retirement data saved successfully for user: 71f94c51-aec1-4707-b04e-6805f1608f83
+2025-06-17 06:22:00,874 - main - INFO - Using chart data as dict directly
+2025-06-17 06:22:00,875 - main - INFO - Saving message to database
+2025-06-17 06:22:00,877 - main - INFO - Saving message to database - Session ID: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-06-17 06:22:00,891 - main - INFO - Message saved successfully with MongoDB ID: 68510988a993e8087956bab2
+2025-06-17 06:22:00,893 - main - INFO - Message saved successfully
+2025-06-17 06:22:00,896 - main - INFO - Unified retirement chat request completed successfully
+2025-06-17 06:23:14,246 - main - INFO - Retrieving all users
+2025-06-17 06:23:14,248 - main - INFO - Retrieved 5 users
+2025-06-17 06:23:43,771 - main - INFO - Updating user profile for ID: 71f94c51-aec1-4707-b04e-6805f1608f83
+2025-06-17 06:24:03,900 - main - INFO - Updating user profile for ID: 71f94c51-aec1-4707-b04e-6805f1608f83
+2025-06-17 06:27:42,655 - main - INFO - Unified retirement chat request - Session ID: a989c248-f442-4d1c-98a5-45c75e4ba846, User ID: 71f94c51-aec1-4707-b04e-6805f1608f83
+2025-06-17 06:27:42,661 - main - INFO - Retrieving user profile
+2025-06-17 06:27:42,684 - main - INFO - Using AI-generated retirement data
+2025-06-17 06:27:42,687 - main - INFO - Appending persona instructions for email: shortbulletpoints@gmail.com
+2025-06-17 06:27:42,690 - main - INFO - Calling master agent via Lyzr API
+2025-06-17 06:27:42,694 - main - INFO - Starting Lyzr API call - Agent ID: 684a8322e5203d8a7b6481f5, Session ID: a989c248-f442-4d1c-98a5-45c75e4ba846, User ID: 71f94c51-aec1-4707-b04e-6805f1608f83
+2025-06-17 06:27:42,844 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-06-17 06:28:01,481 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-06-17 06:28:01,484 - main - INFO - Received response with status code: 200
+2025-06-17 06:28:01,486 - main - INFO - Received response: {'response': '{\n  "text_response": "**How to Increase Your Pension Income & Take More Investment Risk**\\n\\n- Increase pension income by making extra contributions if your plan allows, or extending your working years for higher benefits.\\n- Discuss with your employer about boosting pension benefits or using supplemental plans like IRAs and annuities.\\n- With 20 years to retirement, taking more investment risk (such as investing in growth-focused funds) could potentially grow your savings faster.\\n- Regularly monitor and adjust your investment mix to match your risk comfort and market conditions.\\n- Always consult a licensed advisor to ensure changes fit your long-term retirement goals.",\n  "chart_data": null,\n  "contains_chart": false\n}', 'module_outputs': {}}
+2025-06-17 06:28:01,488 - main - INFO - Successfully parsed JSON response from Lyzr API
+2025-06-17 06:28:01,490 - main - INFO - Master agent API call completed successfully
+2025-06-17 06:28:01,493 - main - INFO - Parsing structured response from master agent
+2025-06-17 06:28:01,499 - main - INFO - Successfully parsed JSON response directly
+2025-06-17 06:28:01,507 - main - INFO - Parsed response - Text length: 651, Contains chart: False
+2025-06-17 06:28:01,510 - main - INFO - Saving message to database
+2025-06-17 06:28:01,525 - main - INFO - Saving message to database - Session ID: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-06-17 06:28:01,540 - main - INFO - Message saved successfully with MongoDB ID: 68510af1a993e8087956bab3
+2025-06-17 06:28:01,551 - main - INFO - Message saved successfully
+2025-06-17 06:28:01,554 - main - INFO - Unified retirement chat request completed successfully
+2025-06-17 06:39:43,346 - main - INFO - FastAPI application initialized
+2025-06-17 06:39:43,348 - main - INFO - CORS middleware configured
+2025-06-17 06:39:43,351 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-17 06:39:43,383 - main - INFO - MongoDB client initialized successfully
+2025-06-17 06:39:43,386 - main - INFO - MongoDB collections configured
+2025-06-17 06:39:43,400 - main - INFO - External API configuration loaded
+2025-06-17 06:44:45,954 - main - INFO - Unified retirement chat request - Session ID: a989c248-f442-4d1c-98a5-45c75e4ba846, User ID: 71f94c51-aec1-4707-b04e-6805f1608f83
+2025-06-17 06:44:45,957 - main - INFO - Retrieving user profile
+2025-06-17 06:44:46,044 - main - INFO - Using AI-generated retirement data
+2025-06-17 06:44:46,052 - main - INFO - Appending persona instructions for email: shortbulletpoints@gmail.com
+2025-06-17 06:44:46,056 - main - INFO - Calling master agent via Lyzr API
+2025-06-17 06:44:46,065 - main - INFO - Starting Lyzr API call - Agent ID: 684a8322e5203d8a7b6481f5, Session ID: a989c248-f442-4d1c-98a5-45c75e4ba846, User ID: 71f94c51-aec1-4707-b04e-6805f1608f83
+2025-06-17 06:44:46,293 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-06-17 06:46:40,620 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-06-17 06:46:40,624 - main - INFO - Received response with status code: 200
+2025-06-17 06:46:40,627 - main - INFO - Received response: {'response': '{\n  "text_response": "**Ways to Increase Pension Income & Consider Investment Risk**\\n\\n- Make additional contributions to your pension plan if allowed, or extend your working years to grow your benefit.\\n- Review your employer\'s options for pension enhancements or supplemental retirement accounts.\\n- With 20 years until retirement, moderately increasing investment risk could help boost long-term retirement savings, but be sure this fits your risk tolerance.\\n- Maintain diversified contributions across your 401k, Social Security, and other sources for stability.\\n- Revisit your strategy periodically and seek professional advice to adapt to changes in your goals or the market.",\n  "chart_data": null,\n  "contains_chart": false\n}', 'module_outputs': {}}
+2025-06-17 06:46:40,630 - main - INFO - Successfully parsed JSON response from Lyzr API
+2025-06-17 06:46:40,634 - main - INFO - Master agent API call completed successfully
+2025-06-17 06:46:40,636 - main - INFO - Parsing structured response from master agent
+2025-06-17 06:46:40,638 - main - INFO - Successfully parsed JSON response directly
+2025-06-17 06:46:40,641 - main - INFO - Parsed response - Text length: 656, Contains chart: False
+2025-06-17 06:46:40,645 - main - INFO - Saving message to database
+2025-06-17 06:46:40,649 - main - INFO - Saving message to database - Session ID: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-06-17 06:46:40,669 - main - INFO - Message saved successfully with MongoDB ID: 68510f50d2ad0ade58eafaf4
+2025-06-17 06:46:40,673 - main - INFO - Message saved successfully
+2025-06-17 06:46:40,681 - main - INFO - Unified retirement chat request completed successfully
+2025-06-17 08:18:11,350 - main - INFO - FastAPI application initialized
+2025-06-17 08:18:11,353 - main - INFO - CORS middleware configured
+2025-06-17 08:18:11,357 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-17 08:18:11,417 - main - INFO - MongoDB client initialized successfully
+2025-06-17 08:18:11,420 - main - INFO - MongoDB collections configured
+2025-06-17 08:18:11,423 - main - INFO - External API configuration loaded

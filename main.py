@@ -591,6 +591,31 @@ async def get_user_chat_history(user_id: str, session_id: str) -> str:
         logger.error(f"Error retrieving chat history: {str(e)}")
         return "Error retrieving chat history"
 
+def append_persona_instructions(email: Optional[str], prompt: str) -> str:
+    """Append persona-specific instructions to the prompt based on user email"""
+    logger.info(f"Appending persona instructions for email: {email}")
+    
+    if email == "smallresponse@gmail.com":
+        persona_instruction = """
+        Provide a concise response in 2-3 sentences, keeping the answer brief and to the point.
+        """
+    elif email == "naiveuser@gmail.com":
+        persona_instruction = """
+        Provide a detailed response and explain all technical terms in simple language, assuming the user has no prior financial knowledge.
+        """
+    elif email == "shortbulletpoints@gmail.com":
+        persona_instruction = """
+        Provide the response in 3-5 concise bullet points, keeping each point short and clear.
+        """
+    else:
+        persona_instruction = ""
+    
+    if persona_instruction:
+        logger.debug(f"Applying persona instruction: {persona_instruction.strip()}")
+        prompt += f"\n\n**Persona-Specific Instructions:**\n{persona_instruction}"
+    
+    return prompt
+
 async def generate_personalized_suggestions(user_id: str, session_id: str, user_profile: dict) -> List[AISuggestion]:
     """Generate personalized AI suggestions based on user profile and chat history"""
     try:
@@ -830,10 +855,12 @@ async def chat_retirement_unified(request: ChatRequest):
 
         Use user data to get more personalised response 
         """
+
+        master_prompt = append_persona_instructions(user_profile.get('email'), master_prompt)
         
         logger.info("Calling master agent via Lyzr API")
         api_response = await call_lyzr_api(
-            agent_id="684a8322e5203d8a7b6481f5",  # Master agent ID
+            agent_id="685123c5e8762a5908ab1d33",  # Master agent ID
             session_id=request.session_id,
             user_id=request.user_id,
             message=master_prompt
@@ -1710,6 +1737,48 @@ async def get_user_profile(user_id: str):
         logger.error(f"Error retrieving user profile: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e)) 
     
+@app.delete("/user-profile/{user_id}")
+async def delete_user_profile(user_id: str):
+    """Delete a user profile and all associated sessions and messages"""
+    logger.info(f"Deleting user profile for ID: {user_id}")
+    
+    try:
+        # Check if user exists
+        user_doc = await user_profiles_collection.find_one({"user_id": user_id})
+        if not user_doc:
+            logger.warning(f"User profile not found for ID: {user_id}")
+            raise HTTPException(status_code=404, detail="User profile not found")
+        
+        # Delete all sessions for the user
+        logger.info(f"Deleting sessions for user ID: {user_id}")
+        session_result = await sessions_collection.delete_many({"user_id": user_id})
+        logger.info(f"Deleted {session_result.deleted_count} sessions")
+        
+        # Delete all messages for the user's sessions
+        logger.info(f"Deleting messages for user ID: {user_id}")
+        message_result = await messages_collection.delete_many({"session_id": {"$in": [
+            session["session_id"] async for session in sessions_collection.find({"user_id": user_id}, {"session_id": 1})
+        ]}})
+        logger.info(f"Deleted {message_result.deleted_count} messages")
+        
+        # Delete the user profile
+        logger.info(f"Deleting user profile for ID: {user_id}")
+        user_result = await user_profiles_collection.delete_one({"user_id": user_id})
+        
+        if user_result.deleted_count == 0:
+            logger.warning(f"Failed to delete user profile for ID: {user_id}")
+            raise HTTPException(status_code=404, detail="User profile not found")
+        
+        logger.info(f"User profile {user_id} and associated data deleted successfully")
+        return {"message": "User profile and associated data deleted successfully"}
+    
+    except HTTPException as http_error:
+        logger.error(f"HTTP exception in delete user profile: {http_error.detail}")
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting user profile {user_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.get("/retirement-calculation/{user_id}")
 async def calculate_retirement_data(user_id: str):
     """Calculate and store retirement data"""
