@@ -14,9 +14,11 @@ import logging
 from logging.handlers import RotatingFileHandler
 import sys
 from bson import ObjectId
-
+import asyncio
+import requests
 
 # Configure logging
+# logging.disable(logging.CRITICAL)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -205,13 +207,13 @@ user_profiles_collection = db.user_profiles
 logger.info("MongoDB collections configured")
 
 # External API configuration
-LYZR_API_KEY = "sk-default-MynmtavBq234dgMhix3UlMno90YHlKJX"
+LYZR_API_KEY = "sk-default-gx2ux63PhW8Fmpt7gS5uPgff7BlEl81L"
 LYZR_BASE_URL = "https://agent-prod.studio.lyzr.ai/v3/inference/chat/"
 PENSION_AGENT_ID = "6850133251da0258f4744a30"
 RETIREMENT_AGENT_ID = "6846d27f62d8a0cca7618607"
-USER_ID = "pranav@lyzr.ai"
+USER_ID = "workspace1@wtw.com"
 logger.info("External API configuration loaded")
-
+ 
 
 def convert_object_ids(data):
     """Recursively convert all ObjectId instances to strings within the dict."""
@@ -757,7 +759,7 @@ async def generate_personalized_suggestions(user_id: str, session_id: str, user_
         
         # Call the AI agent to generate suggestions
         api_response = await call_lyzr_api(
-            agent_id="684a8fcfe5203d8a7b64825e",
+            agent_id="68519f1ee8762a5908ab2930",
             session_id=session_id,
             user_id=user_id,
             message=prompt
@@ -961,12 +963,12 @@ async def chat_retirement_unified(request: ChatRequest):
         
         logger.info("Calling master agent via Lyzr API")
         api_response = await call_lyzr_api(
-            agent_id="685123c5e8762a5908ab1d33",  # Master agent ID
+            agent_id="6851461baf3ce50cc6e2e4b3",  # Master agent ID
             session_id=request.session_id,
             user_id=request.user_id,
             message=master_prompt
         )
-        logger.info("Master agent API call completed successfully")
+        logger.info("Master agent API call completed successfully "+request.message)
         
         # Parse the structured response
         logger.info("Parsing structured response from master agent")
@@ -978,6 +980,8 @@ async def chat_retirement_unified(request: ChatRequest):
             # First attempt to parse the entire response as JSON
             structured_response = json.loads(api_response["response"])
             logger.info("Successfully parsed JSON response directly")
+            print("dd",structured_response,"s")
+            # print("-",api_response ,"d")
             text_response = structured_response.get("text_response", "")
             chart_data_raw = structured_response.get("chart_data")
             contains_chart = structured_response.get("contains_chart", False)
@@ -1342,7 +1346,7 @@ async def compare_retirement_projection(request: LyzrChatRequest):
         # Prepare payload for Lyzr
         lyzr_payload = {
             "user_id": request.user_id,
-            "agent_id": "684be1140a55475675b60d0b",
+            "agent_id": "68519f01ed2a4cfbefdf1481",
             "session_id": request.user_id,  # Generate a new session ID if not provided
             "message": message
         }
