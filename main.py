@@ -590,86 +590,48 @@ def generate_retirement_data(user_profile: dict):
 
     for age in years:
         try:
-            # ADDED: Calculate inflation impact factors
-            years_from_now = age - user_profile.get('current_age', 30)
-            inflation_factor = (1 + user_profile['inflation']) ** years_from_now
-            # Social Security calculation - CHANGED FORMULA
+            # Social Security calculation
             ss_value = 0
             if age >= 62:
-                # Option 1: No COLA (your original request)
-                ss_value = user_profile['social_security_base']
-                # Option 2: With COLA (more realistic) - ADDED
-                ss_value_with_cola = user_profile['social_security_base'] * (1 + user_profile.get('ss_cola_rate', 0.022)) ** (age - 62)
+                ss_value = user_profile['social_security_base'] * (1 + user_profile['inflation']) ** (age - 62)
                 if math.isinf(ss_value) or math.isnan(ss_value):
                     ss_value = max_ss_benefit
                 ss_value = min(ss_value, max_ss_benefit)
-            # ADDED: Calculate real purchasing power
-            ss_real = ss_value / inflation_factor if ss_value > 0 else 0
-            # Pension calculation - ENHANCED FORMULA
-            pension_value = 0
-            if age >= user_profile['retirement_age']:
-                pension_value = user_profile['pension_base'] * \
-                            (1 + user_profile['salary_growth']) ** (age - user_profile['retirement_age'])
-            pension_real = pension_value / inflation_factor
-            # 401k calculation - IMPROVED FORMULA
+
+            # Pension calculation
+            pension_value = user_profile['pension_base'] * \
+                        (1 + user_profile['salary_growth']) ** (age - user_profile['retirement_age'])
+
+            # 401k calculation
             four01k_value = 0
             if age >= 58:
-                # Use Fisher equation for real returns - CHANGED
-                real_return = ((1 + user_profile['investment_return']) / (1 + user_profile['inflation'])) - 1
                 if age <= 65:
                     four01k_value = user_profile['four01k_base'] * \
                                 (1 + user_profile['investment_return']) ** (age - 58)
                 else:
                     base_at_65 = user_profile['four01k_base'] * \
                                 (1 + user_profile['investment_return']) ** (65 - 58)
-                    # IMPROVED: Inflation-adjusted withdrawal rate
-                    inflation_adjusted_withdrawal = 0.05 * (inflation_factor ** 0.1)
-                    four01k_value = base_at_65 * (1 - inflation_adjusted_withdrawal) ** (age - 65)
-            four01k_real = four01k_value / inflation_factor
-            # Other calculation - ENHANCED FOR INFLATION PROTECTION
+                    four01k_value = base_at_65 * (0.95) ** (age - 65)
+
+            # Other calculation
             other_value = 0
             if age >= 58:
-                # ADDED: Account for inflation-protected portion
-                inflation_protected_ratio = user_profile.get('inflation_protected_ratio', 0.3)
-                regular_portion = user_profile['other_base'] * (1 - inflation_protected_ratio)
-                protected_portion = user_profile['other_base'] * inflation_protected_ratio
-                regular_growth = regular_portion * (1 + user_profile['investment_return']) ** (age - 58)
-                protected_growth = protected_portion * inflation_factor * (1 + 0.015) ** (age - 58)  # TIPS return
-                other_value = regular_growth + protected_growth
-            other_real = other_value / inflation_factor
+                other_value = user_profile['other_base'] * \
+                            (1 + user_profile['investment_return']) ** (age - 58)
+
             # Defined Benefit calculation
             defined_benefit_value = 0
             if age >= 62:
                 defined_benefit_value = user_profile['defined_benefit_base'] + \
                                     user_profile['defined_benefit_yearly_increase'] * (age - 62)
-            defined_benefit_real = defined_benefit_value / inflation_factor
-            # ENHANCED: Add inflation impact metrics
-            total_nominal = ss_value + pension_value + four01k_value + other_value + defined_benefit_value
-            total_real = ss_real + pension_real + four01k_real + other_real + defined_benefit_real
+
             retirement_data.append({
                 "age": age,
-                "year": 2024 + years_from_now,  # ADDED
-                "inflation_factor": round(inflation_factor, 3),  # ADDED
-                "purchasing_power_index": round((1/inflation_factor) * 100, 1),  # ADDED
-                # Original values (nominal)
                 "Social Security": round(ss_value, 2),
                 "Pension": round(pension_value, 2),
                 "401k": round(four01k_value, 2),
                 "Other": round(other_value, 2),
-                "Defined Benefit": round(defined_benefit_value, 2),
-                "Total (Nominal)": round(total_nominal, 2),  # ADDED
-                # ADDED: Real purchasing power values
-                "Social Security (Real)": round(ss_real, 2),
-                "Pension (Real)": round(pension_real, 2),
-                "401k (Real)": round(four01k_real, 2),
-                "Other (Real)": round(other_real, 2),
-                "Defined Benefit (Real)": round(defined_benefit_real, 2),
-                "Total (Real)": round(total_real, 2),
-                # ADDED: Inflation impact metrics
-                "inflation_loss_dollars": round(total_nominal - total_real, 2),
-                "inflation_loss_percent": round((1 - total_real/total_nominal) * 100, 1) if total_nominal > 0 else 0,
-                "dollar_future_value": round(1/inflation_factor, 4),  # What $1 today is worth
-                "ss_purchasing_power_loss": round((1 - ss_real/ss_value) * 100, 1) if ss_value > 0 else 0
+                "Defined Benefit": round(defined_benefit_value, 2)
             })
         except (OverflowError, ValueError) as e:
             logger.error(f"Error in generating retirement data: {e}")
