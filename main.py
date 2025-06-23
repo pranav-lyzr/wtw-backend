@@ -1019,7 +1019,7 @@ async def chat_retirement_unified(request: ChatRequest):
 
             **USER QUESTION:** {request.message}
 
-            Provide personalized response for this specific Danish user with exact calculations.
+            Provide personalized response for this specific Danish user with exact calculations.  Provide a concise response in 2-3 sentences, keeping the answer brief and to the point.
             """
         else:
             # Create USA-specific master prompt
@@ -1039,7 +1039,7 @@ async def chat_retirement_unified(request: ChatRequest):
 
             **USER QUESTION:** {request.message}
 
-            Use user data to get more personalized response    
+            Use user data to get more personalized response.  Provide a concise response in 2-3 sentences, keeping the answer brief and to the point.
             """
 
         master_prompt = append_persona_instructions(user_profile.get('email'), master_prompt)
