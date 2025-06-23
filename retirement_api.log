@@ -7925,3 +7925,97 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2025-06-23 11:14:29,135 - main - INFO - MongoDB client initialized successfully
 2025-06-23 11:14:29,137 - main - INFO - MongoDB collections configured
 2025-06-23 11:14:29,139 - main - INFO - External API configuration loaded
+2025-06-23 11:34:04,001 - main - INFO - FastAPI application initialized
+2025-06-23 11:34:04,003 - main - INFO - CORS middleware configured
+2025-06-23 11:34:04,005 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-23 11:34:04,025 - main - INFO - MongoDB client initialized successfully
+2025-06-23 11:34:04,028 - main - INFO - MongoDB collections configured
+2025-06-23 11:34:04,031 - main - INFO - External API configuration loaded
+2025-06-23 11:34:09,567 - main - INFO - FastAPI application initialized
+2025-06-23 11:34:09,570 - main - INFO - CORS middleware configured
+2025-06-23 11:34:09,572 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-23 11:34:09,593 - main - INFO - MongoDB client initialized successfully
+2025-06-23 11:34:09,595 - main - INFO - MongoDB collections configured
+2025-06-23 11:34:09,597 - main - INFO - External API configuration loaded
+2025-06-23 11:34:12,389 - main - INFO - FastAPI application initialized
+2025-06-23 11:34:12,391 - main - INFO - CORS middleware configured
+2025-06-23 11:34:12,393 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-23 11:34:12,411 - main - INFO - MongoDB client initialized successfully
+2025-06-23 11:34:12,412 - main - INFO - MongoDB collections configured
+2025-06-23 11:34:12,413 - main - INFO - External API configuration loaded
+2025-06-23 11:34:15,316 - main - INFO - FastAPI application initialized
+2025-06-23 11:34:15,318 - main - INFO - CORS middleware configured
+2025-06-23 11:34:15,321 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-23 11:34:15,337 - main - INFO - MongoDB client initialized successfully
+2025-06-23 11:34:15,338 - main - INFO - MongoDB collections configured
+2025-06-23 11:34:15,340 - main - INFO - External API configuration loaded
+2025-06-23 11:34:24,632 - main - INFO - Retrieving AI retirement data for user: c3f2a6c1-6e18-4af9-8c98-c62cfcfb303c
+2025-06-23 11:35:18,574 - main - INFO - Generating Denmark retirement data for user: 23938568-a003-4be9-8ff4-1a0364156be7
+2025-06-23 11:35:36,770 - main - INFO - Creating new session for user ID: 23938568-a003-4be9-8ff4-1a0364156be7
+2025-06-23 11:35:36,800 - main - INFO - Created new session: 6358c29d-2d6e-4e61-bcbf-9df7e86d2849
+2025-06-23 11:36:26,185 - main - INFO - Unified retirement chat request - Session ID: 6358c29d-2d6e-4e61-bcbf-9df7e86d2849, User ID: 23938568-a003-4be9-8ff4-1a0364156be7
+2025-06-23 11:36:26,187 - main - INFO - Retrieving user profile
+2025-06-23 11:36:26,193 - main - INFO - Using manually calculated retirement data
+2025-06-23 11:36:26,198 - main - INFO - Using Denmark-specific agent ID: 685927b4a83b7ec9a60665f9
+2025-06-23 11:36:26,201 - main - INFO - Appending persona instructions for email: denmark1@gmail.com
+2025-06-23 11:36:26,203 - main - INFO - Calling Lyzr API with agent ID: 685927b4a83b7ec9a60665f9
+2025-06-23 11:36:26,205 - main - INFO - Calling Lyzr API with prompt: 
+            **USER PROFILE (Denmark):**
+            - Name: Dane
+            - Age: 42 → Retirement: 60
+            - Income: DKK 120,000.0 | Growth: 2.0%
+            - Investment Return: 5.0% | Inflation: 2.0%
+            - Contribution Rate: 10.0%
+            - Folkepension Base: DKK 171000
+            - ATP Base: DKK 8,000.0
+            - Occupational Pension Base: DKK 8,000.0
+            - Firmapension Contribution Rate: 5.0% (if applicable)
+            - Private Pension Base: DKK 4,000.0
+
+            **CURRENT CONTEXT:**
+            - Form Data: {"retireAge": 60, "lifeExpectancy": 90, "beneficiaryIncluded": false, "beneficiaryLifeExpectancy": 0, "salaryGrowth": 0.02, "investmentReturn": 0.05, "inflation": 0.02}
+            - Pension Data: [{"age": 60, "Folkepension": 0, "ATP": 25000.0, "Occupational Pension": 17138.95, "Firmapension": 0, "Private Pension": 4000.0}, {"age": 61, "Folkepension": 0, "ATP": 25500.0, "Occupational Pension": 18355.82, "Firmapension": 0, "Private Pension": 4200.0}, {"age": 62, "Folkepension": 0, "ATP": 26010.0, "Occupational Pension": 19659.08, "Firmapension": 0, "Private Pension": 4410.0}, {"age": 63, "Folkepension": 0, "ATP": 26530.2, "Occupational Pension": 21054.88, "Firmapension": 0, "Private Pension": 4630.5}, {"age": 64, "Folkepension": 0, "ATP": 27060.8, "Occupational Pension": 22549.78, "Firmapension": 0, "Private Pension": 4862.03}, {"age": 65, "Folkepension": 0, "ATP": 27602.02, "Occupational Pension": 24150.81, "Firmapension": 0, "Private Pension": 5105.13}, {"age": 66, "Folkepension": 0, "ATP": 28154.06, "Occupational Pension": 25865.52, "Firmapension": 0, "Private Pension": 5360.38}, {"age": 67, "Folkepension": 280543.63, "ATP": 28717.14, "Occupational Pension": 27701.97, "Firmapension": 0, "Private Pension": 5628.4}, {"age": 68, "Folkepension": 286154.5, "ATP": 29291.48, "Occupational Pension": 29668.81, "Firmapension": 0, "Private Pension": 5909.82}, {"age": 69, "Folkepension": 291877.59, "ATP": 29877.31, "Occupational Pension": 31775.29, "Firmapension": 0, "Private Pension": 6205.31}, {"age": 70, "Folkepension": 297715.14, "ATP": 30474.86, "Occupational Pension": 34031.34, "Firmapension": 0, "Private Pension": 6515.58}, {"age": 71, "Folkepension": 303669.44, "ATP": 31084.36, "Occupational Pension": 36447.56, "Firmapension": 0, "Private Pension": 6841.36}, {"age": 72, "Folkepension": 309742.83, "ATP": 31706.04, "Occupational Pension": 39035.34, "Firmapension": 0, "Private Pension": 7183.43}, {"age": 73, "Folkepension": 315937.69, "ATP": 32340.17, "Occupational Pension": 41806.85, "Firmapension": 0, "Private Pension": 7542.6}, {"age": 74, "Folkepension": 322256.44, "ATP": 32986.97, "Occupational Pension": 44775.14, "Firmapension": 0, "Private Pension": 7919.73}, {"age": 75, "Folkepension": 328701.57, "ATP": 33646.71, "Occupational Pension": 47954.17, "Firmapension": 0, "Private Pension": 8315.71}, {"age": 76, "Folkepension": 335275.6, "ATP": 34319.64, "Occupational Pension": 51358.92, "Firmapension": 0, "Private Pension": 8731.5}, {"age": 77, "Folkepension": 341981.11, "ATP": 35006.04, "Occupational Pension": 55005.4, "Firmapension": 0, "Private Pension": 9168.07}, {"age": 78, "Folkepension": 348820.74, "ATP": 35706.16, "Occupational Pension": 58910.79, "Firmapension": 0, "Private Pension": 9626.48}, {"age": 79, "Folkepension": 355797.15, "ATP": 36420.28, "Occupational Pension": 63093.45, "Firmapension": 0, "Private Pension": 10107.8}, {"age": 80, "Folkepension": 362913.09, "ATP": 37148.68, "Occupational Pension": 67573.09, "Firmapension": 0, "Private Pension": 10613.19}, {"age": 81, "Folkepension": 370171.36, "ATP": 37891.66, "Occupational Pension": 72370.78, "Firmapension": 0, "Private Pension": 11143.85}, {"age": 82, "Folkepension": 377574.78, "ATP": 38649.49, "Occupational Pension": 77509.1, "Firmapension": 0, "Private Pension": 11701.04}, {"age": 83, "Folkepension": 385126.28, "ATP": 39422.48, "Occupational Pension": 83012.25, "Firmapension": 0, "Private Pension": 12286.1}, {"age": 84, "Folkepension": 392828.8, "ATP": 40210.93, "Occupational Pension": 88906.12, "Firmapension": 0, "Private Pension": 12900.4}, {"age": 85, "Folkepension": 400685.38, "ATP": 41015.15, "Occupational Pension": 95218.45, "Firmapension": 0, "Private Pension": 13545.42}, {"age": 86, "Folkepension": 408699.09, "ATP": 41835.45, "Occupational Pension": 101978.96, "Firmapension": 0, "Private Pension": 14222.69}, {"age": 87, "Folkepension": 416873.07, "ATP": 42672.16, "Occupational Pension": 109219.47, "Firmapension": 0, "Private Pension": 14933.83}, {"age": 88, "Folkepension": 425210.53, "ATP": 43525.61, "Occupational Pension": 116974.05, "Firmapension": 0, "Private Pension": 15680.52}, {"age": 89, "Folkepension": 433714.74, "ATP": 44396.12, "Occupational Pension": 125279.21, "Firmapension": 0, "Private Pension": 16464.54}, {"age": 90, "Folkepension": 442389.04, "ATP": 45284.04, "Occupational Pension": 134174.03, "Firmapension": 0, "Private Pension": 17287.77}]
+
+            **USER QUESTION:** if inflation goes upto 9% how will it affect my retirement income
+
+            Provide a response tailored for Danish retirement planning, using Denmark-specific pension components (Folkepension, ATP, Occupational Pension, Firmapension, Private Pension). Avoid references to USA-specific terms like Social Security or 401k. Use user data for a personalized response.
+            
+2025-06-23 11:36:26,208 - main - INFO - Starting Lyzr API call - Agent ID: 685927b4a83b7ec9a60665f9, Session ID: 6358c29d-2d6e-4e61-bcbf-9df7e86d2849, User ID: 23938568-a003-4be9-8ff4-1a0364156be7
+2025-06-23 11:36:26,375 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-06-23 11:38:51,454 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-06-23 11:38:51,458 - main - INFO - Received response with status code: 200
+2025-06-23 11:38:51,476 - main - INFO - Received response: {'response': '{\n  "text_response": "**High Inflation Impact on Your Danish Retirement Income (Ages 60–90)**\\n\\n**Personalized Analysis for Dane**\\n\\n- **Current age:** 42\\n- **Retiring at:** 60\\n- **Current salary:** DKK 120,000 (2% annual growth)\\n- **Investment return:** 5%\\n- **Inflation scenario:** 9%\\n- **Key Pensions:** Folkepension (base DKK 171,000 from age 67), ATP (base DKK 8,000, both indexed to inflation from 67), Occupational Pension (contributions and investment growth), Private Pension (investment growth), Firmapension (not currently active)\\n\\n**How 9% Inflation Affects Your Retirement Income:**\\n- From age 67, **Folkepension and ATP** rise very rapidly each year—these indexed state benefits become the major source of growth, reaching over DKK 2.3 million/year for Folkepension by age 90.\\n- **Occupational and Private Pensions** increase with your assumed 5% investment return, so they do not keep up with inflation; their real (spending) value declines over the years.\\n- **Firmapension** is not shown in results, as it\'s currently not active (set contribution to 5% for modeling if desired).\\n\\n**Key Actions for You**\\n- Consider boosting contributions into Occupational or Private Pension if you want more inflation protection—state programs will help, but employer/private parts lag behind at high inflation.\\n- Regular reviews are essential if macro conditions (like inflation) remain elevated for several years.\\n\\n",\n  "contains_chart": true,\n  "chart_data": {\n    "type": "pension_data",\n    "data": [\n      {"age": 60, "Folkepension": 0, "ATP": 8000.00, "Occupational Pension": 17138.95, "Firmapension": 0, "Private Pension": 4000.00},\n      {"age": 61, "Folkepension": 0, "ATP": 8720.00, "Occupational Pension": 17995.90, "Firmapension": 0, "Private Pension": 4200.00},\n      {"age": 62, "Folkepension": 0, "ATP": 9504.80, "Occupational Pension": 18895.70, "Firmapension": 0, "Private Pension": 4410.00},\n      {"age": 63, "Folkepension": 0, "ATP": 10360.23, "Occupational Pension": 19840.48, "Firmapension": 0, "Private Pension": 4630.50},\n      {"age": 64, "Folkepension": 0, "ATP": 11393.65, "Occupational Pension": 20832.51, "Firmapension": 0, "Private Pension": 4862.03},\n      {"age": 65, "Folkepension": 0, "ATP": 12542.08, "Occupational Pension": 21874.13, "Firmapension": 0, "Private Pension": 5105.13},\n      {"age": 66, "Folkepension": 0, "ATP": 13671.87, "Occupational Pension": 22967.83, "Firmapension": 0, "Private Pension": 5360.38},\n      {"age": 67, "Folkepension": 328626.97, "ATP": 14902.34, "Occupational Pension": 24116.23, "Firmapension": 0, "Private Pension": 5628.40},\n      {"age": 68, "Folkepension": 358203.39, "ATP": 16242.55, "Occupational Pension": 25322.05, "Firmapension": 0, "Private Pension": 5909.82},\n      {"age": 69, "Folkepension": 390441.70, "ATP": 17604.38, "Occupational Pension": 26588.15, "Firmapension": 0, "Private Pension": 6205.31},\n      {"age": 70, "Folkepension": 425581.45, "ATP": 19000.78, "Occupational Pension": 27917.56, "Firmapension": 0, "Private Pension": 6515.58},\n      {"age": 71, "Folkepension": 463884.78, "ATP": 20445.85, "Occupational Pension": 29313.44, "Firmapension": 0, "Private Pension": 6841.36},\n      {"age": 72, "Folkepension": 505637.41, "ATP": 21954.97, "Occupational Pension": 30779.11, "Firmapension": 0, "Private Pension": 7183.43},\n      {"age": 73, "Folkepension": 551150.78, "ATP": 23544.92, "Occupational Pension": 32318.06, "Firmapension": 0, "Private Pension": 7542.60},\n      {"age": 74, "Folkepension": 600763.35, "ATP": 25234.96, "Occupational Pension": 33933.97, "Firmapension": 0, "Private Pension": 7919.73},\n      {"age": 75, "Folkepension": 654843.05, "ATP": 27046.10, "Occupational Pension": 35630.67, "Firmapension": 0, "Private Pension": 8315.71},\n      {"age": 76, "Folkepension": 713789.93, "ATP": 28901.25, "Occupational Pension": 37412.21, "Firmapension": 0, "Private Pension": 8731.50},\n      {"age": 77, "Folkepension": 778037.03, "ATP": 30825.36, "Occupational Pension": 39282.82, "Firmapension": 0, "Private Pension": 9168.07},\n      {"age": 78, "Folkepension": 848051.36, "ATP": 32845.64, "Occupational Pension": 41246.96, "Firmapension": 0, "Private Pension": 9626.48},\n      {"age": 79, "Folkepension": 924337.98, "ATP": 34991.75, "Occupational Pension": 43309.31, "Firmapension": 0, "Private Pension": 10107.80},\n      {"age": 80, "Folkepension": 1007421.38, "ATP": 37295.01, "Occupational Pension": 45474.78, "Firmapension": 0, "Private Pension": 10613.19},\n      {"age": 81, "Folkepension": 1097999.30, "ATP": 39789.56, "Occupational Pension": 47748.52, "Firmapension": 0, "Private Pension": 11143.85},\n      {"age": 82, "Folkepension": 1196828.23, "ATP": 42412.62, "Occupational Pension": 50136.95, "Firmapension": 0, "Private Pension": 11701.04},\n      {"age": 83, "Folkepension": 1304542.77, "ATP": 45184.76, "Occupational Pension": 52646.80, "Firmapension": 0, "Private Pension": 12286.10},\n      {"age": 84, "Folkepension": 1421831.62, "ATP": 48139.39, "Occupational Pension": 55285.14, "Firmapension": 0, "Private Pension": 12900.40},\n      {"age": 85, "Folkepension": 1549406.46, "ATP": 51213.94, "Occupational Pension": 58059.40, "Firmapension": 0, "Private Pension": 13545.42},\n      {"age": 86, "Folkepension": 1688040.04, "ATP": 54448.19, "Occupational Pension": 60977.37, "Firmapension": 0, "Private Pension": 14222.69},\n      {"age": 87, "Folkepension": 1838553.65, "ATP": 57886.53, "Occupational Pension": 64047.24, "Firmapension": 0, "Private Pension": 14933.83},\n      {"age": 88, "Folkepension": 2001832.48, "ATP": 61577.32, "Occupational Pension": 67277.60, "Firmapension": 0, "Private Pension": 15680.52},\n      {"age": 89, "Folkepension": 2178827.41, "ATP": 65573.29, "Occupational Pension": 70677.48, "Firmapension": 0, "Private Pension": 16464.54},\n      {"age": 90, "Folkepension": 2370552.87, "ATP": 69832.89, "Occupational Pension": 74256.36, "Firmapension": 0, "Private Pension": 17287.77}\n    ]\n  }\n}', 'module_outputs': {}}
+2025-06-23 11:38:51,479 - main - INFO - Successfully parsed JSON response from Lyzr API
+2025-06-23 11:38:51,482 - main - INFO - Lyzr API call completed successfully
+2025-06-23 11:38:51,486 - main - INFO - Parsing structured response from master agent
+2025-06-23 11:38:51,489 - main - INFO - Successfully parsed JSON response directly
+2025-06-23 11:38:51,492 - main - INFO - Parsed response - Text length: 1393, Contains chart: True
+2025-06-23 11:38:51,496 - main - INFO - Processing chart data from response
+2025-06-23 11:38:51,502 - main - INFO - Chart data parsed successfully, type: <class 'dict'>
+2025-06-23 11:38:51,507 - main - INFO - Saving AI-generated retirement data
+2025-06-23 11:38:51,511 - main - INFO - Saving AI retirement data for user: 23938568-a003-4be9-8ff4-1a0364156be7
+2025-06-23 11:38:51,527 - main - INFO - AI retirement data saved successfully for user: 23938568-a003-4be9-8ff4-1a0364156be7
+2025-06-23 11:38:51,534 - main - INFO - Using chart data as dict directly
+2025-06-23 11:38:51,540 - main - INFO - Saving message to database
+2025-06-23 11:38:51,544 - main - INFO - Saving message to database - Session ID: 6358c29d-2d6e-4e61-bcbf-9df7e86d2849
+2025-06-23 11:38:51,591 - main - INFO - Message saved successfully with MongoDB ID: 68593ccb97aabb95f50cc533
+2025-06-23 11:38:51,598 - main - INFO - Message saved successfully
+2025-06-23 11:38:51,604 - main - INFO - Unified retirement chat request completed successfully
+2025-06-23 11:53:01,945 - main - INFO - FastAPI application initialized
+2025-06-23 11:53:01,947 - main - INFO - CORS middleware configured
+2025-06-23 11:53:01,949 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-23 11:53:01,968 - main - INFO - MongoDB client initialized successfully
+2025-06-23 11:53:01,973 - main - INFO - MongoDB collections configured
+2025-06-23 11:53:01,977 - main - INFO - External API configuration loaded
+2025-06-23 11:53:04,502 - main - INFO - FastAPI application initialized
+2025-06-23 11:53:04,503 - main - INFO - CORS middleware configured
+2025-06-23 11:53:04,505 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-23 11:53:04,515 - main - INFO - MongoDB client initialized successfully
+2025-06-23 11:53:04,516 - main - INFO - MongoDB collections configured
+2025-06-23 11:53:04,518 - main - INFO - External API configuration loaded
+2025-06-23 11:53:08,591 - main - INFO - FastAPI application initialized
+2025-06-23 11:53:08,592 - main - INFO - CORS middleware configured
+2025-06-23 11:53:08,593 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-23 11:53:08,606 - main - INFO - MongoDB client initialized successfully
+2025-06-23 11:53:08,608 - main - INFO - MongoDB collections configured
+2025-06-23 11:53:08,609 - main - INFO - External API configuration loaded

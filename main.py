@@ -931,8 +931,6 @@ async def root():
     return {"message": "Retirement Planning API"}
 
 
-# Modified /chat endpoint to handle Denmark-specific Lyzr API call
-# Modified /chat endpoint to handle country-specific prompts
 @app.post("/chat", response_model=ChatResponse)
 async def chat_retirement_unified(request: ChatRequest):
     """Unified chat endpoint for retirement planning - routes to appropriate specialized agents"""
@@ -1030,47 +1028,76 @@ async def chat_retirement_unified(request: ChatRequest):
         chart_data_raw = None
         contains_chart = False
 
-        try:
-            # First attempt to parse the entire response as JSON
-            structured_response = json.loads(api_response["response"])
-            logger.info("Successfully parsed JSON response directly")
-            text_response = structured_response.get("text_response", "")
-            chart_data_raw = structured_response.get("chart_data")
-            contains_chart = structured_response.get("contains_chart", False)
-        except json.JSONDecodeError as json_error:
-            logger.warning(f"Initial JSON parse failed: {str(json_error)}, trying to extract from markdown")
-            # Try to extract JSON from markdown code block
-            import re
-            json_match = re.search(r'```json\s*([\s\S]*?)\s*```', api_response["response"])
-            if json_match:
-                logger.info("Found JSON in markdown code block")
-                try:
-                    structured_response = json.loads(json_match.group(1).strip())
-                    logger.info("Successfully parsed JSON from markdown")
-                    
+        # Handle raw API response
+        raw_response = api_response.get("response", "")
+        if not raw_response:
+            logger.warning("Empty response from Lyzr API")
+            text_response = f"I understand your retirement planning question for {'Denmark' if country == 'denmark' else 'USA'}. Please try again with more details."
+        else:
+            try:
+                # First attempt to parse the entire response as JSON
+                if isinstance(raw_response, str):
+                    structured_response = json.loads(raw_response)
+                else:
+                    structured_response = raw_response
+
+                # Check if structured_response is a dict
+                if isinstance(structured_response, dict):
+                    logger.info("Successfully parsed response as dictionary")
                     text_response = structured_response.get("text_response", "")
-                    
-                    # If text_response is empty in JSON, look for text outside JSON blocks
-                    if not text_response:
-                        text_before_json = api_response["response"].split('```json')[0].strip()
-                        if text_before_json:
-                            text_response = text_before_json
-                        else:
-                            parts = api_response["response"].split('```')
-                            if len(parts) > 2:
-                                text_after_json = parts[2].strip()
-                                if text_after_json:
-                                    text_response = text_after_json
-                    
                     chart_data_raw = structured_response.get("chart_data")
                     contains_chart = structured_response.get("contains_chart", False)
-                    
-                except json.JSONDecodeError as markdown_json_error:
-                    logger.error(f"Failed to parse JSON from markdown: {str(markdown_json_error)}")
-                    text_response = api_response["response"].split('```json')[0].strip()
-            else:
-                logger.warning("No JSON found in markdown, using raw response")
-                text_response = api_response["response"].strip()
+                elif isinstance(structured_response, list):
+                    logger.warning("Response parsed as list, treating as chart data")
+                    chart_data_raw = structured_response
+                    contains_chart = True
+                    text_response = f"Retirement data projection for {'Denmark' if country == 'denmark' else 'USA'} based on your profile."
+                else:
+                    logger.warning(f"Unexpected response type: {type(structured_response)}")
+                    text_response = str(structured_response)
+
+            except json.JSONDecodeError as json_error:
+                logger.warning(f"Initial JSON parse failed: {str(json_error)}, trying to extract from markdown")
+                # Try to extract JSON from markdown code block
+                import re
+                json_match = re.search(r'```json\s*([\s\S]*?)\s*```', raw_response)
+                if json_match:
+                    logger.info("Found JSON in markdown code block")
+                    try:
+                        structured_response = json.loads(json_match.group(1).strip())
+                        
+                        if isinstance(structured_response, dict):
+                            logger.info("Successfully parsed JSON from markdown as dictionary")
+                            text_response = structured_response.get("text_response", "")
+                            chart_data_raw = structured_response.get("chart_data")
+                            contains_chart = structured_response.get("contains_chart", False)
+                        elif isinstance(structured_response, list):
+                            logger.warning("Markdown JSON parsed as list, treating as chart data")
+                            chart_data_raw = structured_response
+                            contains_chart = True
+                            text_response = f"Retirement data projection for {'Denmark' if country == 'denmark' else 'USA'} based on your profile."
+                        else:
+                            logger.warning(f"Unexpected markdown JSON type: {type(structured_response)}")
+                            text_response = str(structured_response)
+
+                        # Extract text outside JSON block if text_response is empty
+                        if not text_response:
+                            text_before_json = raw_response.split('```json')[0].strip()
+                            if text_before_json:
+                                text_response = text_before_json
+                            else:
+                                parts = raw_response.split('```')
+                                if len(parts) > 2:
+                                    text_after_json = parts[2].strip()
+                                    if text_after_json:
+                                        text_response = text_after_json
+                        
+                    except json.JSONDecodeError as markdown_json_error:
+                        logger.error(f"Failed to parse JSON from markdown: {str(markdown_json_error)}")
+                        text_response = raw_response.split('```json')[0].strip() or raw_response
+                else:
+                    logger.warning("No JSON found in markdown, using raw response")
+                    text_response = raw_response.strip()
 
         # Default response if parsing failed
         if not text_response and not contains_chart:
@@ -1165,8 +1192,7 @@ async def chat_retirement_unified(request: ChatRequest):
         raise
     except Exception as e:
         logger.error(f"Unexpected error in unified retirement chat: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
-            
+        raise HTTPException(status_code=500, detail=str(e))    
 
 @app.post("/chat_pension", response_model=ChatResponse)
 async def chat_pension(request: ChatRequest):
