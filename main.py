@@ -1053,82 +1053,238 @@ async def chat_retirement_unified(request: ChatRequest):
         )
         logger.info("Lyzr API call completed successfully")
         
-        # Parse the structured response with better error handling
-        logger.info("Parsing structured response from master agent")
+        # Enhanced LLM response parsing - handles all possible formats
+        logger.info("Parsing LLM response with comprehensive format handling")
         text_response = ""
         chart_data_raw = None
         contains_chart = False
 
-        try:
-            # Ensure api_response is properly structured
-            if not isinstance(api_response, dict) or "response" not in api_response:
-                raise ValueError("Invalid API response structure")
-                
-            response_content = api_response["response"]
+        def parse_llm_response(response_content):
+            """Comprehensive LLM response parser handling all possible formats"""
             
-            # First attempt to parse the entire response as JSON
-            structured_response = json.loads(response_content)
-            logger.info("Successfully parsed JSON response directly")
+            # Ensure we have valid response content
+            if not response_content or not isinstance(response_content, str):
+                logger.error("Invalid or empty response content from API")
+                raise ValueError("Empty or invalid API response")
             
-            # Ensure structured_response is a dict
-            if isinstance(structured_response, list):
-                if len(structured_response) > 0 and isinstance(structured_response[0], dict):
-                    structured_response = structured_response[0]
-                else:
-                    raise ValueError("Structured response is a list but doesn't contain valid dict")
+            logger.info(f"Raw response length: {len(response_content)}")
+            logger.debug(f"Raw response preview: {response_content[:200]}...")
             
-            text_response = structured_response.get("text_response", "")
-            chart_data_raw = structured_response.get("chart_data")
-            contains_chart = structured_response.get("contains_chart", False)
+            # Strategy 1: Try direct JSON parsing (clean JSON response)
+            try:
+                parsed = json.loads(response_content.strip())
+                logger.info("✓ Successfully parsed as direct JSON")
+                return handle_parsed_json(parsed, "direct_json")
+            except json.JSONDecodeError:
+                logger.debug("Direct JSON parsing failed, trying other methods")
             
-        except (json.JSONDecodeError, ValueError) as json_error:
-            logger.warning(f"Initial JSON parse failed: {str(json_error)}, trying to extract from markdown")
-            # Try to extract JSON from markdown code block
+            # Strategy 2: Extract JSON from markdown code blocks
             import re
-            json_match = re.search(r'```json\s*([\s\S]*?)\s*```', response_content)
-            if json_match:
-                logger.info("Found JSON in markdown code block")
-                try:
-                    structured_response = json.loads(json_match.group(1).strip())
-                    logger.info("Successfully parsed JSON from markdown")
-                    
-                    # Handle case where structured_response might be a list
-                    if isinstance(structured_response, list):
-                        if len(structured_response) > 0 and isinstance(structured_response[0], dict):
-                            structured_response = structured_response[0]
+            json_patterns = [
+                r'```json\s*([\s\S]*?)\s*```',  # Standard json blocks
+                r'```\s*([\s\S]*?)\s*```',      # Generic code blocks
+                r'`{3}json([\s\S]*?)`{3}',      # Alternative json blocks
+            ]
+            
+            for pattern in json_patterns:
+                matches = re.findall(pattern, response_content, re.IGNORECASE)
+                for match in matches:
+                    try:
+                        parsed = json.loads(match.strip())
+                        logger.info("✓ Successfully parsed JSON from markdown code block")
+                        return handle_parsed_json(parsed, "markdown_json")
+                    except json.JSONDecodeError:
+                        continue
+            
+            # Strategy 3: Look for JSON-like structures (with or without markdown)
+            json_like_patterns = [
+                r'\{[\s\S]*"text_response"[\s\S]*\}',
+                r'\{[\s\S]*"response"[\s\S]*\}',
+                r'\{[\s\S]*"chart_data"[\s\S]*\}',
+                r'\{[\s\S]*\}',  # Any JSON-like structure
+            ]
+            
+            for pattern in json_like_patterns:
+                matches = re.findall(pattern, response_content, re.DOTALL)
+                for match in matches:
+                    try:
+                        # Clean up the match
+                        cleaned_match = match.strip()
+                        parsed = json.loads(cleaned_match)
+                        logger.info("✓ Successfully parsed JSON-like structure")
+                        return handle_parsed_json(parsed, "json_like")
+                    except json.JSONDecodeError:
+                        continue
+            
+            # Strategy 4: Split by common separators and look for JSON parts
+            separators = ['---', '***', '===', '\n\n\n', '```', '###']
+            for separator in separators:
+                parts = response_content.split(separator)
+                for part in parts:
+                    part = part.strip()
+                    if part.startswith('{') and part.endswith('}'):
+                        try:
+                            parsed = json.loads(part)
+                            logger.info(f"✓ Successfully parsed JSON from split part (separator: {separator})")
+                            return handle_parsed_json(parsed, "split_json")
+                        except json.JSONDecodeError:
+                            continue
+            
+            # Strategy 5: Look for key-value patterns in text
+            text_patterns = {
+                'text_response': [
+                    r'"text_response"\s*:\s*"([^"]*(?:\\.[^"]*)*)"',
+                    r'text_response\s*:\s*"([^"]*(?:\\.[^"]*)*)"',
+                    r'Response\s*:\s*(.+?)(?=\n\n|\n$|$)',
+                    r'Answer\s*:\s*(.+?)(?=\n\n|\n$|$)',
+                ],
+                'contains_chart': [
+                    r'"contains_chart"\s*:\s*(true|false)',
+                    r'contains_chart\s*:\s*(true|false)',
+                    r'Chart\s*:\s*(yes|no|true|false)',
+                ],
+                'chart_data': [
+                    r'"chart_data"\s*:\s*(\[[\s\S]*?\])',
+                    r'chart_data\s*:\s*(\[[\s\S]*?\])',
+                    r'"chart_data"\s*:\s*(\{[\s\S]*?\})',
+                ]
+            }
+            
+            extracted_data = {}
+            for key, patterns in text_patterns.items():
+                for pattern in patterns:
+                    match = re.search(pattern, response_content, re.IGNORECASE | re.DOTALL)
+                    if match:
+                        if key == 'contains_chart':
+                            extracted_data[key] = match.group(1).lower() in ['true', 'yes']
+                        elif key == 'chart_data':
+                            try:
+                                extracted_data[key] = json.loads(match.group(1).strip())
+                            except json.JSONDecodeError:
+                                extracted_data[key] = match.group(1).strip()
                         else:
-                            raise ValueError("Markdown JSON is a list but doesn't contain valid dict")
-                    
-                    text_response = structured_response.get("text_response", "")
-                    
-                    # If text_response is empty in JSON, look for text outside JSON blocks
-                    if not text_response:
-                        text_before_json = response_content.split('```json')[0].strip()
-                        if text_before_json:
-                            text_response = text_before_json
-                        else:
-                            parts = response_content.split('```')
-                            if len(parts) > 2:
-                                text_after_json = parts[2].strip()
-                                if text_after_json:
-                                    text_response = text_after_json
-                    
-                    chart_data_raw = structured_response.get("chart_data")
-                    contains_chart = structured_response.get("contains_chart", False)
-                    
-                except (json.JSONDecodeError, ValueError) as markdown_json_error:
-                    logger.error(f"Failed to parse JSON from markdown: {str(markdown_json_error)}")
-                    text_response = response_content.split('```json')[0].strip()
-            else:
-                logger.warning("No JSON found in markdown, using raw response")
-                text_response = response_content.strip()
+                            extracted_data[key] = match.group(1).strip()
+                        break
+            
+            if extracted_data:
+                logger.info("✓ Successfully extracted data using regex patterns")
+                return handle_parsed_json(extracted_data, "regex_extraction")
+            
+            # Strategy 6: Last resort - treat entire response as text
+            logger.warning("All JSON parsing strategies failed, treating as plain text")
+            return {
+                'text_response': response_content.strip(),
+                'chart_data_raw': None,
+                'contains_chart': False,
+                'parse_method': 'plain_text'
+            }
 
-        # Default response if parsing failed
-        if not text_response and not contains_chart:
-            text_response = "I understand your retirement planning question. Let me help you with that based on your profile."
-            logger.info("Using default text response as parsed response was empty")
+        def handle_parsed_json(parsed_data, parse_method):
+            """Handle parsed JSON data regardless of structure"""
+            logger.info(f"Handling parsed JSON data using method: {parse_method}")
+            
+            # Handle case where parsed_data is a list
+            if isinstance(parsed_data, list):
+                if len(parsed_data) > 0:
+                    if isinstance(parsed_data[0], dict):
+                        parsed_data = parsed_data[0]
+                        logger.info("Converted list to first dict element")
+                    else:
+                        # List of non-dict items, might be chart data
+                        return {
+                            'text_response': '',
+                            'chart_data_raw': parsed_data,
+                            'contains_chart': True,
+                            'parse_method': parse_method
+                        }
+                else:
+                    logger.warning("Parsed data is empty list")
+                    raise ValueError("Empty list in parsed data")
+            
+            if not isinstance(parsed_data, dict):
+                logger.error(f"Unexpected parsed data type: {type(parsed_data)}")
+                raise ValueError(f"Expected dict, got {type(parsed_data)}")
+            
+            # Extract response fields with multiple possible keys
+            text_keys = ['text_response', 'response', 'message', 'answer', 'content', 'text', 'reply']
+            chart_keys = ['chart_data', 'data', 'chart', 'graph_data', 'visualization_data']
+            chart_flag_keys = ['contains_chart', 'has_chart', 'include_chart', 'chart', 'graph']
+            
+            # Find text response
+            text_response = ""
+            for key in text_keys:
+                if key in parsed_data and parsed_data[key]:
+                    text_response = str(parsed_data[key]).strip()
+                    logger.info(f"Found text response using key: {key}")
+                    break
+            
+            # Find chart data
+            chart_data_raw = None
+            for key in chart_keys:
+                if key in parsed_data and parsed_data[key]:
+                    chart_data_raw = parsed_data[key]
+                    logger.info(f"Found chart data using key: {key}")
+                    break
+            
+            # Find chart flag
+            contains_chart = False
+            for key in chart_flag_keys:
+                if key in parsed_data:
+                    value = parsed_data[key]
+                    if isinstance(value, bool):
+                        contains_chart = value
+                    elif isinstance(value, str):
+                        contains_chart = value.lower() in ['true', 'yes', '1', 'on']
+                    elif isinstance(value, (int, float)):
+                        contains_chart = bool(value)
+                    logger.info(f"Found chart flag using key: {key}, value: {contains_chart}")
+                    break
+            
+            # Auto-detect chart if chart_data exists but flag is not set
+            if chart_data_raw and not contains_chart:
+                contains_chart = True
+                logger.info("Auto-detected chart presence from chart_data")
+            
+            return {
+                'text_response': text_response,
+                'chart_data_raw': chart_data_raw,
+                'contains_chart': contains_chart,
+                'parse_method': parse_method
+            }
 
-        logger.info(f"Parsed response - Text length: {len(text_response)}, Contains chart: {contains_chart}")
+        # Execute the parsing
+        try:
+            # Ensure api_response has the expected structure
+            if not isinstance(api_response, dict) or "response" not in api_response:
+                logger.error(f"Invalid API response structure: {type(api_response)}")
+                raise HTTPException(status_code=500, detail="Invalid API response structure")
+            
+            response_content = api_response["response"]
+            if not response_content:
+                logger.error("Empty response content from API")
+                raise HTTPException(status_code=500, detail="Empty response from AI service")
+            
+            # Parse the response
+            parsed_result = parse_llm_response(response_content)
+            
+            text_response = parsed_result['text_response']
+            chart_data_raw = parsed_result['chart_data_raw']
+            contains_chart = parsed_result['contains_chart']
+            parse_method = parsed_result['parse_method']
+            
+            logger.info(f"Response parsed successfully using method: {parse_method}")
+            logger.info(f"Text response length: {len(text_response)}, Contains chart: {contains_chart}")
+            
+            # Validate that we got meaningful content
+            if not text_response and not contains_chart:
+                logger.error("No meaningful content extracted from LLM response")
+                raise HTTPException(status_code=500, detail="Failed to extract meaningful content from AI response")
+                
+        except Exception as parse_error:
+            logger.error(f"Failed to parse LLM response: {str(parse_error)}")
+            raise HTTPException(status_code=500, detail=f"Failed to parse AI response: {str(parse_error)}")
+
+        logger.info(f"Final parsed response - Text length: {len(text_response)}, Contains chart: {contains_chart}")
         
         # Handle chart data with better error handling
         chart_data = None
