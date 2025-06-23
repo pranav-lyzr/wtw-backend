@@ -8031,3 +8031,15 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2025-06-23 12:11:48,821 - main - INFO - MongoDB client initialized successfully
 2025-06-23 12:11:48,822 - main - INFO - MongoDB collections configured
 2025-06-23 12:11:48,823 - main - INFO - External API configuration loaded
+2025-06-23 12:20:18,760 - main - INFO - FastAPI application initialized
+2025-06-23 12:20:18,762 - main - INFO - CORS middleware configured
+2025-06-23 12:20:18,764 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-23 12:20:18,779 - main - INFO - MongoDB client initialized successfully
+2025-06-23 12:20:18,781 - main - INFO - MongoDB collections configured
+2025-06-23 12:20:18,783 - main - INFO - External API configuration loaded
+2025-06-23 12:33:13,503 - main - INFO - FastAPI application initialized
+2025-06-23 12:33:13,504 - main - INFO - CORS middleware configured
+2025-06-23 12:33:13,505 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-23 12:33:13,515 - main - INFO - MongoDB client initialized successfully
+2025-06-23 12:33:13,517 - main - INFO - MongoDB collections configured
+2025-06-23 12:33:13,518 - main - INFO - External API configuration loaded

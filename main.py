@@ -585,42 +585,51 @@ def calculate_pension(age, income, retirement_age, salary_growth, pension_multip
 #     return retirement_data
 
 
+def normalize_rate(rate: float) -> float:
+    """Normalize a rate to decimal form (e.g., 5 -> 0.05, 0.05 -> 0.05)"""
+    return rate / 100 if rate > 1 else rate
+
 def generate_retirement_data(user_profile: dict):
     """Generate retirement data matching prompt formulas"""
     years = list(range(user_profile['retirement_age'], user_profile['end_age'] + 1))
     retirement_data = []
     max_ss_benefit = 58476.0  
 
+    # Normalize rates
+    inflation = normalize_rate(user_profile.get('inflation', 0.02))
+    salary_growth = normalize_rate(user_profile.get('salary_growth', 0.02))
+    investment_return = normalize_rate(user_profile.get('investment_return', 0.05))
+
     for age in years:
         try:
             # Social Security calculation
             ss_value = 0
             if age >= 62:
-                ss_value = user_profile['social_security_base'] * (1 + user_profile['inflation']) ** (age - 62)
+                ss_value = user_profile['social_security_base'] * (1 + inflation) ** (age - 62)
                 if math.isinf(ss_value) or math.isnan(ss_value):
                     ss_value = max_ss_benefit
                 ss_value = min(ss_value, max_ss_benefit)
 
             # Pension calculation
             pension_value = user_profile['pension_base'] * \
-                        (1 + user_profile['salary_growth']) ** (age - user_profile['retirement_age'])
+                        (1 + salary_growth) ** (age - user_profile['retirement_age'])
 
             # 401k calculation
             four01k_value = 0
             if age >= 58:
                 if age <= 65:
                     four01k_value = user_profile['four01k_base'] * \
-                                (1 + user_profile['investment_return']) ** (age - 58)
+                                (1 + investment_return) ** (age - 58)
                 else:
                     base_at_65 = user_profile['four01k_base'] * \
-                                (1 + user_profile['investment_return']) ** (65 - 58)
+                                (1 + investment_return) ** (65 - 58)
                     four01k_value = base_at_65 * (0.95) ** (age - 65)
 
             # Other calculation
             other_value = 0
             if age >= 58:
                 other_value = user_profile['other_base'] * \
-                            (1 + user_profile['investment_return']) ** (age - 58)
+                            (1 + investment_return) ** (age - 58)
 
             # Defined Benefit calculation
             defined_benefit_value = 0
@@ -652,34 +661,39 @@ def generate_retirement_data_denmark(user_profile: dict):
     atp_base = 25000  # Average ATP payout (DKK)
     currency_factor = 1  # Use 1 for DKK, convert if needed
 
+    # Normalize rates
+    inflation = normalize_rate(user_profile.get('inflation', 0.02))
+    salary_growth = normalize_rate(user_profile.get('salary_growth', 0.02))
+    investment_return = normalize_rate(user_profile.get('investment_return', 0.05))
+    contribution_rate = normalize_rate(user_profile.get('contribution_rate', 0.1))
+    firmapension_contribution_rate = normalize_rate(user_profile.get('firmapension_contribution_rate', 0.05))
+
     # Step 1: Adjust Folkepension base to value at age 67
     years_until_67 = max(0, 67 - user_profile['current_age'])
-    retirement_year_adjusted_folkepension = folkepension_base * (1 + user_profile['inflation']) ** years_until_67
+    retirement_year_adjusted_folkepension = folkepension_base * (1 + inflation) ** years_until_67
 
     for age in years:
         try:
             # Folkepension: apply inflation from 2024 to 67, then grow yearly from 67
             folkepension = 0
             if age >= 67:
-                folkepension = retirement_year_adjusted_folkepension * (1 + user_profile['inflation']) ** (age - 67)
+                folkepension = retirement_year_adjusted_folkepension * (1 + inflation) ** (age - 67)
 
             # ATP: Adjust from retirement year onwards
-            atp_value = atp_base * (1 + user_profile['inflation']) ** (age - user_profile['retirement_age'])
+            atp_value = atp_base * (1 + inflation) ** (age - user_profile['retirement_age'])
 
             # Occupational Pension
-            occ_pension = user_profile['contribution_rate'] * user_profile['income'] * \
-                          ((1 + user_profile['salary_growth']) ** (age - user_profile['current_age'])) * \
-                          (1 + user_profile['investment_return']) ** (age - user_profile['retirement_age'])
+            occ_pension = contribution_rate * user_profile['income'] * \
+                          ((1 + salary_growth) ** (age - user_profile['current_age'])) * \
+                          (1 + investment_return) ** (age - user_profile['retirement_age'])
 
             # Firmapension (employer-sponsored)
-            firmapension_value = 0
-            if 'firmapension_contribution_rate' in user_profile:
-                firmapension_value = user_profile['firmapension_contribution_rate'] * user_profile['income'] * \
-                                     ((1 + user_profile['salary_growth']) ** (age - user_profile['current_age'])) * \
-                                     (1 + user_profile['investment_return']) ** (age - user_profile['retirement_age'])
+            firmapension_value = firmapension_contribution_rate * user_profile['income'] * \
+                                 ((1 + salary_growth) ** (age - user_profile['current_age'])) * \
+                                 (1 + investment_return) ** (age - user_profile['retirement_age'])
 
             # Private Pension (similar to 'Other')
-            private_value = user_profile['other_base'] * (1 + user_profile['investment_return']) ** (age - user_profile['retirement_age'])
+            private_value = user_profile['other_base'] * (1 + investment_return) ** (age - user_profile['retirement_age'])
 
             retirement_data.append({
                 "age": age,
@@ -695,7 +709,7 @@ def generate_retirement_data_denmark(user_profile: dict):
             continue
 
     return retirement_data
-
+    
 async def get_user_chat_history(user_id: str, session_id: str) -> str:
     """Get formatted chat history for a user session"""
     try:
