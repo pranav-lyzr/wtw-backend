@@ -7906,3 +7906,22 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2025-06-23 10:39:07,147 - main - INFO - MongoDB client initialized successfully
 2025-06-23 10:39:07,149 - main - INFO - MongoDB collections configured
 2025-06-23 10:39:07,150 - main - INFO - External API configuration loaded
+2025-06-23 10:47:42,458 - main - INFO - FastAPI application initialized
+2025-06-23 10:47:42,461 - main - INFO - CORS middleware configured
+2025-06-23 10:47:42,463 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-23 10:47:42,476 - main - INFO - MongoDB client initialized successfully
+2025-06-23 10:47:42,478 - main - INFO - MongoDB collections configured
+2025-06-23 10:47:42,479 - main - INFO - External API configuration loaded
+2025-06-23 11:01:46,488 - main - INFO - Creating user profile for: Danish, email: denmark@gmail.com
+2025-06-23 11:01:46,677 - main - INFO - User profile created with ID: c3f2a6c1-6e18-4af9-8c98-c62cfcfb303c
+2025-06-23 11:01:46,682 - main - INFO - Generating Denmark retirement data for user: c3f2a6c1-6e18-4af9-8c98-c62cfcfb303c
+2025-06-23 11:02:08,200 - main - INFO - Retrieving AI retirement data for user: c3f2a6c1-6e18-4af9-8c98-c62cfcfb303c
+2025-06-23 11:03:44,381 - main - INFO - Creating user profile for: Dane, email: denmark1@gmail.com
+2025-06-23 11:03:44,394 - main - INFO - User profile created with ID: 23938568-a003-4be9-8ff4-1a0364156be7
+2025-06-23 11:03:44,398 - main - INFO - Generating Denmark retirement data for user: 23938568-a003-4be9-8ff4-1a0364156be7
+2025-06-23 11:14:29,105 - main - INFO - FastAPI application initialized
+2025-06-23 11:14:29,107 - main - INFO - CORS middleware configured
+2025-06-23 11:14:29,109 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-23 11:14:29,135 - main - INFO - MongoDB client initialized successfully
+2025-06-23 11:14:29,137 - main - INFO - MongoDB collections configured
+2025-06-23 11:14:29,139 - main - INFO - External API configuration loaded

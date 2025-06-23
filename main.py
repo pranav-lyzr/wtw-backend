@@ -932,6 +932,7 @@ async def root():
 
 
 # Modified /chat endpoint to handle Denmark-specific Lyzr API call
+# Modified /chat endpoint to handle country-specific prompts
 @app.post("/chat", response_model=ChatResponse)
 async def chat_retirement_unified(request: ChatRequest):
     """Unified chat endpoint for retirement planning - routes to appropriate specialized agents"""
@@ -959,35 +960,62 @@ async def chat_retirement_unified(request: ChatRequest):
         # Get latest retirement data
         latest_retirement_data = get_latest_retirement_data(user_profile)
         
-        # Determine agent ID based on country
+        # Determine agent ID and prompt based on country
+        country = user_profile.get('country', 'USA').lower()
         agent_id = "6851461baf3ce50cc6e2e4b3"  # Default master agent for USA
-        if user_profile.get('country', 'USA').lower() == 'denmark':
+        if country == 'denmark':
             agent_id = "685927b4a83b7ec9a60665f9"  # Denmark-specific agent
             logger.info(f"Using Denmark-specific agent ID: {agent_id}")
-        
-        # Create master prompt for parent agent
-        master_prompt = f"""
-        **USER PROFILE:**
-        - Name: {user_profile.get('name', 'User')}
-        - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
-        - Income: ${user_profile.get('income', 70000):,} | Growth: {user_profile.get('salary_growth', 0.02)*100}%
-        - Investment Return: {user_profile.get('investment_return', 0.05)*100}% | Inflation: {user_profile.get('inflation', 0.02)*100}%
-        - Social Security: ${user_profile.get('social_security_base', 18000):,} | Pension: ${user_profile.get('pension_base', 800):,}
-        - 401k: ${user_profile.get('four01k_base', 100):,} | Other: ${user_profile.get('other_base', 400):,}
-        - Defined Benefit: ${user_profile.get('defined_benefit_base', 14000):,} (+${user_profile.get('defined_benefit_yearly_increase', 300):,}/year)
+            
+            # Denmark-specific prompt
+            master_prompt = f"""
+            **USER PROFILE (Denmark):**
+            - Name: {user_profile.get('name', 'User')}
+            - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
+            - Income: DKK {user_profile.get('income', 500000):,} | Growth: {user_profile.get('salary_growth', 0.02)*100}%
+            - Investment Return: {user_profile.get('investment_return', 0.05)*100}% | Inflation: {user_profile.get('inflation', 0.02)*100}%
+            - Contribution Rate: {user_profile.get('contribution_rate', 0.1)*100}%
+            - Folkepension Base: DKK 171000
+            - ATP Base: DKK {user_profile.get('pension_base', 25000):,}
+            - Occupational Pension Base: DKK {user_profile.get('pension_base', 8000):,}
+            - Firmapension Contribution Rate: {user_profile.get('firmapension_contribution_rate', 0.05)*100}% (if applicable)
+            - Private Pension Base: DKK {user_profile.get('other_base', 4000):,}
 
-        **CURRENT CONTEXT:**
-        - Form Data: {json.dumps(form_data)}
-        - Pension Data: {json.dumps(latest_retirement_data)}
+            **CURRENT CONTEXT:**
+            - Form Data: {json.dumps(form_data)}
+            - Pension Data: {json.dumps(latest_retirement_data)}
 
-        **USER QUESTION:** {request.message}
+            **USER QUESTION:** {request.message}
 
-        Use user data to get more personalised response    
-        """
+            Provide a response tailored for Danish retirement planning, using Denmark-specific pension components (Folkepension, ATP, Occupational Pension, Firmapension, Private Pension). Avoid references to USA-specific terms like Social Security or 401k. Use user data for a personalized response.
+            """
+        else:
+            logger.info(f"Using USA-specific agent ID: {agent_id}")
+            # USA-specific prompt
+            master_prompt = f"""
+            **USER PROFILE (USA):**
+            - Name: {user_profile.get('name', 'User')}
+            - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
+            - Income: ${user_profile.get('income', 70000):,} | Growth: {user_profile.get('salary_growth', 0.02)*100}%
+            - Investment Return: {user_profile.get('investment_return', 0.05)*100}% | Inflation: {user_profile.get('inflation', 0.02)*100}%
+            - Social Security: ${user_profile.get('social_security_base', 18000):,}
+            - Pension: ${user_profile.get('pension_base', 800):,}
+            - 401k: ${user_profile.get('four01k_base', 100):,}
+            - Other: ${user_profile.get('other_base', 400):,}
+            - Defined Benefit: ${user_profile.get('defined_benefit_base', 14000):,} (+${user_profile.get('defined_benefit_yearly_increase', 300):,}/year)
+
+            **CURRENT CONTEXT:**
+            - Form Data: {json.dumps(form_data)}
+            - Pension Data: {json.dumps(latest_retirement_data)}
+
+            **USER QUESTION:** {request.message}
+
+            Use user data to get more personalized response
+            """
 
         master_prompt = append_persona_instructions(user_profile.get('email'), master_prompt)
         
-        logger.info(f"Calling Lyzr API with agent ID: {agent_id}") 
+        logger.info(f"Calling Lyzr API with agent ID: {agent_id}")
         api_response = await call_lyzr_api(
             agent_id=agent_id,
             session_id=request.session_id,
@@ -1006,8 +1034,6 @@ async def chat_retirement_unified(request: ChatRequest):
             # First attempt to parse the entire response as JSON
             structured_response = json.loads(api_response["response"])
             logger.info("Successfully parsed JSON response directly")
-            print("dd",structured_response,"s")
-            # print("-",api_response ,"d")
             text_response = structured_response.get("text_response", "")
             chart_data_raw = structured_response.get("chart_data")
             contains_chart = structured_response.get("contains_chart", False)
@@ -1048,7 +1074,7 @@ async def chat_retirement_unified(request: ChatRequest):
 
         # Default response if parsing failed
         if not text_response and not contains_chart:
-            text_response = "I understand your retirement planning question. Let me help you with that based on your profile."
+            text_response = f"I understand your retirement planning question for {'Denmark' if country == 'denmark' else 'USA'}. Let me help you with that based on your profile."
             logger.info("Using default text response as parsed response was empty")
 
         logger.info(f"Parsed response - Text length: {len(text_response)}, Contains chart: {contains_chart}")
@@ -1140,7 +1166,7 @@ async def chat_retirement_unified(request: ChatRequest):
     except Exception as e:
         logger.error(f"Unexpected error in unified retirement chat: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
-    
+            
 
 @app.post("/chat_pension", response_model=ChatResponse)
 async def chat_pension(request: ChatRequest):
