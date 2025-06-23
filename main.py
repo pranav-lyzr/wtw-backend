@@ -587,7 +587,7 @@ def calculate_pension(age, income, retirement_age, salary_growth, pension_multip
 
 def normalize_rate(rate: float) -> float:
     """Normalize a rate to decimal form (e.g., 5 -> 0.05, 0.05 -> 0.05)"""
-    return rate / 100 if rate > 1 else rate
+    return rate / 100 if rate >= 1 else rate
 
 def generate_retirement_data(user_profile: dict):
     """Generate retirement data matching prompt formulas"""
@@ -709,7 +709,7 @@ def generate_retirement_data_denmark(user_profile: dict):
             continue
 
     return retirement_data
-    
+
 async def get_user_chat_history(user_id: str, session_id: str) -> str:
     """Get formatted chat history for a user session"""
     try:
