@@ -15,7 +15,6 @@ from logging.handlers import RotatingFileHandler
 import sys
 from bson import ObjectId
 import asyncio
-import requests
 
 # Configure logging
 # logging.disable(logging.CRITICAL)
@@ -75,6 +74,7 @@ class UserProfile(BaseModel):
     contribution_rate: float = 0.1
     pension_multiplier: float = 0.015
     end_age: int = 90
+    country: Optional[str] = "USA"
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
     ai_retirement_data: Optional[List[Dict]] = None
@@ -90,6 +90,7 @@ class UserProfileCreate(BaseModel):
     contribution_rate: float = 0.1
     pension_multiplier: float = 0.015
     end_age: int = 90
+    country: Optional[str] = "USA"
     social_security_base: float = 18000.0
     pension_base: float = 8000.0
     four01k_base: float = 10000.0
@@ -112,6 +113,7 @@ class UserProfileUpdate(BaseModel):
     contribution_rate: Optional[float] = None
     pension_multiplier: Optional[float] = None
     end_age: Optional[int] = None
+    country: Optional[str] = None
     social_security_base: Optional[float] = None
     pension_base: Optional[float] = None
     four01k_base: Optional[float] = None
@@ -135,6 +137,7 @@ class UserProfileResponse(BaseModel):
     contribution_rate: float
     pension_multiplier: float
     end_age: int
+    country: Optional[str] = "USA"
     created_at: datetime
     updated_at: datetime
     social_security_base: float
@@ -639,6 +642,60 @@ def generate_retirement_data(user_profile: dict):
 
     return retirement_data
 
+def generate_retirement_data_denmark(user_profile: dict):
+    """Generate Denmark-style retirement data including Firmapensionsordning"""
+    years = list(range(user_profile['retirement_age'], user_profile['end_age'] + 1))
+    retirement_data = []
+    
+    # Folkepension: 2024 base values (DKK)
+    folkepension_base = 81000 + 90000  # Basic amount + supplement
+    atp_base = 25000  # Average ATP payout (DKK)
+    currency_factor = 1  # Use 1 for DKK, convert if needed
+
+    # Step 1: Adjust Folkepension base to value at age 67
+    years_until_67 = max(0, 67 - user_profile['current_age'])
+    retirement_year_adjusted_folkepension = folkepension_base * (1 + user_profile['inflation']) ** years_until_67
+
+    for age in years:
+        try:
+            # Folkepension: apply inflation from 2024 to 67, then grow yearly from 67
+            folkepension = 0
+            if age >= 67:
+                folkepension = retirement_year_adjusted_folkepension * (1 + user_profile['inflation']) ** (age - 67)
+
+            # ATP: Adjust from retirement year onwards
+            atp_value = atp_base * (1 + user_profile['inflation']) ** (age - user_profile['retirement_age'])
+
+            # Occupational Pension
+            occ_pension = user_profile['contribution_rate'] * user_profile['income'] * \
+                          ((1 + user_profile['salary_growth']) ** (age - user_profile['current_age'])) * \
+                          (1 + user_profile['investment_return']) ** (age - user_profile['retirement_age'])
+
+            # Firmapension (employer-sponsored)
+            firmapension_value = 0
+            if 'firmapension_contribution_rate' in user_profile:
+                firmapension_value = user_profile['firmapension_contribution_rate'] * user_profile['income'] * \
+                                     ((1 + user_profile['salary_growth']) ** (age - user_profile['current_age'])) * \
+                                     (1 + user_profile['investment_return']) ** (age - user_profile['retirement_age'])
+
+            # Private Pension (similar to 'Other')
+            private_value = user_profile['other_base'] * (1 + user_profile['investment_return']) ** (age - user_profile['retirement_age'])
+
+            retirement_data.append({
+                "age": age,
+                "Folkepension": round(folkepension * currency_factor, 2),
+                "ATP": round(atp_value * currency_factor, 2),
+                "Occupational Pension": round(occ_pension * currency_factor, 2),
+                "Firmapension": round(firmapension_value * currency_factor, 2),
+                "Private Pension": round(private_value * currency_factor, 2),
+            })
+
+        except (OverflowError, ValueError) as e:
+            logger.error(f"Error in Denmark retirement data generation: {e}")
+            continue
+
+    return retirement_data
+
 async def get_user_chat_history(user_id: str, session_id: str) -> str:
     """Get formatted chat history for a user session"""
     try:
@@ -874,6 +931,7 @@ async def root():
     return {"message": "Retirement Planning API"}
 
 
+# Modified /chat endpoint to handle Denmark-specific Lyzr API call
 @app.post("/chat", response_model=ChatResponse)
 async def chat_retirement_unified(request: ChatRequest):
     """Unified chat endpoint for retirement planning - routes to appropriate specialized agents"""
@@ -901,6 +959,12 @@ async def chat_retirement_unified(request: ChatRequest):
         # Get latest retirement data
         latest_retirement_data = get_latest_retirement_data(user_profile)
         
+        # Determine agent ID based on country
+        agent_id = "6851461baf3ce50cc6e2e4b3"  # Default master agent for USA
+        if user_profile.get('country', 'USA').lower() == 'denmark':
+            agent_id = "685927b4a83b7ec9a60665f9"  # Denmark-specific agent
+            logger.info(f"Using Denmark-specific agent ID: {agent_id}")
+        
         # Create master prompt for parent agent
         master_prompt = f"""
         **USER PROFILE:**
@@ -923,14 +987,14 @@ async def chat_retirement_unified(request: ChatRequest):
 
         master_prompt = append_persona_instructions(user_profile.get('email'), master_prompt)
         
-        logger.info("Calling master agent via Lyzr API")
+        logger.info(f"Calling Lyzr API with agent ID: {agent_id}")
         api_response = await call_lyzr_api(
-            agent_id="6851461baf3ce50cc6e2e4b3",  # Master agent ID
+            agent_id=agent_id,
             session_id=request.session_id,
             user_id=request.user_id,
             message=master_prompt
         )
-        logger.info("Master agent API call completed successfully "+request.message)
+        logger.info("Lyzr API call completed successfully")
         
         # Parse the structured response
         logger.info("Parsing structured response from master agent")
@@ -1706,6 +1770,7 @@ async def create_user_profile(request: UserProfileCreate):
             "contribution_rate": request.contribution_rate,
             "pension_multiplier": request.pension_multiplier,
             "end_age": request.end_age,
+            "country": request.country if request.country else "USA",
             "social_security_base": request.social_security_base,
             "pension_base": request.pension_base,
             "four01k_base": request.four01k_base,
@@ -1865,7 +1930,13 @@ async def calculate_retirement_data(user_id: str):
         if not user_doc:
             raise HTTPException(status_code=404, detail="User profile not found")
         
-        retirement_data = generate_retirement_data(user_doc)
+        # Select retirement calculation based on country
+        if user_doc.get('country', 'USA').lower() == 'denmark':
+            logger.info(f"Generating Denmark retirement data for user: {user_id}")
+            retirement_data = generate_retirement_data_denmark(user_doc)
+        else:
+            logger.info(f"Generating USA retirement data for user: {user_id}")
+            retirement_data = generate_retirement_data(user_doc)
         
         update_result = await user_profiles_collection.update_one(
             {"user_id": user_id},
@@ -1884,7 +1955,8 @@ async def calculate_retirement_data(user_id: str):
         }
     except Exception as e:
         logger.error(f"Retirement calculation error: {str(e)}")
-        raise
+        raise HTTPException(status_code=400, detail=str(e))
+
 
 @app.post("/user-sessions/{user_id}")
 async def create_user_session(user_id: str, session_name: Optional[str] = None):
