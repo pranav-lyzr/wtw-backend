@@ -939,13 +939,23 @@ async def chat_retirement_unified(request: ChatRequest):
     logger.debug(f"Message: {request.message[:100]}..." if len(request.message) > 100 else f"Message: {request.message}")
     
     try:
-        # Retrieve user profile
+        # Retrieve user profile with proper error handling
         logger.info("Retrieving user profile")
         user_profile = await user_profiles_collection.find_one({"user_id": request.user_id})
         if not user_profile:
             raise HTTPException(status_code=404, detail="User profile not found")
         
-        # Prepare form data for context
+        # Ensure user_profile is a dict, not a list
+        if isinstance(user_profile, list):
+            if len(user_profile) > 0:
+                user_profile = user_profile[0]
+            else:
+                raise HTTPException(status_code=404, detail="User profile is empty")
+        
+        # Safely extract profile data with defaults
+        country = user_profile.get('country', 'USA').lower() if isinstance(user_profile, dict) else 'usa'
+        
+        # Prepare form data for context with safe extraction
         form_data = {
             "retireAge": user_profile.get('retirement_age', 65),
             "lifeExpectancy": user_profile.get('end_age', 85),
@@ -956,34 +966,67 @@ async def chat_retirement_unified(request: ChatRequest):
             "inflation": user_profile.get('inflation', 0.02),
         }
         
-        # Get latest retirement data
-        latest_retirement_data = get_latest_retirement_data(user_profile)
+        # Get latest retirement data with error handling
+        try:
+            latest_retirement_data = get_latest_retirement_data(user_profile)
+            # Ensure it's not a list when we expect a dict
+            if isinstance(latest_retirement_data, list):
+                if len(latest_retirement_data) > 0:
+                    latest_retirement_data = latest_retirement_data[0]
+                else:
+                    latest_retirement_data = {}
+        except Exception as retirement_error:
+            logger.error(f"Error getting retirement data: {str(retirement_error)}")
+            latest_retirement_data = {}
         
         # Determine agent ID based on country
         agent_id = "6851461baf3ce50cc6e2e4b3"  # Default master agent for USA
-        if user_profile.get('country', 'USA').lower() == 'denmark':
+        if country == 'denmark':
             agent_id = "685927b4a83b7ec9a60665f9"  # Denmark-specific agent
             logger.info(f"Using Denmark-specific agent ID: {agent_id}")
-        
-        # Create master prompt for parent agent
-        master_prompt = f"""
-        **USER PROFILE:**
-        - Name: {user_profile.get('name', 'User')}
-        - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
-        - Income: ${user_profile.get('income', 70000):,} | Growth: {user_profile.get('salary_growth', 0.02)*100}%
-        - Investment Return: {user_profile.get('investment_return', 0.05)*100}% | Inflation: {user_profile.get('inflation', 0.02)*100}%
-        - Social Security: ${user_profile.get('social_security_base', 18000):,} | Pension: ${user_profile.get('pension_base', 800):,}
-        - 401k: ${user_profile.get('four01k_base', 100):,} | Other: ${user_profile.get('other_base', 400):,}
-        - Defined Benefit: ${user_profile.get('defined_benefit_base', 14000):,} (+${user_profile.get('defined_benefit_yearly_increase', 300):,}/year)
+            
+            # Create Denmark-specific master prompt
+            master_prompt = f"""
+            **USER PROFILE (Denmark):**
+            - Name: {user_profile.get('name', 'User')}
+            - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
+            - Income: DKK {user_profile.get('income', 500000):,} | Growth: {user_profile.get('salary_growth', 0.02)*100}%
+            - Investment Return: {user_profile.get('investment_return', 0.05)*100}% | Inflation: {user_profile.get('inflation', 0.02)*100}%
+            - Contribution Rate: {user_profile.get('contribution_rate', 0.1)*100}%
+            - Folkepension Base: DKK 171000
+            - ATP Base: DKK {user_profile.get('pension_base', 25000):,}
+            - Occupational Pension Base: DKK {user_profile.get('pension_base', 8000):,}
+            - Firmapension Contribution Rate: {user_profile.get('firmapension_contribution_rate', 0.05)*100}% (if applicable)
+            - Private Pension Base: DKK {user_profile.get('other_base', 4000):,}
 
-        **CURRENT CONTEXT:**
-        - Form Data: {json.dumps(form_data)}
-        - Pension Data: {json.dumps(latest_retirement_data)}
+            **CURRENT CONTEXT:**
+            - Form Data: {json.dumps(form_data)}
+            - Pension Data: {json.dumps(latest_retirement_data)}
 
-        **USER QUESTION:** {request.message}
+            **USER QUESTION:** {request.message}
 
-        Use user data to get more personalised response    
-        """
+            Provide personalized response for this specific Danish user with exact calculations.
+            """
+        else:
+            # Create USA-specific master prompt
+            master_prompt = f"""
+            **USER PROFILE:**
+            - Name: {user_profile.get('name', 'User')}
+            - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
+            - Income: ${user_profile.get('income', 70000):,} | Growth: {user_profile.get('salary_growth', 0.02)*100}%
+            - Investment Return: {user_profile.get('investment_return', 0.05)*100}% | Inflation: {user_profile.get('inflation', 0.02)*100}%
+            - Social Security: ${user_profile.get('social_security_base', 18000):,} | Pension: ${user_profile.get('pension_base', 800):,}
+            - 401k: ${user_profile.get('four01k_base', 100):,} | Other: ${user_profile.get('other_base', 400):,}
+            - Defined Benefit: ${user_profile.get('defined_benefit_base', 14000):,} (+${user_profile.get('defined_benefit_yearly_increase', 300):,}/year)
+
+            **CURRENT CONTEXT:**
+            - Form Data: {json.dumps(form_data)}
+            - Pension Data: {json.dumps(latest_retirement_data)}
+
+            **USER QUESTION:** {request.message}
+
+            Use user data to get more personalized response    
+            """
 
         master_prompt = append_persona_instructions(user_profile.get('email'), master_prompt)
         
@@ -996,41 +1039,61 @@ async def chat_retirement_unified(request: ChatRequest):
         )
         logger.info("Lyzr API call completed successfully")
         
-        # Parse the structured response
+        # Parse the structured response with better error handling
         logger.info("Parsing structured response from master agent")
         text_response = ""
         chart_data_raw = None
         contains_chart = False
 
         try:
+            # Ensure api_response is properly structured
+            if not isinstance(api_response, dict) or "response" not in api_response:
+                raise ValueError("Invalid API response structure")
+                
+            response_content = api_response["response"]
+            
             # First attempt to parse the entire response as JSON
-            structured_response = json.loads(api_response["response"])
+            structured_response = json.loads(response_content)
             logger.info("Successfully parsed JSON response directly")
-            print("dd",structured_response,"s")
-            # print("-",api_response ,"d")
+            
+            # Ensure structured_response is a dict
+            if isinstance(structured_response, list):
+                if len(structured_response) > 0 and isinstance(structured_response[0], dict):
+                    structured_response = structured_response[0]
+                else:
+                    raise ValueError("Structured response is a list but doesn't contain valid dict")
+            
             text_response = structured_response.get("text_response", "")
             chart_data_raw = structured_response.get("chart_data")
             contains_chart = structured_response.get("contains_chart", False)
-        except json.JSONDecodeError as json_error:
+            
+        except (json.JSONDecodeError, ValueError) as json_error:
             logger.warning(f"Initial JSON parse failed: {str(json_error)}, trying to extract from markdown")
             # Try to extract JSON from markdown code block
             import re
-            json_match = re.search(r'```json\s*([\s\S]*?)\s*```', api_response["response"])
+            json_match = re.search(r'```json\s*([\s\S]*?)\s*```', response_content)
             if json_match:
                 logger.info("Found JSON in markdown code block")
                 try:
                     structured_response = json.loads(json_match.group(1).strip())
                     logger.info("Successfully parsed JSON from markdown")
                     
+                    # Handle case where structured_response might be a list
+                    if isinstance(structured_response, list):
+                        if len(structured_response) > 0 and isinstance(structured_response[0], dict):
+                            structured_response = structured_response[0]
+                        else:
+                            raise ValueError("Markdown JSON is a list but doesn't contain valid dict")
+                    
                     text_response = structured_response.get("text_response", "")
                     
                     # If text_response is empty in JSON, look for text outside JSON blocks
                     if not text_response:
-                        text_before_json = api_response["response"].split('```json')[0].strip()
+                        text_before_json = response_content.split('```json')[0].strip()
                         if text_before_json:
                             text_response = text_before_json
                         else:
-                            parts = api_response["response"].split('```')
+                            parts = response_content.split('```')
                             if len(parts) > 2:
                                 text_after_json = parts[2].strip()
                                 if text_after_json:
@@ -1039,12 +1102,12 @@ async def chat_retirement_unified(request: ChatRequest):
                     chart_data_raw = structured_response.get("chart_data")
                     contains_chart = structured_response.get("contains_chart", False)
                     
-                except json.JSONDecodeError as markdown_json_error:
+                except (json.JSONDecodeError, ValueError) as markdown_json_error:
                     logger.error(f"Failed to parse JSON from markdown: {str(markdown_json_error)}")
-                    text_response = api_response["response"].split('```json')[0].strip()
+                    text_response = response_content.split('```json')[0].strip()
             else:
                 logger.warning("No JSON found in markdown, using raw response")
-                text_response = api_response["response"].strip()
+                text_response = response_content.strip()
 
         # Default response if parsing failed
         if not text_response and not contains_chart:
@@ -1053,7 +1116,7 @@ async def chat_retirement_unified(request: ChatRequest):
 
         logger.info(f"Parsed response - Text length: {len(text_response)}, Contains chart: {contains_chart}")
         
-        # Handle chart data
+        # Handle chart data with better error handling
         chart_data = None
         if contains_chart and chart_data_raw:
             logger.info("Processing chart data from response")
@@ -1069,7 +1132,7 @@ async def chat_retirement_unified(request: ChatRequest):
                 # Save AI-generated retirement data
                 if isinstance(parsed_chart_data, dict) and parsed_chart_data.get("type") == "pension_data":
                     ai_retirement_data = parsed_chart_data.get("data", [])
-                    if ai_retirement_data:
+                    if ai_retirement_data and isinstance(ai_retirement_data, list):
                         logger.info("Saving AI-generated retirement data")
                         await save_ai_retirement_data(request.user_id, ai_retirement_data)
                 elif isinstance(parsed_chart_data, list):
@@ -1101,7 +1164,7 @@ async def chat_retirement_unified(request: ChatRequest):
                 chart_data = None
                 contains_chart = False
         
-        # Save message to database
+        # Save message to database with safe chart data handling
         logger.info("Saving message to database")
         database_chart_data = None
         if contains_chart and chart_data_raw:
@@ -1139,8 +1202,8 @@ async def chat_retirement_unified(request: ChatRequest):
         raise
     except Exception as e:
         logger.error(f"Unexpected error in unified retirement chat: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
-    
+        logger.error(f"Error type: {type(e).__name__}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")    
 
 @app.post("/chat_pension", response_model=ChatResponse)
 async def chat_pension(request: ChatRequest):
