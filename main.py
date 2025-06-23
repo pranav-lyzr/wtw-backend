@@ -931,6 +931,7 @@ async def root():
     return {"message": "Retirement Planning API"}
 
 
+# Modified /chat endpoint to handle Denmark-specific Lyzr API call
 @app.post("/chat", response_model=ChatResponse)
 async def chat_retirement_unified(request: ChatRequest):
     """Unified chat endpoint for retirement planning - routes to appropriate specialized agents"""
@@ -958,62 +959,35 @@ async def chat_retirement_unified(request: ChatRequest):
         # Get latest retirement data
         latest_retirement_data = get_latest_retirement_data(user_profile)
         
-        # Determine agent ID and prompt based on country
-        country = user_profile.get('country', 'USA').lower()
+        # Determine agent ID based on country
         agent_id = "6851461baf3ce50cc6e2e4b3"  # Default master agent for USA
-        if country == 'denmark':
+        if user_profile.get('country', 'USA').lower() == 'denmark':
             agent_id = "685927b4a83b7ec9a60665f9"  # Denmark-specific agent
             logger.info(f"Using Denmark-specific agent ID: {agent_id}")
-            
-            # Denmark-specific prompt
-            master_prompt = f"""
-            **USER PROFILE (Denmark):**
-            - Name: {user_profile.get('name', 'User')}
-            - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
-            - Income: DKK {user_profile.get('income', 500000):,} | Growth: {user_profile.get('salary_growth', 0.02)*100}%
-            - Investment Return: {user_profile.get('investment_return', 0.05)*100}% | Inflation: {user_profile.get('inflation', 0.02)*100}%
-            - Contribution Rate: {user_profile.get('contribution_rate', 0.1)*100}%
-            - Folkepension Base: DKK 171000
-            - ATP Base: DKK {user_profile.get('pension_base', 25000):,}
-            - Occupational Pension Base: DKK {user_profile.get('pension_base', 8000):,}
-            - Firmapension Contribution Rate: {user_profile.get('firmapension_contribution_rate', 0.05)*100}% (if applicable)
-            - Private Pension Base: DKK {user_profile.get('other_base', 4000):,}
+        
+        # Create master prompt for parent agent
+        master_prompt = f"""
+        **USER PROFILE:**
+        - Name: {user_profile.get('name', 'User')}
+        - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
+        - Income: ${user_profile.get('income', 70000):,} | Growth: {user_profile.get('salary_growth', 0.02)*100}%
+        - Investment Return: {user_profile.get('investment_return', 0.05)*100}% | Inflation: {user_profile.get('inflation', 0.02)*100}%
+        - Social Security: ${user_profile.get('social_security_base', 18000):,} | Pension: ${user_profile.get('pension_base', 800):,}
+        - 401k: ${user_profile.get('four01k_base', 100):,} | Other: ${user_profile.get('other_base', 400):,}
+        - Defined Benefit: ${user_profile.get('defined_benefit_base', 14000):,} (+${user_profile.get('defined_benefit_yearly_increase', 300):,}/year)
 
-            **CURRENT CONTEXT:**
-            - Form Data: {json.dumps(form_data)}
-            - Pension Data: {json.dumps(latest_retirement_data)}
+        **CURRENT CONTEXT:**
+        - Form Data: {json.dumps(form_data)}
+        - Pension Data: {json.dumps(latest_retirement_data)}
 
-            **USER QUESTION:** {request.message}
+        **USER QUESTION:** {request.message}
 
-            Provide a response tailored for Danish retirement planning, using Denmark-specific pension components (Folkepension, ATP, Occupational Pension, Firmapension, Private Pension). Avoid references to USA-specific terms like Social Security or 401k. Use user data for a personalized response.
-            """
-        else:
-            logger.info(f"Using USA-specific agent ID: {agent_id}")
-            # USA-specific prompt
-            master_prompt = f"""
-            **USER PROFILE (USA):**
-            - Name: {user_profile.get('name', 'User')}
-            - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
-            - Income: ${user_profile.get('income', 70000):,} | Growth: {user_profile.get('salary_growth', 0.02)*100}%
-            - Investment Return: {user_profile.get('investment_return', 0.05)*100}% | Inflation: {user_profile.get('inflation', 0.02)*100}%
-            - Social Security: ${user_profile.get('social_security_base', 18000):,}
-            - Pension: ${user_profile.get('pension_base', 800):,}
-            - 401k: ${user_profile.get('four01k_base', 100):,}
-            - Other: ${user_profile.get('other_base', 400):,}
-            - Defined Benefit: ${user_profile.get('defined_benefit_base', 14000):,} (+${user_profile.get('defined_benefit_yearly_increase', 300):,}/year)
-
-            **CURRENT CONTEXT:**
-            - Form Data: {json.dumps(form_data)}
-            - Pension Data: {json.dumps(latest_retirement_data)}
-
-            **USER QUESTION:** {request.message}
-
-            Use user data to get more personalized response
-            """
+        Use user data to get more personalised response    
+        """
 
         master_prompt = append_persona_instructions(user_profile.get('email'), master_prompt)
         
-        logger.info(f"Calling Lyzr API with agent ID: {agent_id}")
+        logger.info(f"Calling Lyzr API with agent ID: {agent_id}") 
         api_response = await call_lyzr_api(
             agent_id=agent_id,
             session_id=request.session_id,
@@ -1028,80 +1002,53 @@ async def chat_retirement_unified(request: ChatRequest):
         chart_data_raw = None
         contains_chart = False
 
-        # Handle raw API response
-        raw_response = api_response.get("response", "")
-        if not raw_response:
-            logger.warning("Empty response from Lyzr API")
-            text_response = f"I understand your retirement planning question for {'Denmark' if country == 'denmark' else 'USA'}. Please try again with more details."
-        else:
-            try:
-                # First attempt to parse the entire response as JSON
-                if isinstance(raw_response, str):
-                    structured_response = json.loads(raw_response)
-                else:
-                    structured_response = raw_response
-
-                # Check if structured_response is a dict
-                if isinstance(structured_response, dict):
-                    logger.info("Successfully parsed response as dictionary")
+        try:
+            # First attempt to parse the entire response as JSON
+            structured_response = json.loads(api_response["response"])
+            logger.info("Successfully parsed JSON response directly")
+            print("dd",structured_response,"s")
+            # print("-",api_response ,"d")
+            text_response = structured_response.get("text_response", "")
+            chart_data_raw = structured_response.get("chart_data")
+            contains_chart = structured_response.get("contains_chart", False)
+        except json.JSONDecodeError as json_error:
+            logger.warning(f"Initial JSON parse failed: {str(json_error)}, trying to extract from markdown")
+            # Try to extract JSON from markdown code block
+            import re
+            json_match = re.search(r'```json\s*([\s\S]*?)\s*```', api_response["response"])
+            if json_match:
+                logger.info("Found JSON in markdown code block")
+                try:
+                    structured_response = json.loads(json_match.group(1).strip())
+                    logger.info("Successfully parsed JSON from markdown")
+                    
                     text_response = structured_response.get("text_response", "")
+                    
+                    # If text_response is empty in JSON, look for text outside JSON blocks
+                    if not text_response:
+                        text_before_json = api_response["response"].split('```json')[0].strip()
+                        if text_before_json:
+                            text_response = text_before_json
+                        else:
+                            parts = api_response["response"].split('```')
+                            if len(parts) > 2:
+                                text_after_json = parts[2].strip()
+                                if text_after_json:
+                                    text_response = text_after_json
+                    
                     chart_data_raw = structured_response.get("chart_data")
                     contains_chart = structured_response.get("contains_chart", False)
-                elif isinstance(structured_response, list):
-                    logger.warning("Response parsed as list, treating as chart data")
-                    chart_data_raw = structured_response
-                    contains_chart = True
-                    text_response = f"Retirement data projection for {'Denmark' if country == 'denmark' else 'USA'} based on your profile."
-                else:
-                    logger.warning(f"Unexpected response type: {type(structured_response)}")
-                    text_response = str(structured_response)
-
-            except json.JSONDecodeError as json_error:
-                logger.warning(f"Initial JSON parse failed: {str(json_error)}, trying to extract from markdown")
-                # Try to extract JSON from markdown code block
-                import re
-                json_match = re.search(r'```json\s*([\s\S]*?)\s*```', raw_response)
-                if json_match:
-                    logger.info("Found JSON in markdown code block")
-                    try:
-                        structured_response = json.loads(json_match.group(1).strip())
-                        
-                        if isinstance(structured_response, dict):
-                            logger.info("Successfully parsed JSON from markdown as dictionary")
-                            text_response = structured_response.get("text_response", "")
-                            chart_data_raw = structured_response.get("chart_data")
-                            contains_chart = structured_response.get("contains_chart", False)
-                        elif isinstance(structured_response, list):
-                            logger.warning("Markdown JSON parsed as list, treating as chart data")
-                            chart_data_raw = structured_response
-                            contains_chart = True
-                            text_response = f"Retirement data projection for {'Denmark' if country == 'denmark' else 'USA'} based on your profile."
-                        else:
-                            logger.warning(f"Unexpected markdown JSON type: {type(structured_response)}")
-                            text_response = str(structured_response)
-
-                        # Extract text outside JSON block if text_response is empty
-                        if not text_response:
-                            text_before_json = raw_response.split('```json')[0].strip()
-                            if text_before_json:
-                                text_response = text_before_json
-                            else:
-                                parts = raw_response.split('```')
-                                if len(parts) > 2:
-                                    text_after_json = parts[2].strip()
-                                    if text_after_json:
-                                        text_response = text_after_json
-                        
-                    except json.JSONDecodeError as markdown_json_error:
-                        logger.error(f"Failed to parse JSON from markdown: {str(markdown_json_error)}")
-                        text_response = raw_response.split('```json')[0].strip() or raw_response
-                else:
-                    logger.warning("No JSON found in markdown, using raw response")
-                    text_response = raw_response.strip()
+                    
+                except json.JSONDecodeError as markdown_json_error:
+                    logger.error(f"Failed to parse JSON from markdown: {str(markdown_json_error)}")
+                    text_response = api_response["response"].split('```json')[0].strip()
+            else:
+                logger.warning("No JSON found in markdown, using raw response")
+                text_response = api_response["response"].strip()
 
         # Default response if parsing failed
         if not text_response and not contains_chart:
-            text_response = f"I understand your retirement planning question for {'Denmark' if country == 'denmark' else 'USA'}. Let me help you with that based on your profile."
+            text_response = "I understand your retirement planning question. Let me help you with that based on your profile."
             logger.info("Using default text response as parsed response was empty")
 
         logger.info(f"Parsed response - Text length: {len(text_response)}, Contains chart: {contains_chart}")
@@ -1192,7 +1139,8 @@ async def chat_retirement_unified(request: ChatRequest):
         raise
     except Exception as e:
         logger.error(f"Unexpected error in unified retirement chat: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))    
+        raise HTTPException(status_code=500, detail=str(e))
+    
 
 @app.post("/chat_pension", response_model=ChatResponse)
 async def chat_pension(request: ChatRequest):
