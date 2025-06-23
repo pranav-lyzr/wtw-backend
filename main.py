@@ -987,7 +987,7 @@ async def chat_retirement_unified(request: ChatRequest):
 
         master_prompt = append_persona_instructions(user_profile.get('email'), master_prompt)
         
-        logger.info(f"Calling Lyzr API with agent ID: {agent_id}")
+        logger.info(f"Calling Lyzr API with agent ID: {agent_id}") 
         api_response = await call_lyzr_api(
             agent_id=agent_id,
             session_id=request.session_id,
