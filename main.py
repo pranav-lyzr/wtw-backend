@@ -1052,7 +1052,7 @@ async def chat_retirement_unified(request: ChatRequest):
             message=master_prompt
         )
         logger.info("Lyzr API call completed successfully")
-        logger.info("Lyzr API call completed successfully", api_response)
+        logger.info(f"Received response: {api_response}")
 
         
         # Enhanced LLM response parsing - with better error handling and logging

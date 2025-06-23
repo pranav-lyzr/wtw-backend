@@ -8085,3 +8085,27 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2025-06-23 13:42:55,696 - main - INFO - MongoDB client initialized successfully
 2025-06-23 13:42:55,698 - main - INFO - MongoDB collections configured
 2025-06-23 13:42:55,699 - main - INFO - External API configuration loaded
+2025-06-23 13:49:32,163 - main - INFO - FastAPI application initialized
+2025-06-23 13:49:32,165 - main - INFO - CORS middleware configured
+2025-06-23 13:49:32,166 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-23 13:49:32,183 - main - INFO - MongoDB client initialized successfully
+2025-06-23 13:49:32,184 - main - INFO - MongoDB collections configured
+2025-06-23 13:49:32,187 - main - INFO - External API configuration loaded
+2025-06-23 13:49:54,803 - main - INFO - FastAPI application initialized
+2025-06-23 13:49:54,805 - main - INFO - CORS middleware configured
+2025-06-23 13:49:54,807 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-23 13:49:54,821 - main - INFO - MongoDB client initialized successfully
+2025-06-23 13:49:54,824 - main - INFO - MongoDB collections configured
+2025-06-23 13:49:54,825 - main - INFO - External API configuration loaded
+2025-06-23 13:50:45,863 - main - INFO - FastAPI application initialized
+2025-06-23 13:50:45,864 - main - INFO - CORS middleware configured
+2025-06-23 13:50:45,865 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-23 13:50:45,878 - main - INFO - MongoDB client initialized successfully
+2025-06-23 13:50:45,881 - main - INFO - MongoDB collections configured
+2025-06-23 13:50:45,882 - main - INFO - External API configuration loaded
+2025-06-23 13:50:50,324 - main - INFO - FastAPI application initialized
+2025-06-23 13:50:50,326 - main - INFO - CORS middleware configured
+2025-06-23 13:50:50,328 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-23 13:50:50,340 - main - INFO - MongoDB client initialized successfully
+2025-06-23 13:50:50,342 - main - INFO - MongoDB collections configured
+2025-06-23 13:50:50,343 - main - INFO - External API configuration loaded
