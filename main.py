@@ -753,6 +753,35 @@ def append_persona_instructions(email: Optional[str], prompt: str) -> str:
         persona_instruction = """
         Provide the response in 3-5 concise bullet points, keeping each point short and clear.
         """
+    elif "briefbullets" in email:
+        persona_instruction = """
+        **Response Style: Brief / Bullets**
+        - Provide a concise response in 3-5 bullet points.
+        - Use short, clear sentences.
+        - Focus on key information, avoiding unnecessary details.
+        - Example:
+          - Main point 1
+          - Main point 2
+          - Main point 3
+        """
+    elif "plainlanguage" in email:
+        persona_instruction = """
+        **Response Style: Plain-language (Non-finance)**
+        - Use simple, everyday words that anyone can understand.
+        - Avoid financial jargon or complex terms.
+        - Explain concepts as if speaking to someone with no financial background. Explain financial works when required.
+        - Keep the response friendly and approachable.
+        - Example: Instead of "asset allocation," say "how your money is split between different investments."
+        """
+    elif "financepro" in email:
+        persona_instruction = """
+        **Response Style: Technical (Finance Pro)**
+        - Use precise financial terminology and industry-specific language.
+        - Include detailed calculations or methodologies where relevant.
+        - Assume the user has advanced knowledge of finance and retirement planning.
+        - Provide in-depth analysis suitable for a financial professional.
+        - Example: Reference terms like "net present value," "compound annual growth rate," or "actuarial assumptions."
+        """
     else:
         persona_instruction = ""
     
