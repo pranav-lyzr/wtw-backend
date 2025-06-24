@@ -263,37 +263,34 @@ async def call_lyzr_api(agent_id: str, session_id: str, user_id: str, message: s
                 LYZR_BASE_URL,
                 json=payload,
                 headers=headers,
-                timeout=600.0
+                timeout=6000.0
             )
             
             logger.info(f"Received response with status code: {response.status_code}")
-            # Log the raw response for debugging
-            raw_response = response.text[:1000] + "..." if len(response.text) > 1000 else response.text
-            logger.debug(f"Raw API response: {raw_response}")
+            # Log the raw response immediately
+            raw_response = response.text[:2000] + "..." if len(response.text) > 2000 else response.text
+            logger.info(f"Raw Lyzr API response: {raw_response}")
             
             response.raise_for_status()
             
-            response_data = response.json()
-            # Ensure the response is logged consistently
-            logger.info(f"Received response: {response_data}")
-
             try:
-                response_log = json.dumps(response_data, indent=2)[:1000] + "..." if len(json.dumps(response_data)) > 1000 else json.dumps(response_data)
+                response_data = response.json()
+                # Log the parsed response
+                response_log = json.dumps(response_data, indent=2)[:2000] + "..." if len(json.dumps(response_data)) > 2000 else json.dumps(response_data)
                 logger.info(f"Received response: {response_log}")
-            except (TypeError, ValueError) as e:
-                logger.error(f"Failed to log response_data: {str(e)}")
-                logger.info(f"Received response (raw): {str(response_data)[:1000]}...")
-            
-            logger.info(f"Response data keys: {list(response_data.keys()) if isinstance(response_data, dict) else 'Not a dict'}")
-            
-            return response_data
+                logger.info(f"Response data keys: {list(response_data.keys()) if isinstance(response_data, dict) else 'Not a dict'}")
+                return response_data
+            except json.JSONDecodeError as json_error:
+                logger.error(f"Failed to parse JSON response: {str(json_error)}")
+                logger.error(f"Raw response content: {raw_response}")
+                raise HTTPException(status_code=500, detail=f"Invalid JSON response from API: {str(json_error)}")
             
         except httpx.RequestError as e:
             logger.error(f"HTTP request error in Lyzr API call: {str(e)}")
             raise HTTPException(status_code=500, detail=f"API request failed: {str(e)}")
         except httpx.HTTPStatusError as e:
             logger.error(f"HTTP status error in Lyzr API call: {e.response.status_code} - {str(e)}")
-            error_response = e.response.text[:1000] + "..." if len(e.response.text) > 1000 else e.response.text
+            error_response = e.response.text[:2000] + "..." if len(e.response.text) > 2000 else e.response.text
             logger.error(f"Error response content: {error_response}")
             raise HTTPException(status_code=e.response.status_code, detail=f"API error: {str(e)}")
         except Exception as e:
