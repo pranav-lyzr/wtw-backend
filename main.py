@@ -768,6 +768,7 @@ def append_persona_instructions(email: Optional[str], prompt: str) -> str:
         persona_instruction = """
         **Response Style: Plain-language (Non-finance)**
         - Use simple, everyday words that anyone can understand.
+        - Provide a concise response in 3-5 bullet points.
         - Avoid financial jargon or complex terms.
         - Explain concepts as if speaking to someone with no financial background. Explain financial works when required.
         - Keep the response friendly and approachable.
@@ -776,6 +777,7 @@ def append_persona_instructions(email: Optional[str], prompt: str) -> str:
     elif "financepro" in email:
         persona_instruction = """
         **Response Style: Technical (Finance Pro)**
+        - Provide a concise response in 3-5 bullet points.
         - Use precise financial terminology and industry-specific language.
         - Include detailed calculations or methodologies where relevant.
         - Assume the user has advanced knowledge of finance and retirement planning.
