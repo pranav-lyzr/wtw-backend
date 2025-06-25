@@ -1312,7 +1312,7 @@ async def chat_retirement_unified(request: ChatRequest):
         if not text_response and not contains_chart:
             logger.error("No meaningful content extracted from LLM response")
             logger.error(f"Full response content: {response_content[:1000]}...")
-            raise HTTPException(status_code=500, detail=raw_api_response)
+            raise HTTPException(status_code=500, detail=raw_api_response) 
 
                 
      
