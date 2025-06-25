@@ -8323,3 +8323,58 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2025-06-24 06:25:39,838 - main - INFO - MongoDB client initialized successfully
 2025-06-24 06:25:39,845 - main - INFO - MongoDB collections configured
 2025-06-24 06:25:39,847 - main - INFO - External API configuration loaded
+2025-06-24 10:29:28,488 - main - INFO - Unified retirement chat request - Session ID: 2955bc3b-d29e-4d1c-b01f-536acf4fbf6b, User ID: ca96e5fe-5ecb-4915-ba85-bfb841ee74f5
+2025-06-24 10:29:28,498 - main - INFO - Retrieving user profile
+2025-06-24 10:29:28,632 - main - ERROR - HTTP exception in unified retirement chat: User profile not found
+2025-06-24 10:30:00,334 - main - INFO - Unified retirement chat request - Session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-06-24 10:30:00,335 - main - INFO - Retrieving user profile
+2025-06-24 10:30:00,340 - main - INFO - Using manually calculated retirement data
+2025-06-24 10:30:00,342 - main - INFO - Using Denmark-specific agent ID: 685927b4a83b7ec9a60665f9
+2025-06-24 10:30:00,345 - main - INFO - Appending persona instructions for email: danish2@gmail.com
+2025-06-24 10:30:00,347 - main - INFO - Calling Lyzr API with agent ID: 685927b4a83b7ec9a60665f9
+2025-06-24 10:30:00,348 - main - INFO - Starting Lyzr API call - Agent ID: 685927b4a83b7ec9a60665f9, Session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-06-24 10:30:00,497 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-06-24 10:30:23,177 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-06-24 10:30:23,182 - main - INFO - Received response with status code: 200
+2025-06-24 10:30:23,185 - main - INFO - Raw Lyzr API response: {"response":"```json\n{\n  \"text_response\": \"To adjust your retirement budget effectively for both travel and regular expenses, you should prioritize your annual projected pension income of DKK 148,930.31 by allocating a portion for regular expenses first, then setting aside funds specifically for travel based on your estimates. Regularly review and adjust your budget for inflation and potential unexpected costs to ensure a balanced financial strategy in your retirement years.\"\n}\n```","module_outputs":{}}
+2025-06-24 10:30:23,187 - main - INFO - Received response: {"response": "```json\n{\n  \"text_response\": \"To adjust your retirement budget effectively for both travel and regular expenses, you should prioritize your annual projected pension income of DKK 148,930.31 by allocating a portion for regular expenses first, then setting aside funds specifically for travel based on your estimates. Regularly review and adjust your budget for inflation and potential unexpected costs to ensure a balanced financial strategy in your retirement years.\"\n}\n```", "module_outputs": {}}
+2025-06-24 10:30:23,188 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-06-24 10:30:23,191 - main - INFO - Lyzr API call completed successfully
+2025-06-24 10:30:23,193 - main - INFO - Received response: {'response': '```json\n{\n  "text_response": "To adjust your retirement budget effectively for both travel and regular expenses, you should prioritize your annual projected pension income of DKK 148,930.31 by allocating a portion for regular expenses first, then setting aside funds specifically for travel based on your estimates. Regularly review and adjust your budget for inflation and potential unexpected costs to ensure a balanced financial strategy in your retirement years."\n}\n```', 'module_outputs': {}}
+2025-06-24 10:30:23,194 - main - INFO - Parsing LLM response with comprehensive format handling
+2025-06-24 10:30:23,197 - main - INFO - Parsing LLM response
+2025-06-24 10:30:23,199 - main - INFO - Raw response length: 473
+2025-06-24 10:30:23,202 - main - INFO - ✓ Successfully parsed JSON from markdown code block
+2025-06-24 10:30:23,204 - main - INFO - Handling parsed JSON data using method: markdown_json
+2025-06-24 10:30:23,206 - main - INFO - Response parsed successfully using method: markdown_json
+2025-06-24 10:30:23,209 - main - INFO - Text response length: 436, Contains chart: False
+2025-06-24 10:30:23,211 - main - INFO - Final parsed response - Text length: 436, Contains chart: False
+2025-06-24 10:30:23,217 - main - INFO - Saving message to database
+2025-06-24 10:30:23,219 - main - INFO - Saving message to database - Session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7
+2025-06-24 10:30:23,245 - main - INFO - Message saved successfully with MongoDB ID: 685a7e3fbfd1bdba71e67731
+2025-06-24 10:30:23,248 - main - INFO - Message saved successfully
+2025-06-24 10:30:23,252 - main - INFO - Unified retirement chat request completed successfully
+2025-06-25 05:08:58,415 - main - INFO - FastAPI application initialized
+2025-06-25 05:08:58,417 - main - INFO - CORS middleware configured
+2025-06-25 05:08:58,418 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-25 05:08:58,457 - main - INFO - MongoDB client initialized successfully
+2025-06-25 05:08:58,458 - main - INFO - MongoDB collections configured
+2025-06-25 05:08:58,459 - main - INFO - External API configuration loaded
+2025-06-25 05:42:12,960 - main - INFO - FastAPI application initialized
+2025-06-25 05:42:12,962 - main - INFO - CORS middleware configured
+2025-06-25 05:42:12,964 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-25 05:42:12,990 - main - INFO - MongoDB client initialized successfully
+2025-06-25 05:42:12,992 - main - INFO - MongoDB collections configured
+2025-06-25 05:42:12,993 - main - INFO - External API configuration loaded
+2025-06-25 05:42:36,219 - main - INFO - FastAPI application initialized
+2025-06-25 05:42:36,221 - main - INFO - CORS middleware configured
+2025-06-25 05:42:36,222 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-25 05:42:36,233 - main - INFO - MongoDB client initialized successfully
+2025-06-25 05:42:36,234 - main - INFO - MongoDB collections configured
+2025-06-25 05:42:36,235 - main - INFO - External API configuration loaded
+2025-06-25 05:43:11,771 - main - INFO - FastAPI application initialized
+2025-06-25 05:43:11,773 - main - INFO - CORS middleware configured
+2025-06-25 05:43:11,775 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-25 05:43:11,799 - main - INFO - MongoDB client initialized successfully
+2025-06-25 05:43:11,801 - main - INFO - MongoDB collections configured
+2025-06-25 05:43:11,802 - main - INFO - External API configuration loaded

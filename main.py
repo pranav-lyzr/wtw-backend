@@ -1310,7 +1310,13 @@ async def chat_retirement_unified(request: ChatRequest):
         if not text_response and not contains_chart:
             logger.error("No meaningful content extracted from LLM response")
             logger.error(f"Full response content: {response_content[:1000]}...")
-            raise HTTPException(status_code=500, detail="Failed to extract meaningful content from AI response")
+            return {
+                "response": "Failed to extract meaningful content from AI response",
+                "session_id": request.session_id,
+                "chart_data": None,
+                "contains_chart": False,
+                "raw_api_response": raw_api_response
+            }
                 
      
 
@@ -1387,12 +1393,13 @@ async def chat_retirement_unified(request: ChatRequest):
         logger.info("Message saved successfully")
         
         # Create final response
-        response = ChatResponse(
-            response=text_response,
-            session_id=request.session_id,
-            chart_data=chart_data,
-            contains_chart=contains_chart
-        )
+        response = {
+            "response": text_response,
+            "session_id": request.session_id,
+            "chart_data": chart_data,
+            "contains_chart": contains_chart,
+            "raw_api_response": raw_api_response
+        }
 
         logger.info("Unified retirement chat request completed successfully")
         return response
