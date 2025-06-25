@@ -8378,3 +8378,15 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2025-06-25 05:43:11,799 - main - INFO - MongoDB client initialized successfully
 2025-06-25 05:43:11,801 - main - INFO - MongoDB collections configured
 2025-06-25 05:43:11,802 - main - INFO - External API configuration loaded
+2025-06-25 05:48:09,427 - main - INFO - FastAPI application initialized
+2025-06-25 05:48:09,428 - main - INFO - CORS middleware configured
+2025-06-25 05:48:09,430 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-25 05:48:09,444 - main - INFO - MongoDB client initialized successfully
+2025-06-25 05:48:09,445 - main - INFO - MongoDB collections configured
+2025-06-25 05:48:09,446 - main - INFO - External API configuration loaded
+2025-06-25 05:48:18,381 - main - INFO - FastAPI application initialized
+2025-06-25 05:48:18,383 - main - INFO - CORS middleware configured
+2025-06-25 05:48:18,386 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-25 05:48:18,413 - main - INFO - MongoDB client initialized successfully
+2025-06-25 05:48:18,415 - main - INFO - MongoDB collections configured
+2025-06-25 05:48:18,419 - main - INFO - External API configuration loaded
