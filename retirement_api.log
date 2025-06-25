@@ -8450,3 +8450,15 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2025-06-25 10:52:52,090 - main - INFO - MongoDB client initialized successfully
 2025-06-25 10:52:52,092 - main - INFO - MongoDB collections configured
 2025-06-25 10:52:52,093 - main - INFO - External API configuration loaded
+2025-06-25 11:00:18,243 - main - INFO - FastAPI application initialized
+2025-06-25 11:00:18,245 - main - INFO - CORS middleware configured
+2025-06-25 11:00:18,246 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-25 11:00:18,264 - main - INFO - MongoDB client initialized successfully
+2025-06-25 11:00:18,266 - main - INFO - MongoDB collections configured
+2025-06-25 11:00:18,269 - main - INFO - External API configuration loaded
+2025-06-25 11:00:29,728 - main - INFO - FastAPI application initialized
+2025-06-25 11:00:29,729 - main - INFO - CORS middleware configured
+2025-06-25 11:00:29,731 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-25 11:00:29,742 - main - INFO - MongoDB client initialized successfully
+2025-06-25 11:00:29,744 - main - INFO - MongoDB collections configured
+2025-06-25 11:00:29,745 - main - INFO - External API configuration loaded

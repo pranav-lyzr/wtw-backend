@@ -1034,6 +1034,17 @@ async def chat_retirement_unified(request: ChatRequest):
             logger.error(f"Error getting retirement data: {str(retirement_error)}")
             latest_retirement_data = {}
         
+        logger.info("Retrieving recent chat history")
+        recent_messages = []
+        cursor = messages_collection.find({"session_id": request.session_id}).sort("timestamp", -1).limit(3)
+        async for message in cursor:
+            recent_messages.append({
+                "user_message": message['user_message'],
+                "ai_response": message['ai_response'],
+                "timestamp": message['timestamp'].isoformat()
+            })
+        recent_messages.reverse()
+
         # Determine agent ID based on country
         agent_id = "6851461baf3ce50cc6e2e4b3"  # Default master agent for USA
         if country == 'denmark':
@@ -1057,6 +1068,7 @@ async def chat_retirement_unified(request: ChatRequest):
             **CURRENT CONTEXT:**
             - Form Data: {json.dumps(form_data)}
             - Pension Data: {json.dumps(latest_retirement_data)}
+            - Recent Conversations: {json.dumps(recent_messages, default=str)}
 
             **USER QUESTION:** {request.message}
 
@@ -1077,6 +1089,7 @@ async def chat_retirement_unified(request: ChatRequest):
             **CURRENT CONTEXT:**
             - Form Data: {json.dumps(form_data)}
             - Pension Data: {json.dumps(latest_retirement_data)}
+            - Recent Conversations: {json.dumps(recent_messages, default=str)}
 
             **USER QUESTION:** {request.message}
 
