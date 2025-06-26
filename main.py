@@ -1056,9 +1056,9 @@ async def chat_retirement_unified(request: ChatRequest):
             **USER PROFILE (Denmark):**
             - Name: {user_profile.get('name', 'User')}
             - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
-            - Income: DKK {user_profile.get('income', 500000):,} | Growth: {user_profile.get('salary_growth', 0.02)*100}%
-            - Investment Return: {user_profile.get('investment_return', 0.05)*100}% | Inflation: {user_profile.get('inflation', 0.02)*100}%
-            - Contribution Rate: {user_profile.get('contribution_rate', 0.1)*100}%
+            - Income: DKK {user_profile.get('income', 500000):,} | Growth: {normalize_rate(user_profile.get('salary_growth', 0.02))*100}%
+            - Investment Return: {normalize_rate(user_profile.get('investment_return', 0.05))*100}% | Inflation: {normalize_rate(user_profile.get('inflation', 0.02))*100}%
+            - Contribution Rate: {normalize_rate(user_profile.get('contribution_rate', 0.1))*100}%
             - Folkepension Base: DKK 171000
             - ATP Base: DKK {user_profile.get('pension_base', 25000):,}
             - Occupational Pension Base: DKK {user_profile.get('pension_base', 8000):,}
@@ -1072,7 +1072,7 @@ async def chat_retirement_unified(request: ChatRequest):
 
             **USER QUESTION:** {request.message}
 
-            Provide personalized response for this specific Danish user with exact calculations.  
+            Provide personalized response for this specific Danish user with exact calculations. Keep the response more analytical   
             """
         else:
             # Create USA-specific master prompt
@@ -1080,8 +1080,8 @@ async def chat_retirement_unified(request: ChatRequest):
             **USER PROFILE:**
             - Name: {user_profile.get('name', 'User')}
             - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
-            - Income: ${user_profile.get('income', 70000):,} | Growth: {user_profile.get('salary_growth', 0.02)*100}%
-            - Investment Return: {user_profile.get('investment_return', 0.05)*100}% | Inflation: {user_profile.get('inflation', 0.02)*100}%
+            - Income: ${user_profile.get('income', 70000):,} | Growth: {normalize_rate(user_profile.get('salary_growth', 0.02))*100}%
+            - Investment Return: {normalize_rate(user_profile.get('investment_return', 0.05))*100}% | Inflation: {normalize_rate(user_profile.get('inflation', 0.02))*100}%
             - Social Security: ${user_profile.get('social_security_base', 18000):,} | Pension: ${user_profile.get('pension_base', 800):,}
             - 401k: ${user_profile.get('four01k_base', 100):,} | Other: ${user_profile.get('other_base', 400):,}
             - Defined Benefit: ${user_profile.get('defined_benefit_base', 14000):,} (+${user_profile.get('defined_benefit_yearly_increase', 300):,}/year)
@@ -1093,7 +1093,7 @@ async def chat_retirement_unified(request: ChatRequest):
 
             **USER QUESTION:** {request.message}
 
-            Use user data to get more personalized response. 
+            Use user data to get more personalized response for this USA client. Keep the response more analytical   
             """
 
         master_prompt = append_persona_instructions(user_profile.get('email'), master_prompt)
