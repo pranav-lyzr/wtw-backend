@@ -8606,3 +8606,21 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2025-06-26 10:58:41,327 - main - INFO - MongoDB client initialized successfully
 2025-06-26 10:58:41,329 - main - INFO - MongoDB collections configured
 2025-06-26 10:58:41,330 - main - INFO - External API configuration loaded
+2025-06-26 10:58:44,094 - main - INFO - FastAPI application initialized
+2025-06-26 10:58:44,097 - main - INFO - CORS middleware configured
+2025-06-26 10:58:44,099 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-26 10:58:44,121 - main - INFO - MongoDB client initialized successfully
+2025-06-26 10:58:44,123 - main - INFO - MongoDB collections configured
+2025-06-26 10:58:44,125 - main - INFO - External API configuration loaded
+2025-06-26 13:10:23,455 - main - INFO - FastAPI application initialized
+2025-06-26 13:10:23,470 - main - INFO - CORS middleware configured
+2025-06-26 13:10:23,473 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-26 13:10:23,622 - main - INFO - MongoDB client initialized successfully
+2025-06-26 13:10:23,626 - main - INFO - MongoDB collections configured
+2025-06-26 13:10:23,634 - main - INFO - External API configuration loaded
+2025-06-27 05:06:54,027 - main - INFO - FastAPI application initialized
+2025-06-27 05:06:54,064 - main - INFO - CORS middleware configured
+2025-06-27 05:06:54,099 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-06-27 05:06:54,838 - main - INFO - MongoDB client initialized successfully
+2025-06-27 05:06:54,840 - main - INFO - MongoDB collections configured
+2025-06-27 05:06:54,842 - main - INFO - External API configuration loaded

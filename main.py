@@ -347,15 +347,8 @@ async def stream_lyzr_api(agent_id: str, session_id: str, user_id: str, message:
         
 def get_latest_retirement_data(user_profile: dict) -> List[Dict]:
     """Get the latest retirement data (AI-generated if available, otherwise manual)"""
-    ai_data = user_profile.get('ai_retirement_data', [])
-    manual_data = user_profile.get('retirement_data', [])
     
-    # If AI data exists and is more recent, use it
-    if ai_data:
-        logger.info("Using AI-generated retirement data")
-        return ai_data
-    else:
-        logger.info("Using manually calculated retirement data")
+    manual_data = user_profile.get('retirement_data', [])
         return manual_data
     
 def create_pension_prompt(user_message: str, user_profile: dict):
@@ -1024,12 +1017,7 @@ async def chat_retirement_unified(request: ChatRequest):
         # Get latest retirement data with error handling
         try:
             latest_retirement_data = get_latest_retirement_data(user_profile)
-            # Ensure it's not a list when we expect a dict
-            if isinstance(latest_retirement_data, list):
-                if len(latest_retirement_data) > 0:
-                    latest_retirement_data = latest_retirement_data[0]
-                else:
-                    latest_retirement_data = {}
+            # Always use the full list for both Denmark and USA
         except Exception as retirement_error:
             logger.error(f"Error getting retirement data: {str(retirement_error)}")
             latest_retirement_data = {}
