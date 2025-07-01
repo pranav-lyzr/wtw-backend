@@ -347,9 +347,8 @@ async def stream_lyzr_api(agent_id: str, session_id: str, user_id: str, message:
         
 def get_latest_retirement_data(user_profile: dict) -> List[Dict]:
     """Get the latest retirement data (AI-generated if available, otherwise manual)"""
-    
     manual_data = user_profile.get('retirement_data', [])
-        return manual_data
+    return manual_data
     
 def create_pension_prompt(user_message: str, user_profile: dict):
     """Create pension prompt using user profile data"""
