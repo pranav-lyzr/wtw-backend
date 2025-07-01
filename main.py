@@ -1014,13 +1014,7 @@ async def chat_retirement_unified(request: ChatRequest):
             "inflation": user_profile.get('inflation', 0.02),
         }
         
-        # Get latest retirement data with error handling
-        try:
-            latest_retirement_data = get_latest_retirement_data(user_profile)
-            # Always use the full list for both Denmark and USA
-        except Exception as retirement_error:
-            logger.error(f"Error getting retirement data: {str(retirement_error)}")
-            latest_retirement_data = {}
+        latest_retirement_data = user_profile.get('retirement_data', [])
         
         logger.info("Retrieving recent chat history")
         recent_messages = []
@@ -1055,7 +1049,7 @@ async def chat_retirement_unified(request: ChatRequest):
 
             **CURRENT CONTEXT:**
             - Form Data: {json.dumps(form_data)}
-            - Pension Data: {json.dumps(latest_retirement_data)}
+            - Pension Graph Data: {json.dumps(latest_retirement_data)}
             - Recent Conversations: {json.dumps(recent_messages, default=str)}
 
             **USER QUESTION:** {request.message}
@@ -1076,7 +1070,7 @@ async def chat_retirement_unified(request: ChatRequest):
 
             **CURRENT CONTEXT:**
             - Form Data: {json.dumps(form_data)}
-            - Pension Data: {json.dumps(latest_retirement_data)}
+            - Pension Graph Data: {json.dumps(latest_retirement_data)}
             - Recent Conversations: {json.dumps(recent_messages, default=str)}
 
             **USER QUESTION:** {request.message}
