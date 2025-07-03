@@ -969,6 +969,11 @@ Respond with ONLY this JSON structure:
     logger.info(f"Master prompt created, total length: {len(prompt)}")
     return prompt
 
+def replace_strong_with_stars(text: str) -> str:
+    """Replace <strong> and </strong> with ** in a string."""
+    if not isinstance(text, str):
+        return text
+    return text.replace('<strong>', '**').replace('</strong>', '**')
 
 # API Routes
 
@@ -1295,6 +1300,9 @@ async def chat_retirement_unified(request: ChatRequest):
         parsed_result = parse_llm_response(response_content)
         
         text_response = parsed_result['text_response']
+        # Replace <strong> and </strong> with **
+        if isinstance(text_response, str):
+            text_response = text_response.replace('<strong>', '**').replace('</strong>', '**')
         chart_data_raw = parsed_result['chart_data_raw']
         contains_chart = parsed_result['contains_chart']
         parse_method = parsed_result['parse_method']
@@ -1442,6 +1450,9 @@ async def chat_pension(request: ChatRequest):
             structured_response = json.loads(api_response["response"])
             logger.info("Successfully parsed JSON response directly")
             text_response = structured_response.get("text_response", "")
+            # Replace <strong> and </strong> with **
+            if isinstance(text_response, str):
+                text_response = text_response.replace('<strong>', '**').replace('</strong>', '**')
             chart_data_raw = structured_response.get("chart_data")
             contains_chart = structured_response.get("contains_chart", False)
         except json.JSONDecodeError as json_error:
@@ -1457,6 +1468,9 @@ async def chat_pension(request: ChatRequest):
                     
                     # FIXED: Always try to get text_response from the structured JSON first
                     text_response = structured_response.get("text_response", "")
+                    # Replace <strong> and </strong> with **
+                    if isinstance(text_response, str):
+                        text_response = text_response.replace('<strong>', '**').replace('</strong>', '**')
                     
                     # Only if text_response is empty in JSON, then look for text outside JSON blocks
                     if not text_response:
@@ -1789,6 +1803,9 @@ async def chat_retirement(request: ChatRequest):
                 logger.info(f"Received response: {response_data}")
                 
                 response_text = response_data.get("response", "")
+                # Replace <strong> and </strong> with **
+                if isinstance(response_text, str):
+                    response_text = response_text.replace('<strong>', '**').replace('</strong>', '**')
                 logger.info(f"Retrieved response text, length: {len(response_text)}")
                 
             except httpx.RequestError as e:
