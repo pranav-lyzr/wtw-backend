@@ -15,6 +15,7 @@ from logging.handlers import RotatingFileHandler
 import sys
 from bson import ObjectId
 import asyncio
+import re
 
 # Configure logging
 # logging.disable(logging.CRITICAL)
@@ -41,6 +42,8 @@ class ChatResponse(BaseModel):
     session_id: str
     chart_data: Optional[Dict[str, Any]] = None
     contains_chart: bool = False
+    chat_chart: Optional[Dict[str, Any]] = None
+
 
 class SessionCreate(BaseModel):
     user_id: str
@@ -1392,13 +1395,13 @@ async def chat_retirement_unified(request: ChatRequest):
         logger.info("Message saved successfully")
         
         # Create final response
-        response = {
-            "response": text_response,
-            "session_id": request.session_id,
-            "chart_data": chart_data,
-            "contains_chart": contains_chart,
-            "raw_api_response": raw_api_response
-        }
+        # response = {
+        #     "response": text_response,
+        #     "session_id": request.session_id,
+        #     "chart_data": chart_data,
+        #     "contains_chart": contains_chart,
+        #     "raw_api_response": raw_api_response
+        # }
 
         # --- ADDITIONAL LYZR CALLS FOR CHARTS ---
         chat_chart = None
@@ -1412,6 +1415,7 @@ async def chat_retirement_unified(request: ChatRequest):
             else:
                 chart_agent_id = "68679ff43a9ed747d209f9cf"
                 chart_session_id = "68679ff43a9ed747d209f9cf-1pe8o6qimu7"
+            
             chart_payload = {
                 "user_id": "workspace1@wtw.com",
                 "agent_id": chart_agent_id,
@@ -1422,6 +1426,8 @@ async def chat_retirement_unified(request: ChatRequest):
                 "Content-Type": "application/json",
                 "x-api-key": lyzr_chart_api_key
             }
+            
+            logger.info("Making chart API call...")
             async with httpx.AsyncClient() as chart_client:
                 chart_resp = await chart_client.post(
                     lyzr_chart_url,
@@ -1431,36 +1437,105 @@ async def chat_retirement_unified(request: ChatRequest):
                 )
                 chart_resp.raise_for_status()
                 chart_json = chart_resp.json()
-                # Try to extract JSON from the 'response' field if present
-                import re
+                logger.info(f"Chart API response received: {type(chart_json)}")
+                
+                # Extract and parse the chart response
                 chat_chart = None
                 if isinstance(chart_json, dict) and "response" in chart_json:
                     raw_chart_resp = chart_json["response"]
+                    logger.info(f"Raw chart response: {raw_chart_resp}...")
+                    
+                    # Try multiple parsing strategies
                     try:
+                        # Strategy 1: Direct JSON parsing
                         chat_chart = json.loads(raw_chart_resp)
-                    except Exception:
-                        # Try to extract JSON from markdown code block
-                        match = re.search(r'```json\\s*([\\s\\S]*?)\\s*```', raw_chart_resp)
+                        logger.info("✓ Chart data parsed as direct JSON", chat_chart)
+                    except json.JSONDecodeError:
+                        # Strategy 2: Extract from markdown code block
+                        import re
+                        json_pattern = r'```(?:json)?\s*([\s\S]*?)\s*```'
+                        match = re.search(json_pattern, raw_chart_resp, re.IGNORECASE)
                         if match:
                             try:
                                 chat_chart = json.loads(match.group(1).strip())
-                            except Exception:
-                                chat_chart = None
+                                logger.info("✓ Chart data parsed from markdown code block")
+                            except json.JSONDecodeError:
+                                logger.warning("Failed to parse JSON from markdown block")
+                        
+                        # Strategy 3: Extract JSON object pattern
+                        if not chat_chart:
+                            json_obj_pattern = r'\{[\s\S]*\}'
+                            match = re.search(json_obj_pattern, raw_chart_resp, re.DOTALL)
+                            if match:
+                                try:
+                                    chat_chart = json.loads(match.group(0).strip())
+                                    logger.info("✓ Chart data parsed from JSON object pattern")
+                                except json.JSONDecodeError:
+                                    logger.warning("Failed to parse JSON object pattern")
                 else:
-                    chat_chart = chart_json
-                # Save chat_chart to DB as a message
+                    # Try to use the entire response as chart data
+                    if isinstance(chart_json, dict):
+                        chat_chart = chart_json
+                        logger.info("Using entire response as chart data")
+                
+                # Validate chart data structure
                 if chat_chart:
-                    await save_message(
-                        session_id=request.session_id,
-                        user_message="[System] Chart API call",
-                        ai_response="[Chart Data]",
-                        chart_data=chat_chart,
-                        contains_chart=True
-                    )
+                    logger.info(f"Chart data structure: {type(chat_chart)}")
+                    if isinstance(chat_chart, dict):
+                        logger.info(f"Chart data keys: {list(chat_chart.keys())}")
+                        
+                        # Check if it has the expected structure
+                        if 'needsChart' in chat_chart and chat_chart.get('needsChart'):
+                            logger.info("✓ Chart data has needsChart=True")
+                            if 'chartData' in chat_chart:
+                                logger.info("✓ Chart data has chartData field")
+                                chart_data_field = chat_chart['chartData']
+                                if isinstance(chart_data_field, dict) and 'data' in chart_data_field:
+                                    logger.info(f"✓ Chart has {len(chart_data_field['data'])} data points")
+                                else:
+                                    logger.warning("Chart data field doesn't have expected 'data' array")
+                            else:
+                                logger.warning("Chart data missing 'chartData' field")
+                        else:
+                            logger.info("Chart data indicates no chart needed or missing needsChart field")
+                    else:
+                        logger.warning(f"Chart data is not a dict: {type(chat_chart)}")
+                else:
+                    logger.warning("No chart data extracted from response")
+
+                print("chat_chart",chat_chart)
+                    
+                # Save chat_chart to DB as a message (only if we have valid chart data)
+                if chat_chart:
+                    try:
+                        await save_message(
+                            session_id=request.session_id,
+                            user_message="[System] Chart API call",
+                            ai_response="[Chart Data]",
+                            chart_data=chat_chart,
+                            contains_chart=True
+                        )
+                        logger.info("Chart data saved to database successfully")
+                    except Exception as save_error:
+                        logger.error(f"Error saving chart data to database: {str(save_error)}")
+                
         except Exception as chart_api_exc:
             logger.error(f"Error in additional chart Lyzr API call: {str(chart_api_exc)}")
+            logger.error(f"Chart API error type: {type(chart_api_exc).__name__}")
             chat_chart = None
-        response["chat_chart"] = chat_chart
+
+        # Add chat_chart to response
+        response = {
+            "response": text_response,
+            "session_id": request.session_id,
+            "chart_data": chart_data,
+            "contains_chart": contains_chart,
+            "raw_api_response": raw_api_response,
+            "chat_chart": chat_chart
+        }
+        
+        print("final response",response)
+
         # --- END ADDITIONAL LYZR CALLS ---
 
         logger.info("Unified retirement chat request completed successfully")
