@@ -8672,3 +8672,9 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2025-07-04 09:43:34,729 - main - INFO - MongoDB client initialized successfully
 2025-07-04 09:43:34,731 - main - INFO - MongoDB collections configured
 2025-07-04 09:43:34,731 - main - INFO - External API configuration loaded
+2025-07-04 09:52:51,337 - main - INFO - FastAPI application initialized
+2025-07-04 09:52:51,339 - main - INFO - CORS middleware configured
+2025-07-04 09:52:51,341 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-04 09:52:51,369 - main - INFO - MongoDB client initialized successfully
+2025-07-04 09:52:51,370 - main - INFO - MongoDB collections configured
+2025-07-04 09:52:51,371 - main - INFO - External API configuration loaded

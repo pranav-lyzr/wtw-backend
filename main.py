@@ -1416,7 +1416,7 @@ async def chat_retirement_unified(request: ChatRequest):
                 "user_id": "workspace1@wtw.com",
                 "agent_id": chart_agent_id,
                 "session_id": chart_session_id,
-                "message": ""
+                "message": master_prompt
             }
             chart_headers = {
                 "Content-Type": "application/json",
