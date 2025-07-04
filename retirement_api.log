@@ -8654,3 +8654,21 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2025-07-03 12:24:31,524 - main - INFO - MongoDB client initialized successfully
 2025-07-03 12:24:31,526 - main - INFO - MongoDB collections configured
 2025-07-03 12:24:31,528 - main - INFO - External API configuration loaded
+2025-07-04 04:50:51,392 - main - INFO - FastAPI application initialized
+2025-07-04 04:50:51,408 - main - INFO - CORS middleware configured
+2025-07-04 04:50:51,413 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-04 04:50:51,624 - main - INFO - MongoDB client initialized successfully
+2025-07-04 04:50:51,662 - main - INFO - MongoDB collections configured
+2025-07-04 04:50:51,681 - main - INFO - External API configuration loaded
+2025-07-04 09:42:14,385 - main - INFO - FastAPI application initialized
+2025-07-04 09:42:14,389 - main - INFO - CORS middleware configured
+2025-07-04 09:42:14,393 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-04 09:42:14,440 - main - INFO - MongoDB client initialized successfully
+2025-07-04 09:42:14,445 - main - INFO - MongoDB collections configured
+2025-07-04 09:42:14,448 - main - INFO - External API configuration loaded
+2025-07-04 09:43:34,715 - main - INFO - FastAPI application initialized
+2025-07-04 09:43:34,716 - main - INFO - CORS middleware configured
+2025-07-04 09:43:34,717 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-04 09:43:34,729 - main - INFO - MongoDB client initialized successfully
+2025-07-04 09:43:34,731 - main - INFO - MongoDB collections configured
+2025-07-04 09:43:34,731 - main - INFO - External API configuration loaded

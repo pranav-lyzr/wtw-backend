@@ -1400,6 +1400,69 @@ async def chat_retirement_unified(request: ChatRequest):
             "raw_api_response": raw_api_response
         }
 
+        # --- ADDITIONAL LYZR CALLS FOR CHARTS ---
+        chat_chart = None
+        try:
+            # Determine which additional call to make based on country
+            lyzr_chart_api_key = "sk-default-fwThPbmS31sO4pkjt1NDjSC8pcKdFfGm"
+            lyzr_chart_url = "https://agent-prod.studio.lyzr.ai/v3/inference/chat/"
+            if country == 'denmark':
+                chart_agent_id = "68679f0f3a9ed747d209f9a8"
+                chart_session_id = "68679f0f3a9ed747d209f9a8-gbrg1op7lwd"
+            else:
+                chart_agent_id = "68679ff43a9ed747d209f9cf"
+                chart_session_id = "68679ff43a9ed747d209f9cf-1pe8o6qimu7"
+            chart_payload = {
+                "user_id": "workspace1@wtw.com",
+                "agent_id": chart_agent_id,
+                "session_id": chart_session_id,
+                "message": ""
+            }
+            chart_headers = {
+                "Content-Type": "application/json",
+                "x-api-key": lyzr_chart_api_key
+            }
+            async with httpx.AsyncClient() as chart_client:
+                chart_resp = await chart_client.post(
+                    lyzr_chart_url,
+                    json=chart_payload,
+                    headers=chart_headers,
+                    timeout=600.0
+                )
+                chart_resp.raise_for_status()
+                chart_json = chart_resp.json()
+                # Try to extract JSON from the 'response' field if present
+                import re
+                chat_chart = None
+                if isinstance(chart_json, dict) and "response" in chart_json:
+                    raw_chart_resp = chart_json["response"]
+                    try:
+                        chat_chart = json.loads(raw_chart_resp)
+                    except Exception:
+                        # Try to extract JSON from markdown code block
+                        match = re.search(r'```json\\s*([\\s\\S]*?)\\s*```', raw_chart_resp)
+                        if match:
+                            try:
+                                chat_chart = json.loads(match.group(1).strip())
+                            except Exception:
+                                chat_chart = None
+                else:
+                    chat_chart = chart_json
+                # Save chat_chart to DB as a message
+                if chat_chart:
+                    await save_message(
+                        session_id=request.session_id,
+                        user_message="[System] Chart API call",
+                        ai_response="[Chart Data]",
+                        chart_data=chat_chart,
+                        contains_chart=True
+                    )
+        except Exception as chart_api_exc:
+            logger.error(f"Error in additional chart Lyzr API call: {str(chart_api_exc)}")
+            chat_chart = None
+        response["chat_chart"] = chat_chart
+        # --- END ADDITIONAL LYZR CALLS ---
+
         logger.info("Unified retirement chat request completed successfully")
         return response
         
