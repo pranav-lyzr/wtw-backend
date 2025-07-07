@@ -64,6 +64,7 @@ class MessageResponse(BaseModel):
     chart_data: Optional[Union[Dict[str, Any], List[Dict[str, Any]]]] = None
     contains_chart: bool = False
     timestamp: datetime
+    chat_chart: Optional[Dict[str, Any]] = None
 
 class UserProfile(BaseModel):
     user_id: str
@@ -460,12 +461,13 @@ async def save_ai_retirement_data(user_id: str, ai_retirement_data: List[Dict]):
         logger.error(f"Error saving AI retirement data: {str(e)}")
         raise
     
-async def save_message(session_id: str, user_message: str, ai_response: str, chart_data: Optional[Dict[str, Any]] = None, contains_chart: bool = False):
+async def save_message(session_id: str, user_message: str, ai_response: str, chart_data: Optional[Dict[str, Any]] = None, contains_chart: bool = False, chat_chart: Optional[Dict[str, Any]] = None):
     """Save a message to the database"""
     logger.info(f"Saving message to database - Session ID: {session_id}")
-    logger.debug(f"User message length: {len(user_message)}")
-    logger.debug(f"AI response length: {len(ai_response)}")
-    logger.debug(f"Contains chart: {contains_chart}")
+    logger.info(f"User message length: {len(user_message)}")
+    logger.info(f"AI response length: {len(ai_response)}")
+    logger.info(f"Contains chart: {contains_chart}")
+    logger.info(f"Chat chart: {chat_chart}")
     
     try:
         message_doc = {
@@ -475,6 +477,7 @@ async def save_message(session_id: str, user_message: str, ai_response: str, cha
             "ai_response": ai_response,
             "chart_data": chart_data,
             "contains_chart": contains_chart,
+            "chat_chart": chat_chart,
             "timestamp": datetime.utcnow()
         }
         
@@ -1392,7 +1395,7 @@ async def chat_retirement_unified(request: ChatRequest):
         #     chart_data=database_chart_data,
         #     contains_chart=contains_chart
         # )
-        logger.info("Message saved successfully")
+        logger.info("Message saved successfully Negative")
         
         # Create final response
         # response = {
@@ -1505,28 +1508,28 @@ async def chat_retirement_unified(request: ChatRequest):
 
                 print("chat_chart",chat_chart)
                     
-                # Save chat_chart to DB as a message (only if we have valid chart data)
-                if chat_chart:
-                    try:
-                        await save_message(
-                            session_id=request.session_id,
-                            user_message=request.message,
-                            ai_response=text_response,
-                            chart_data=database_chart_data,
-                            contains_chart=contains_chart,
-                            chat_chart= chat_chart
-                        )
-                        # await save_message(
-                        #     session_id=request.session_id,
-                        #     user_message="[System] Chart API call",
-                        #     ai_response="[Chart Data]",
-                        #     chart_data=chat_chart,
-                        #     chat_chart= chat_chart
-                        #     contains_chart=True
-                        # )
-                        logger.info("Chart data saved to database successfully")
-                    except Exception as save_error:
-                        logger.error(f"Error saving chart data to database: {str(save_error)}")
+                
+                try:
+                    print("saving messages ")
+                    await save_message(
+                        session_id=request.session_id,
+                        user_message=request.message,
+                        ai_response=text_response,
+                        chart_data=database_chart_data,
+                        contains_chart=contains_chart,
+                        chat_chart= chat_chart
+                    )
+                    # await save_message(
+                    #     session_id=request.session_id,
+                    #     user_message="[System] Chart API call",
+                    #     ai_response="[Chart Data]",
+                    #     chart_data=chat_chart,
+                    #     chat_chart= chat_chart
+                    #     contains_chart=True
+                    # )
+                    logger.info("Chart data saved to database successfully")
+                except Exception as save_error:
+                    logger.error(f"Error saving chart data to database: {str(save_error)}")
                 
         except Exception as chart_api_exc:
             logger.error(f"Error in additional chart Lyzr API call: {str(chart_api_exc)}")

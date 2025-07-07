@@ -9557,3 +9557,437 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2025-07-07 10:48:45,110 - main - INFO - MongoDB client initialized successfully
 2025-07-07 10:48:45,112 - main - INFO - MongoDB collections configured
 2025-07-07 10:48:45,114 - main - INFO - External API configuration loaded
+2025-07-07 10:55:42,392 - main - INFO - FastAPI application initialized
+2025-07-07 10:55:42,395 - main - INFO - CORS middleware configured
+2025-07-07 10:55:42,398 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 10:55:42,432 - main - INFO - MongoDB client initialized successfully
+2025-07-07 10:55:42,434 - main - INFO - MongoDB collections configured
+2025-07-07 10:55:42,446 - main - INFO - External API configuration loaded
+2025-07-07 10:56:05,253 - main - INFO - Retrieving all users
+2025-07-07 10:56:06,221 - main - INFO - Retrieved 8 users
+2025-07-07 10:56:23,033 - main - INFO - Retrieving sessions, user_id filter: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-07 10:56:23,129 - main - INFO - Retrieved 2 sessions
+2025-07-07 10:57:23,913 - main - INFO - FastAPI application initialized
+2025-07-07 10:57:23,917 - main - INFO - CORS middleware configured
+2025-07-07 10:57:23,921 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 10:57:23,949 - main - INFO - MongoDB client initialized successfully
+2025-07-07 10:57:23,951 - main - INFO - MongoDB collections configured
+2025-07-07 10:57:23,954 - main - INFO - External API configuration loaded
+2025-07-07 10:57:32,614 - main - INFO - FastAPI application initialized
+2025-07-07 10:57:32,616 - main - INFO - CORS middleware configured
+2025-07-07 10:57:32,617 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 10:57:32,637 - main - INFO - MongoDB client initialized successfully
+2025-07-07 10:57:32,639 - main - INFO - MongoDB collections configured
+2025-07-07 10:57:32,641 - main - INFO - External API configuration loaded
+2025-07-07 10:57:47,260 - main - INFO - FastAPI application initialized
+2025-07-07 10:57:47,261 - main - INFO - CORS middleware configured
+2025-07-07 10:57:47,263 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 10:57:47,279 - main - INFO - MongoDB client initialized successfully
+2025-07-07 10:57:47,280 - main - INFO - MongoDB collections configured
+2025-07-07 10:57:47,283 - main - INFO - External API configuration loaded
+2025-07-07 10:58:01,249 - main - INFO - Unified retirement chat request - Session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-07 10:58:01,258 - main - INFO - Retrieving user profile
+2025-07-07 10:58:01,320 - main - INFO - Retrieving recent chat history
+2025-07-07 10:58:01,390 - main - INFO - Using Denmark-specific agent ID: 685927b4a83b7ec9a60665f9
+2025-07-07 10:58:01,400 - main - INFO - Appending persona instructions for email: danish2@gmail.com
+2025-07-07 10:58:01,414 - main - INFO - Calling Lyzr API with agent ID: 685927b4a83b7ec9a60665f9
+2025-07-07 10:58:01,416 - main - INFO - Starting Lyzr API call - Agent ID: 685927b4a83b7ec9a60665f9, Session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-07 10:58:01,798 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-07-07 10:58:58,554 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-07 10:58:58,558 - main - INFO - Received response with status code: 200
+2025-07-07 10:58:58,560 - main - INFO - Raw Lyzr API response: {"response":"{\"text_response\":\"<strong>Inflation-Linked vs. Nominal Bonds Analysis</strong>  \nYour DKK 100,000 investment over 18 years yields very different real outcomes:  \n• <strong>Inflation-Linked Securities</strong> maintain constant purchasing power at DKK 100,000 throughout, fully hedging 2 % annual inflation.  \n• <strong>Nominal Bonds (5 %)</strong> grow to DKK 240,543 nominally by age 60, but when adjusted for cumulative 2 % inflation, the real value is only DKK 180,613.  \nBy retirement, nominal bonds outperform in real terms (+DKK 80,613), but carry inflation risk if rates rise above 2 %. Inflation-linked securities eliminate this risk, ensuring your income’s purchasing power.  \nHow might these results influence your allocation between nominal bonds and inflation-linked securities as you approach age 60?\",\"chart_data\":{\"type\":\"pension_data\",\"data\":[{\"age\":42,\"Nominal\":100000,\"Real_Nominal\":100000,\"Inflation-Linked\":100000},{\"age\":51,\"Nominal\":155132,\"Real_Nominal\":129425,\"Inflation-Linked\":100000},{\"age\":60,\"Nominal\":240543,\"Real_Nominal\":180613,\"Inflation-Linked\":100000}]},\"contains_chart\":true}","module_outputs":{}}
+2025-07-07 10:58:58,562 - main - INFO - Received response: {"response": "{\"text_response\":\"<strong>Inflation-Linked vs. Nominal Bonds Analysis</strong>  \nYour DKK 100,000 investment over 18 years yields very different real outcomes:  \n\u2022 <strong>Inflation-Linked Securities</strong> maintain constant purchasing power at DKK 100,000 throughout, fully hedging 2 % annual inflation.  \n\u2022 <strong>Nominal Bonds (5 %)</strong> grow to DKK 240,543 nominally by age 60, but when adjusted for cumulative 2 % inflation, the real value is only DKK 180,613.  \nBy retirement, nominal bonds outperform in real terms (+DKK 80,613), but carry inflation risk if rates rise above 2 %. Inflation-linked securities eliminate this risk, ensuring your income\u2019s purchasing power.  \nHow might these results influence your allocation between nominal bonds and inflation-linked securities as you approach age 60?\",\"chart_data\":{\"type\":\"pension_data\",\"data\":[{\"age\":42,\"Nominal\":100000,\"Real_Nominal\":100000,\"Inflation-Linked\":100000},{\"age\":51,\"Nominal\":155132,\"Real_Nominal\":129425,\"Inflation-Linked\":100000},{\"age\":60,\"Nominal\":240543,\"Real_Nominal\":180613,\"Inflation-Linked\":100000}]},\"contains_chart\":true}", "module_outputs": {}}
+2025-07-07 10:58:58,563 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-07-07 10:58:58,565 - main - INFO - Lyzr API call completed successfully
+2025-07-07 10:58:58,567 - main - INFO - Received response: {'response': '{"text_response":"<strong>Inflation-Linked vs. Nominal Bonds Analysis</strong>  \nYour DKK 100,000 investment over 18 years yields very different real outcomes:  \n• <strong>Inflation-Linked Securities</strong> maintain constant purchasing power at DKK 100,000 throughout, fully hedging 2 % annual inflation.  \n• <strong>Nominal Bonds (5 %)</strong> grow to DKK 240,543 nominally by age 60, but when adjusted for cumulative 2 % inflation, the real value is only DKK 180,613.  \nBy retirement, nominal bonds outperform in real terms (+DKK 80,613), but carry inflation risk if rates rise above 2 %. Inflation-linked securities eliminate this risk, ensuring your income’s purchasing power.  \nHow might these results influence your allocation between nominal bonds and inflation-linked securities as you approach age 60?","chart_data":{"type":"pension_data","data":[{"age":42,"Nominal":100000,"Real_Nominal":100000,"Inflation-Linked":100000},{"age":51,"Nominal":155132,"Real_Nominal":129425,"Inflation-Linked":100000},{"age":60,"Nominal":240543,"Real_Nominal":180613,"Inflation-Linked":100000}]},"contains_chart":true}', 'module_outputs': {}}
+2025-07-07 10:58:58,568 - main - INFO - Parsing LLM response with comprehensive format handling
+2025-07-07 10:58:58,569 - main - INFO - Parsing LLM response
+2025-07-07 10:58:58,571 - main - INFO - Raw response length: 1111
+2025-07-07 10:58:58,576 - main - INFO - ✓ Successfully extracted data using regex patterns
+2025-07-07 10:58:58,578 - main - INFO - Response parsed successfully using method: regex_extraction
+2025-07-07 10:58:58,580 - main - INFO - Text response length: 756, Contains chart: True
+2025-07-07 10:58:58,583 - main - INFO - Final parsed response - Text length: 756, Contains chart: True
+2025-07-07 10:58:58,591 - main - INFO - Processing chart data from response
+2025-07-07 10:58:58,597 - main - ERROR - Failed to parse chart data: Expecting ',' delimiter: line 1 column 107 (char 106)
+2025-07-07 10:58:58,599 - main - INFO - Saving message to database
+2025-07-07 10:58:58,601 - main - INFO - Message saved successfully Negative
+2025-07-07 10:58:58,605 - main - INFO - Making chart API call...
+2025-07-07 10:59:09,986 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-07 10:59:09,989 - main - INFO - Chart API response received: <class 'dict'>
+2025-07-07 10:59:09,992 - main - INFO - Raw chart response: ```json
+{
+  "needsChart": true,
+  "explanation": "Visual comparison of inflation-protected vs traditional investments helps demonstrate the real value protection over Rachel's 18-year retirement period",
+  "chartData": {
+    "type": "line",
+    "title": "Inflation Protection: Real vs Nominal Retirement Income",
+    "subtitle": "Rachel's projected retirement income with 2% inflation over 30 years",
+    "data": {
+      "labels": ["2042", "2047", "2052", "2057", "2062", "2067", "2072"],
+      "datasets": [
+        {
+          "label": "Current Portfolio (Nominal Value)",
+          "data": [148930, 164400, 181500, 200400, 221200, 244100, 269300],
+          "color": "#dc2626",
+          "borderWidth": 2
+        },
+        {
+          "label": "Current Portfolio (Real Value)",
+          "data": [148930, 148900, 148800, 148600, 148300, 147900, 147400],
+          "color": "#ea580c",
+          "borderWidth": 2
+        },
+        {
+          "label": "With 40% Inflation-Linked Securities",
+          "data": [148930, 155200, 162000, 169300, 177100, 185400, 194200],
+          "color": "#2563eb",
+          "borderWidth": 2
+        },
+        {
+          "label": "With 60% Inflation-Linked Securities",
+          "data": [148930, 158800, 169200, 180300, 192100, 204700, 218200],
+          "color": "#16a34a",
+          "borderWidth": 2
+        }
+      ]
+    },
+    "options": {
+      "currency": "DKK",
+      "yAxisLabel": "Annual Income (DKK)",
+      "xAxisLabel": "Year",
+      "showPoints": true,
+      "showGrid": true
+    }
+  }
+}
+```...
+2025-07-07 10:59:09,995 - main - INFO - ✓ Chart data parsed from markdown code block
+2025-07-07 10:59:09,999 - main - INFO - Chart data structure: <class 'dict'>
+2025-07-07 10:59:10,012 - main - INFO - Chart data keys: ['needsChart', 'explanation', 'chartData']
+2025-07-07 10:59:10,018 - main - INFO - ✓ Chart data has needsChart=True
+2025-07-07 10:59:10,020 - main - INFO - ✓ Chart data has chartData field
+2025-07-07 10:59:10,022 - main - INFO - ✓ Chart has 2 data points
+2025-07-07 10:59:10,040 - main - ERROR - Error saving chart data to database: save_message() got an unexpected keyword argument 'chat_chart'
+2025-07-07 10:59:10,047 - main - INFO - Unified retirement chat request completed successfully
+2025-07-07 11:00:55,194 - main - INFO - FastAPI application initialized
+2025-07-07 11:00:55,204 - main - INFO - CORS middleware configured
+2025-07-07 11:00:55,214 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 11:00:55,268 - main - INFO - MongoDB client initialized successfully
+2025-07-07 11:00:55,273 - main - INFO - MongoDB collections configured
+2025-07-07 11:00:55,282 - main - INFO - External API configuration loaded
+2025-07-07 11:01:01,918 - main - INFO - FastAPI application initialized
+2025-07-07 11:01:01,920 - main - INFO - CORS middleware configured
+2025-07-07 11:01:01,922 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 11:01:01,945 - main - INFO - MongoDB client initialized successfully
+2025-07-07 11:01:01,947 - main - INFO - MongoDB collections configured
+2025-07-07 11:01:01,949 - main - INFO - External API configuration loaded
+2025-07-07 11:01:29,989 - main - INFO - Retrieving messages for session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7
+2025-07-07 11:01:30,053 - main - INFO - Retrieved 2 messages for session 7caf72af-885b-4ff9-ade3-338395ee07a7
+2025-07-07 11:01:37,890 - main - INFO - Unified retirement chat request - Session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-07 11:01:37,893 - main - INFO - Retrieving user profile
+2025-07-07 11:01:37,899 - main - INFO - Retrieving recent chat history
+2025-07-07 11:01:37,905 - main - INFO - Using Denmark-specific agent ID: 685927b4a83b7ec9a60665f9
+2025-07-07 11:01:37,907 - main - INFO - Appending persona instructions for email: danish2@gmail.com
+2025-07-07 11:01:37,912 - main - INFO - Calling Lyzr API with agent ID: 685927b4a83b7ec9a60665f9
+2025-07-07 11:01:37,917 - main - INFO - Starting Lyzr API call - Agent ID: 685927b4a83b7ec9a60665f9, Session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-07 11:01:38,061 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-07-07 11:02:09,281 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-07 11:02:09,285 - main - INFO - Received response with status code: 200
+2025-07-07 11:02:09,287 - main - INFO - Raw Lyzr API response: {"response":"{\"text_response\":\"<strong>Inflation-Linked Securities: A Strategic Move for Long-Term Stability</strong>  \nIncorporating inflation-linked bonds into your portfolio can help preserve the real value of your retirement income, given your 5% expected return against 2% inflation. Key benefits include:  \n- <strong>Inflation Protection</strong>: Maintains a real return of approximately 3% if inflation rises unexpectedly.  \n- <strong>Diversification</strong>: Adds an asset class with low correlation to equities and traditional bonds.  \n- <strong>Steady Purchasing Power</strong>: Supports your retirement cashflow from age 60 through 90 without erosion.  \nHave you considered what percentage of your fixed-income allocation you’d dedicate to inflation-linked securities to balance growth and protection?\",\"chart_data\":null,\"contains_chart\":false}","module_outputs":{}}
+2025-07-07 11:02:09,289 - main - INFO - Received response: {"response": "{\"text_response\":\"<strong>Inflation-Linked Securities: A Strategic Move for Long-Term Stability</strong>  \nIncorporating inflation-linked bonds into your portfolio can help preserve the real value of your retirement income, given your 5% expected return against 2% inflation. Key benefits include:  \n- <strong>Inflation Protection</strong>: Maintains a real return of approximately 3% if inflation rises unexpectedly.  \n- <strong>Diversification</strong>: Adds an asset class with low correlation to equities and traditional bonds.  \n- <strong>Steady Purchasing Power</strong>: Supports your retirement cashflow from age 60 through 90 without erosion.  \nHave you considered what percentage of your fixed-income allocation you\u2019d dedicate to inflation-linked securities to balance growth and protection?\",\"chart_data\":null,\"contains_chart\":false}", "module_outputs": {}}
+2025-07-07 11:02:09,292 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-07-07 11:02:09,295 - main - INFO - Lyzr API call completed successfully
+2025-07-07 11:02:09,300 - main - INFO - Received response: {'response': '{"text_response":"<strong>Inflation-Linked Securities: A Strategic Move for Long-Term Stability</strong>  \nIncorporating inflation-linked bonds into your portfolio can help preserve the real value of your retirement income, given your 5% expected return against 2% inflation. Key benefits include:  \n- <strong>Inflation Protection</strong>: Maintains a real return of approximately 3% if inflation rises unexpectedly.  \n- <strong>Diversification</strong>: Adds an asset class with low correlation to equities and traditional bonds.  \n- <strong>Steady Purchasing Power</strong>: Supports your retirement cashflow from age 60 through 90 without erosion.  \nHave you considered what percentage of your fixed-income allocation you’d dedicate to inflation-linked securities to balance growth and protection?","chart_data":null,"contains_chart":false}', 'module_outputs': {}}
+2025-07-07 11:02:09,302 - main - INFO - Parsing LLM response with comprehensive format handling
+2025-07-07 11:02:09,304 - main - INFO - Parsing LLM response
+2025-07-07 11:02:09,316 - main - INFO - Raw response length: 844
+2025-07-07 11:02:09,324 - main - INFO - ✓ Successfully extracted data using regex patterns
+2025-07-07 11:02:09,328 - main - INFO - Response parsed successfully using method: regex_extraction
+2025-07-07 11:02:09,336 - main - INFO - Text response length: 731, Contains chart: False
+2025-07-07 11:02:09,337 - main - INFO - Final parsed response - Text length: 731, Contains chart: False
+2025-07-07 11:02:09,339 - main - INFO - Saving message to database
+2025-07-07 11:02:09,341 - main - INFO - Message saved successfully Negative
+2025-07-07 11:02:09,342 - main - INFO - Making chart API call...
+2025-07-07 11:02:33,803 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-07 11:02:33,807 - main - INFO - Chart API response received: <class 'dict'>
+2025-07-07 11:02:33,809 - main - INFO - Raw chart response: ```json
+{
+  "needsChart": true,
+  "explanation": "Visual comparison of inflation-protected vs standard portfolio performance shows the impact on real purchasing power over Rachel's 30-year retirement period",
+  "chartData": {
+    "type": "line",
+    "title": "Inflation Impact on Retirement Income Value",
+    "subtitle": "Real purchasing power comparison over 30-year retirement (2042-2072)",
+    "data": {
+      "labels": ["2042", "2047", "2052", "2057", "2062", "2067", "2072"],
+      "datasets": [
+        {
+          "label": "Current Portfolio (5% return, 2% inflation)",
+          "data": [148930, 134271, 121081, 109196, 98481, 88815, 80089],
+          "color": "#dc2626",
+          "borderWidth": 2
+        },
+        {
+          "label": "50% Inflation-Linked Portfolio",
+          "data": [148930, 142135, 135693, 129592, 123821, 118368, 113223],
+          "color": "#2563eb",
+          "borderWidth": 2
+        },
+        {
+          "label": "Nominal Income (unadjusted)",
+          "data": [148930, 165040, 182794, 202514, 224363, 248549, 275333],
+          "color": "#16a34a",
+          "borderWidth": 2
+        }
+      ]
+    },
+    "options": {
+      "currency": "DKK",
+      "yAxisLabel": "Real Value (DKK)",
+      "xAxisLabel": "Year",
+      "showPoints": true,
+      "showGrid": true
+    }
+  }
+}
+```
+<strong>Analysis: Inflation Protection Strategy for Rachel's Retirement Portfolio</strong>
+Given your pension projections and Denmark's inflation environment, incorporating inflation-linked securities is <strong>strategically sound</strong> for protecting your retirement income's real value.
+<strong>Current Inflation Exposure Risk:</strong>
+- Your DKK 148,930 annual pension income at age 60 will lose 39% of its purchasing power over 25 years at 2% inflation
+- By age 85, the real value drops to approximately DKK 90,000 in today's purchasing power
+<strong>Recommended Inflation-Linked Securities Allocation:</strong>
+- <strong>40-50% allocation</strong> to Danish inflation-linked bonds (TIPS-equivalent)
+- <strong>10-15% allocation</strong> to European inflation-protected securities (EIPS)
+- <strong>5-10% allocation</strong> to inflation-hedged REITs or commodities
+<strong>Expected Impact on Your Portfolio:</strong>
+- <strong>Reduced volatility</strong> in real income terms
+- <strong>Protection against inflation spikes</strong> above the 2% baseline
+- <strong>Slight reduction</strong> in nominal returns (typically 0.5-1% lower than conventional bonds)
+<strong>Danish-Specific Considerations:</strong>
+- Denmark's inflation-linked government bonds (IL-bonds) offer direct CPI protection
+- Consider the 15.3% pension yield tax impact on inflation adjustments
+- Your Folkepension already includes inflation adjustment from age 67
+<strong>Implementation Strategy:</strong>
+1. <strong>Gradual transition</strong> over 2-3 years as you approach retirement
+2. <strong>Rebalance annually</strong> to maintain target allocation
+3. <strong>Monitor real yields</strong> - currently attractive in Danish IL-bond market
+<strong>Cost-Benefit Analysis:</strong>
+- <strong>Cost</strong>: Potential 0.5-1% annual return reduction
+- <strong>Benefit</strong>: Preserves 85-90% of purchasing power vs. 61% with current strategy
+This adjustment aligns with your conservative 5% investment return assumption while providing crucial inflation protection for your 30-year retirement horizon....
+2025-07-07 11:02:33,811 - main - INFO - ✓ Chart data parsed from markdown code block
+2025-07-07 11:02:33,813 - main - INFO - Chart data structure: <class 'dict'>
+2025-07-07 11:02:33,815 - main - INFO - Chart data keys: ['needsChart', 'explanation', 'chartData']
+2025-07-07 11:02:33,817 - main - INFO - ✓ Chart data has needsChart=True
+2025-07-07 11:02:33,819 - main - INFO - ✓ Chart data has chartData field
+2025-07-07 11:02:33,820 - main - INFO - ✓ Chart has 2 data points
+2025-07-07 11:02:33,822 - main - INFO - Saving message to database - Session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7
+2025-07-07 11:02:33,852 - main - INFO - Message saved successfully with MongoDB ID: 686ba949f809fc2a84bf8517
+2025-07-07 11:02:33,853 - main - INFO - Chart data saved to database successfully
+2025-07-07 11:02:33,855 - main - INFO - Unified retirement chat request completed successfully
+2025-07-07 11:02:45,519 - main - INFO - Retrieving messages for session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7
+2025-07-07 11:02:45,532 - main - INFO - Retrieved 3 messages for session 7caf72af-885b-4ff9-ade3-338395ee07a7
+2025-07-07 11:04:30,571 - main - INFO - FastAPI application initialized
+2025-07-07 11:04:30,574 - main - INFO - CORS middleware configured
+2025-07-07 11:04:30,576 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 11:04:30,602 - main - INFO - MongoDB client initialized successfully
+2025-07-07 11:04:30,607 - main - INFO - MongoDB collections configured
+2025-07-07 11:04:30,613 - main - INFO - External API configuration loaded
+2025-07-07 11:04:35,265 - main - INFO - FastAPI application initialized
+2025-07-07 11:04:35,267 - main - INFO - CORS middleware configured
+2025-07-07 11:04:35,270 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 11:04:35,299 - main - INFO - MongoDB client initialized successfully
+2025-07-07 11:04:35,303 - main - INFO - MongoDB collections configured
+2025-07-07 11:04:35,306 - main - INFO - External API configuration loaded
+2025-07-07 11:04:44,072 - main - INFO - Unified retirement chat request - Session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-07 11:04:44,074 - main - INFO - Retrieving user profile
+2025-07-07 11:04:44,139 - main - INFO - Retrieving recent chat history
+2025-07-07 11:04:44,162 - main - INFO - Using Denmark-specific agent ID: 685927b4a83b7ec9a60665f9
+2025-07-07 11:04:44,174 - main - INFO - Appending persona instructions for email: danish2@gmail.com
+2025-07-07 11:04:44,176 - main - INFO - Calling Lyzr API with agent ID: 685927b4a83b7ec9a60665f9
+2025-07-07 11:04:44,181 - main - INFO - Starting Lyzr API call - Agent ID: 685927b4a83b7ec9a60665f9, Session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-07 11:04:44,432 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-07-07 11:05:35,942 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-07 11:05:35,946 - main - INFO - Received response with status code: 200
+2025-07-07 11:05:35,947 - main - INFO - Raw Lyzr API response: {"response":"{\"text_response\":\"<strong>Preserving Your Retirement Income’s Real Value with Inflation-Linked Securities</strong>  \nWith a 5% expected return and 2% inflation, the real return on your Occupational, Firmapension, and Private Pension components is about 3%. However, these aren’t inherently inflation-indexed, which exposes you to purchasing-power risk over a 30-year retirement horizon.  \n<strong>Analytical Calculation:</strong>  \n- Current Private Pension at 60: DKK 4,000 growing at 5% nominal = DKK 17,287.77 by age 90 (nominal). Real value after inflation (2%) = DKK 8,643.88  \n- If 20% of this is shifted into inflation-linked bonds (assumed to yield 2% real), that portion’s real value remains DKK 8,643.88 instead of eroding to DKK 6,915.10 (if kept at 3% real).  \nAllocating <strong>20%–30%</strong> of your non-indexed pension assets into inflation-linked securities could:  \n- Maintain purchasing power with a guaranteed 2% real yield  \n- Reduce volatility relative to equities  \n- Safeguard regular cashflow for expenses like travel  \nHow would dedicating 25% of your fixed-income allocation to inflation-linked bonds impact your overall portfolio risk and return expectations?\",\"chart_data\":null,\"contains_chart\":false}","module_outputs":{}}
+2025-07-07 11:05:35,949 - main - INFO - Received response: {"response": "{\"text_response\":\"<strong>Preserving Your Retirement Income\u2019s Real Value with Inflation-Linked Securities</strong>  \nWith a 5% expected return and 2% inflation, the real return on your Occupational, Firmapension, and Private Pension components is about 3%. However, these aren\u2019t inherently inflation-indexed, which exposes you to purchasing-power risk over a 30-year retirement horizon.  \n<strong>Analytical Calculation:</strong>  \n- Current Private Pension at 60: DKK 4,000 growing at 5% nominal = DKK 17,287.77 by age 90 (nominal). Real value after inflation (2%) = DKK 8,643.88  \n- If 20% of this is shifted into inflation-linked bonds (assumed to yield 2% real), that portion\u2019s real value remains DKK 8,643.88 instead of eroding to DKK 6,915.10 (if kept at 3% real).  \nAllocating <strong>20%\u201330%</strong> of your non-indexed pension assets into inflation-linked securities could:  \n- Maintain purchasing power with a guaranteed 2% real yield  \n- Reduce volatility relative to equities  \n- Safeguard regular cashflow for expenses like travel  \nHow would dedicating 25% of your fixed-income allocation to inflation-linked bonds impact your overall portfolio risk and return expectations?\",\"chart_data\":null,\"contains_chart\":false}", "module_outputs": {}}
+2025-07-07 11:05:35,951 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-07-07 11:05:35,953 - main - INFO - Lyzr API call completed successfully
+2025-07-07 11:05:35,957 - main - INFO - Received response: {'response': '{"text_response":"<strong>Preserving Your Retirement Income’s Real Value with Inflation-Linked Securities</strong>  \nWith a 5% expected return and 2% inflation, the real return on your Occupational, Firmapension, and Private Pension components is about 3%. However, these aren’t inherently inflation-indexed, which exposes you to purchasing-power risk over a 30-year retirement horizon.  \n<strong>Analytical Calculation:</strong>  \n- Current Private Pension at 60: DKK 4,000 growing at 5% nominal = DKK 17,287.77 by age 90 (nominal). Real value after inflation (2%) = DKK 8,643.88  \n- If 20% of this is shifted into inflation-linked bonds (assumed to yield 2% real), that portion’s real value remains DKK 8,643.88 instead of eroding to DKK 6,915.10 (if kept at 3% real).  \nAllocating <strong>20%–30%</strong> of your non-indexed pension assets into inflation-linked securities could:  \n- Maintain purchasing power with a guaranteed 2% real yield  \n- Reduce volatility relative to equities  \n- Safeguard regular cashflow for expenses like travel  \nHow would dedicating 25% of your fixed-income allocation to inflation-linked bonds impact your overall portfolio risk and return expectations?","chart_data":null,"contains_chart":false}', 'module_outputs': {}}
+2025-07-07 11:05:35,958 - main - INFO - Parsing LLM response with comprehensive format handling
+2025-07-07 11:05:35,960 - main - INFO - Parsing LLM response
+2025-07-07 11:05:35,963 - main - INFO - Raw response length: 1232
+2025-07-07 11:05:35,973 - main - INFO - ✓ Successfully extracted data using regex patterns
+2025-07-07 11:05:35,975 - main - INFO - Response parsed successfully using method: regex_extraction
+2025-07-07 11:05:35,977 - main - INFO - Text response length: 1132, Contains chart: False
+2025-07-07 11:05:35,980 - main - INFO - Final parsed response - Text length: 1132, Contains chart: False
+2025-07-07 11:05:35,983 - main - INFO - Saving message to database
+2025-07-07 11:05:35,989 - main - INFO - Message saved successfully Negative
+2025-07-07 11:05:35,991 - main - INFO - Making chart API call...
+2025-07-07 11:05:46,778 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-07 11:05:46,782 - main - INFO - Chart API response received: <class 'dict'>
+2025-07-07 11:05:46,783 - main - INFO - Raw chart response: ```json
+{
+  "needsChart": true,
+  "explanation": "Visual comparison of inflation-protected vs traditional portfolio performance over retirement period helps demonstrate the value of inflation-linked securities",
+  "chartData": {
+    "type": "line",
+    "title": "Retirement Income Protection: Traditional vs Inflation-Linked Portfolio",
+    "subtitle": "Real purchasing power comparison over 30-year retirement (Age 60-90)",
+    "data": {
+      "labels": ["Age 60", "Age 65", "Age 70", "Age 75", "Age 80", "Age 85", "Age 90"],
+      "datasets": [
+        {
+          "label": "Traditional Portfolio (5% return, 2% inflation)",
+          "data": [148930, 164220, 181000, 199410, 219620, 242050, 266850],
+          "color": "#dc2626",
+          "borderWidth": 2
+        },
+        {
+          "label": "50% Inflation-Linked Portfolio",
+          "data": [148930, 168950, 191680, 217480, 246830, 280240, 318360],
+          "color": "#2563eb",
+          "borderWidth": 2
+        },
+        {
+          "label": "Real Value (Inflation-Adjusted)",
+          "data": [148930, 148930, 148930, 148930, 148930, 148930, 148930],
+          "color": "#16a34a",
+          "borderWidth": 2,
+          "borderDash": [5, 5]
+        }
+      ]
+    },
+    "options": {
+      "currency": "DKK",
+      "yAxisLabel": "Annual Income (DKK)",
+      "xAxisLabel": "Age",
+      "showPoints": true,
+      "showGrid": true
+    }
+  }
+}
+```...
+2025-07-07 11:05:46,785 - main - INFO - ✓ Chart data parsed from markdown code block
+2025-07-07 11:05:46,787 - main - INFO - Chart data structure: <class 'dict'>
+2025-07-07 11:05:46,788 - main - INFO - Chart data keys: ['needsChart', 'explanation', 'chartData']
+2025-07-07 11:05:46,790 - main - INFO - ✓ Chart data has needsChart=True
+2025-07-07 11:05:46,791 - main - INFO - ✓ Chart data has chartData field
+2025-07-07 11:05:46,793 - main - INFO - ✓ Chart has 2 data points
+2025-07-07 11:05:46,794 - main - INFO - Saving message to database - Session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7
+2025-07-07 11:05:46,800 - main - INFO - Message saved successfully with MongoDB ID: 686baa0a791a6f5ac90d6f49
+2025-07-07 11:05:46,801 - main - INFO - Chart data saved to database successfully
+2025-07-07 11:05:46,803 - main - INFO - Unified retirement chat request completed successfully
+2025-07-07 11:06:11,926 - main - INFO - Retrieving messages for session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7
+2025-07-07 11:06:11,959 - main - INFO - Retrieved 4 messages for session 7caf72af-885b-4ff9-ade3-338395ee07a7
+2025-07-07 11:06:40,821 - main - INFO - FastAPI application initialized
+2025-07-07 11:06:40,825 - main - INFO - CORS middleware configured
+2025-07-07 11:06:40,828 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 11:06:40,901 - main - INFO - MongoDB client initialized successfully
+2025-07-07 11:06:40,905 - main - INFO - MongoDB collections configured
+2025-07-07 11:06:40,914 - main - INFO - External API configuration loaded
+2025-07-07 11:06:48,191 - main - INFO - FastAPI application initialized
+2025-07-07 11:06:48,193 - main - INFO - CORS middleware configured
+2025-07-07 11:06:48,196 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 11:06:48,217 - main - INFO - MongoDB client initialized successfully
+2025-07-07 11:06:48,219 - main - INFO - MongoDB collections configured
+2025-07-07 11:06:48,222 - main - INFO - External API configuration loaded
+2025-07-07 11:06:54,889 - main - INFO - FastAPI application initialized
+2025-07-07 11:06:54,891 - main - INFO - CORS middleware configured
+2025-07-07 11:06:54,893 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 11:06:54,912 - main - INFO - MongoDB client initialized successfully
+2025-07-07 11:06:54,915 - main - INFO - MongoDB collections configured
+2025-07-07 11:06:54,919 - main - INFO - External API configuration loaded
+2025-07-07 11:07:01,455 - main - INFO - Unified retirement chat request - Session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-07 11:07:01,458 - main - INFO - Retrieving user profile
+2025-07-07 11:07:01,535 - main - INFO - Retrieving recent chat history
+2025-07-07 11:07:01,542 - main - INFO - Using Denmark-specific agent ID: 685927b4a83b7ec9a60665f9
+2025-07-07 11:07:01,549 - main - INFO - Appending persona instructions for email: danish2@gmail.com
+2025-07-07 11:07:01,553 - main - INFO - Calling Lyzr API with agent ID: 685927b4a83b7ec9a60665f9
+2025-07-07 11:07:01,556 - main - INFO - Starting Lyzr API call - Agent ID: 685927b4a83b7ec9a60665f9, Session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-07 11:07:01,715 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-07-07 11:09:09,684 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-07 11:09:09,689 - main - INFO - Received response with status code: 200
+2025-07-07 11:09:09,691 - main - INFO - Raw Lyzr API response: {"response":"{\"text_response\":\"<strong>Incorporating Inflation-Linked Securities: Analytical Impact</strong>  \nBy reallocating 20–30% of your fixed-income allocation into inflation-linked bonds (assumed real yield ~2.5%), you can better preserve purchasing power against your 2% inflation rate.  \n<strong>Calculation Example:</strong>  \n• Assume fixed-income comprises 30% of your total portfolio.  \n• <strong>20% Allocation</strong> of fixed income → 0.30 × 0.20 = 6% of total portfolio with real inflation protection.  \n• <strong>30% Allocation</strong> of fixed income → 0.30 × 0.30 = 9% of total portfolio protected.  \nThis shift cushions a meaningful portion of your portfolio against inflation erosion, securing stable real returns over your 30-year retirement horizon.  \nWhat percentage of your fixed-income allocation would you feel comfortable dedicating to inflation-linked bonds to balance growth and protection?\",\"chart_data\":null,\"contains_chart\":false}","module_outputs":{}}
+2025-07-07 11:09:09,694 - main - INFO - Received response: {"response": "{\"text_response\":\"<strong>Incorporating Inflation-Linked Securities: Analytical Impact</strong>  \nBy reallocating 20\u201330% of your fixed-income allocation into inflation-linked bonds (assumed real yield ~2.5%), you can better preserve purchasing power against your 2% inflation rate.  \n<strong>Calculation Example:</strong>  \n\u2022 Assume fixed-income comprises 30% of your total portfolio.  \n\u2022 <strong>20% Allocation</strong> of fixed income \u2192 0.30 \u00d7 0.20 = 6% of total portfolio with real inflation protection.  \n\u2022 <strong>30% Allocation</strong> of fixed income \u2192 0.30 \u00d7 0.30 = 9% of total portfolio protected.  \nThis shift cushions a meaningful portion of your portfolio against inflation erosion, securing stable real returns over your 30-year retirement horizon.  \nWhat percentage of your fixed-income allocation would you feel comfortable dedicating to inflation-linked bonds to balance growth and protection?\",\"chart_data\":null,\"contains_chart\":false}", "module_outputs": {}}
+2025-07-07 11:09:09,696 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-07-07 11:09:09,700 - main - INFO - Lyzr API call completed successfully
+2025-07-07 11:09:09,702 - main - INFO - Received response: {'response': '{"text_response":"<strong>Incorporating Inflation-Linked Securities: Analytical Impact</strong>  \nBy reallocating 20–30% of your fixed-income allocation into inflation-linked bonds (assumed real yield ~2.5%), you can better preserve purchasing power against your 2% inflation rate.  \n<strong>Calculation Example:</strong>  \n• Assume fixed-income comprises 30% of your total portfolio.  \n• <strong>20% Allocation</strong> of fixed income → 0.30 × 0.20 = 6% of total portfolio with real inflation protection.  \n• <strong>30% Allocation</strong> of fixed income → 0.30 × 0.30 = 9% of total portfolio protected.  \nThis shift cushions a meaningful portion of your portfolio against inflation erosion, securing stable real returns over your 30-year retirement horizon.  \nWhat percentage of your fixed-income allocation would you feel comfortable dedicating to inflation-linked bonds to balance growth and protection?","chart_data":null,"contains_chart":false}', 'module_outputs': {}}
+2025-07-07 11:09:09,705 - main - INFO - Parsing LLM response with comprehensive format handling
+2025-07-07 11:09:09,707 - main - INFO - Parsing LLM response
+2025-07-07 11:09:09,709 - main - INFO - Raw response length: 953
+2025-07-07 11:09:09,718 - main - INFO - ✓ Successfully extracted data using regex patterns
+2025-07-07 11:09:09,721 - main - INFO - Response parsed successfully using method: regex_extraction
+2025-07-07 11:09:09,724 - main - INFO - Text response length: 840, Contains chart: False
+2025-07-07 11:09:09,726 - main - INFO - Final parsed response - Text length: 840, Contains chart: False
+2025-07-07 11:09:09,728 - main - INFO - Saving message to database
+2025-07-07 11:09:09,731 - main - INFO - Message saved successfully Negative
+2025-07-07 11:09:09,734 - main - INFO - Making chart API call...
+2025-07-07 11:09:22,868 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-07 11:09:22,873 - main - INFO - Chart API response received: <class 'dict'>
+2025-07-07 11:09:22,876 - main - INFO - Raw chart response: ```json
+{
+  "needsChart": true,
+  "explanation": "A line chart showing the real vs nominal value of retirement income over time would effectively demonstrate the impact of inflation erosion and the protective benefits of inflation-linked securities",
+  "chartData": {
+    "type": "line",
+    "title": "Real vs Nominal Value of Retirement Income",
+    "subtitle": "Impact of 2% inflation on purchasing power over 30-year retirement (Age 60-90)",
+    "data": {
+      "labels": ["Age 60", "Age 65", "Age 70", "Age 75", "Age 80", "Age 85", "Age 90"],
+      "datasets": [
+        {
+          "label": "Total Nominal Income",
+          "data": [146830, 408023, 642612, 932294, 1298589, 1760768, 2340926],
+          "color": "#2563eb",
+          "borderWidth": 2
+        },
+        {
+          "label": "Real Value (2% inflation)",
+          "data": [146830, 371293, 523845, 663842, 784632, 888134, 987351],
+          "color": "#dc2626",
+          "borderWidth": 2
+        },
+        {
+          "label": "Protected with 25% Inflation-Linked",
+          "data": [146830, 380458, 563429, 743868, 942761, 1189451, 1498139],
+          "color": "#16a34a",
+          "borderWidth": 2
+        }
+      ]
+    },
+    "options": {
+      "currency": "DKK",
+      "yAxisLabel": "Annual Income (DKK)",
+      "xAxisLabel": "Age",
+      "showPoints": true,
+      "showGrid": true
+    }
+  }
+}
+```...
+2025-07-07 11:09:22,879 - main - INFO - ✓ Chart data parsed from markdown code block
+2025-07-07 11:09:22,882 - main - INFO - Chart data structure: <class 'dict'>
+2025-07-07 11:09:22,885 - main - INFO - Chart data keys: ['needsChart', 'explanation', 'chartData']
+2025-07-07 11:09:22,887 - main - INFO - ✓ Chart data has needsChart=True
+2025-07-07 11:09:22,889 - main - INFO - ✓ Chart data has chartData field
+2025-07-07 11:09:22,892 - main - INFO - ✓ Chart has 2 data points
+2025-07-07 11:09:22,894 - main - INFO - Saving message to database - Session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7
+2025-07-07 11:09:22,897 - main - INFO - User message length: 110
+2025-07-07 11:09:22,901 - main - INFO - AI response length: 840
+2025-07-07 11:09:22,906 - main - INFO - Contains chart: False
+2025-07-07 11:09:22,910 - main - INFO - Chat chart: {'needsChart': True, 'explanation': 'A line chart showing the real vs nominal value of retirement income over time would effectively demonstrate the impact of inflation erosion and the protective benefits of inflation-linked securities', 'chartData': {'type': 'line', 'title': 'Real vs Nominal Value of Retirement Income', 'subtitle': 'Impact of 2% inflation on purchasing power over 30-year retirement (Age 60-90)', 'data': {'labels': ['Age 60', 'Age 65', 'Age 70', 'Age 75', 'Age 80', 'Age 85', 'Age 90'], 'datasets': [{'label': 'Total Nominal Income', 'data': [146830, 408023, 642612, 932294, 1298589, 1760768, 2340926], 'color': '#2563eb', 'borderWidth': 2}, {'label': 'Real Value (2% inflation)', 'data': [146830, 371293, 523845, 663842, 784632, 888134, 987351], 'color': '#dc2626', 'borderWidth': 2}, {'label': 'Protected with 25% Inflation-Linked', 'data': [146830, 380458, 563429, 743868, 942761, 1189451, 1498139], 'color': '#16a34a', 'borderWidth': 2}]}, 'options': {'currency': 'DKK', 'yAxisLabel': 'Annual Income (DKK)', 'xAxisLabel': 'Age', 'showPoints': True, 'showGrid': True}}}
+2025-07-07 11:09:22,923 - main - INFO - Message saved successfully with MongoDB ID: 686baae23453f594da854c75
+2025-07-07 11:09:22,926 - main - INFO - Chart data saved to database successfully
+2025-07-07 11:09:22,929 - main - INFO - Unified retirement chat request completed successfully
+2025-07-07 11:11:57,790 - main - INFO - Retrieving messages for session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7
+2025-07-07 11:11:57,817 - main - INFO - Retrieved 5 messages for session 7caf72af-885b-4ff9-ade3-338395ee07a7
+2025-07-07 11:17:00,984 - main - INFO - FastAPI application initialized
+2025-07-07 11:17:00,986 - main - INFO - CORS middleware configured
+2025-07-07 11:17:00,988 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 11:17:01,013 - main - INFO - MongoDB client initialized successfully
+2025-07-07 11:17:01,017 - main - INFO - MongoDB collections configured
+2025-07-07 11:17:01,025 - main - INFO - External API configuration loaded
+2025-07-07 11:17:01,967 - main - INFO - Retrieving messages for session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7
+2025-07-07 11:17:02,049 - main - INFO - Retrieved 5 messages for session 7caf72af-885b-4ff9-ade3-338395ee07a7
