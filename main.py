@@ -1385,13 +1385,13 @@ async def chat_retirement_unified(request: ChatRequest):
                 logger.error(f"Error preparing chart data for database: {str(db_chart_error)}")
                 database_chart_data = None
         
-        await save_message(
-            session_id=request.session_id,
-            user_message=request.message,
-            ai_response=text_response,
-            chart_data=database_chart_data,
-            contains_chart=contains_chart
-        )
+        # await save_message(
+        #     session_id=request.session_id,
+        #     user_message=request.message,
+        #     ai_response=text_response,
+        #     chart_data=database_chart_data,
+        #     contains_chart=contains_chart
+        # )
         logger.info("Message saved successfully")
         
         # Create final response
@@ -1510,11 +1510,20 @@ async def chat_retirement_unified(request: ChatRequest):
                     try:
                         await save_message(
                             session_id=request.session_id,
-                            user_message="[System] Chart API call",
-                            ai_response="[Chart Data]",
-                            chart_data=chat_chart,
-                            contains_chart=True
+                            user_message=request.message,
+                            ai_response=text_response,
+                            chart_data=database_chart_data,
+                            contains_chart=contains_chart,
+                            chat_chart= chat_chart
                         )
+                        # await save_message(
+                        #     session_id=request.session_id,
+                        #     user_message="[System] Chart API call",
+                        #     ai_response="[Chart Data]",
+                        #     chart_data=chat_chart,
+                        #     chat_chart= chat_chart
+                        #     contains_chart=True
+                        # )
                         logger.info("Chart data saved to database successfully")
                     except Exception as save_error:
                         logger.error(f"Error saving chart data to database: {str(save_error)}")

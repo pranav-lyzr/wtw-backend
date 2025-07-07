@@ -9465,3 +9465,95 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 2025-07-04 11:08:58,259 - main - INFO - Message saved successfully with MongoDB ID: 6867b64a12753ff8ec227aee
 2025-07-04 11:08:58,275 - main - INFO - Chart data saved to database successfully
 2025-07-04 11:08:58,281 - main - INFO - Unified retirement chat request completed successfully
+2025-07-04 11:10:32,642 - main - INFO - Unified retirement chat request - Session ID: d7e146a9-1397-4011-93b2-b7bbb3729606, User ID: 8ab0ad97-2f35-4a22-a401-266ea3393e48
+2025-07-04 11:10:32,644 - main - INFO - Retrieving user profile
+2025-07-04 11:10:32,661 - main - INFO - Retrieving recent chat history
+2025-07-04 11:10:32,669 - main - INFO - Appending persona instructions for email: pranav@gmail.com
+2025-07-04 11:10:32,671 - main - INFO - Calling Lyzr API with agent ID: 6851461baf3ce50cc6e2e4b3
+2025-07-04 11:10:32,673 - main - INFO - Starting Lyzr API call - Agent ID: 6851461baf3ce50cc6e2e4b3, Session ID: d7e146a9-1397-4011-93b2-b7bbb3729606, User ID: 8ab0ad97-2f35-4a22-a401-266ea3393e48
+2025-07-04 11:10:32,800 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-07-04 11:11:35,951 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-04 11:11:35,953 - main - INFO - Received response with status code: 200
+2025-07-04 11:11:35,955 - main - INFO - Raw Lyzr API response: {"response":"{\"text_response\":\"<strong>Future Value Analysis</strong>\nAnalyzing your salary’s nominal and real values over 10 years underscores inflation’s bite. With 2% annual growth, your salary rises to <strong>$97,573</strong> nominally. Yet in real terms, that equates to <strong>$59,744</strong> at 5% inflation and <strong>$49,622</strong> at 7%, highlighting a significant purchasing-power gap. *How might you adjust savings or investment strategies to bridge this gap?*\n<strong>Income Composition in Real Terms</strong>\nYour income mix also erodes under inflation. At 5%, Social Security drops to <strong>$10,919</strong>, pensions to <strong>$2,305</strong>, defined benefits to <strong>$10,308</strong>, 401(k) to <strong>$61</strong>, and other sources to <strong>$244</strong>. Under 7%, these fall further. This calls for diversification into inflation-hedged assets and periodic portfolio reviews. *What allocation shifts could help preserve your income streams?*\",\"chart_data\":{\"type\":\"pie\",\"datasets\":[{\"values\":[{\"label\":\"Nominal Salary (0% Inflation)\",\"value\":97573},{\"label\":\"Real Salary @5%\",\"value\":59744},{\"label\":\"Real Salary @7%\",\"value\":49622}],\"description\":\"Salary Distribution After 10 Years\"},{\"values\":[{\"label\":\"Social Security @5%\",\"value\":10919},{\"label\":\"Pension @5%\",\"value\":2305},{\"label\":\"401(k) @5%\",\"value\":61},{\"label\":\"Other @5%\",\"value\":244},{\"label\":\"Defined Benefit @5%\",\"value\":10308}],\"description\":\"Real Income Breakdown (5% Inflation)\"},{\"values\":[{\"label\":\"Social Security @7%\",\"value\":9139},{\"label\":\"Pension @7%\",\"value\":1930},{\"label\":\"401(k) @7%\",\"value\":51},{\"label\":\"Other @7%\",\"value\":203},{\"label\":\"Defined Benefit @7%\",\"value\":8633}],\"description\":\"Real Income Breakdown (7% Inflation)\"}],\"title\":\"Future Income Comparison\"},\"contains_chart\":true}","module_outputs":{}}
+2025-07-04 11:11:35,956 - main - INFO - Received response: {"response": "{\"text_response\":\"<strong>Future Value Analysis</strong>\nAnalyzing your salary\u2019s nominal and real values over 10 years underscores inflation\u2019s bite. With 2% annual growth, your salary rises to <strong>$97,573</strong> nominally. Yet in real terms, that equates to <strong>$59,744</strong> at 5% inflation and <strong>$49,622</strong> at 7%, highlighting a significant purchasing-power gap. *How might you adjust savings or investment strategies to bridge this gap?*\n<strong>Income Composition in Real Terms</strong>\nYour income mix also erodes under inflation. At 5%, Social Security drops to <strong>$10,919</strong>, pensions to <strong>$2,305</strong>, defined benefits to <strong>$10,308</strong>, 401(k) to <strong>$61</strong>, and other sources to <strong>$244</strong>. Under 7%, these fall further. This calls for diversification into inflation-hedged assets and periodic portfolio reviews. *What allocation shifts could help preserve your income streams?*\",\"chart_data\":{\"type\":\"pie\",\"datasets\":[{\"values\":[{\"label\":\"Nominal Salary (0% Inflation)\",\"value\":97573},{\"label\":\"Real Salary @5%\",\"value\":59744},{\"label\":\"Real Salary @7%\",\"value\":49622}],\"description\":\"Salary Distribution After 10 Years\"},{\"values\":[{\"label\":\"Social Security @5%\",\"value\":10919},{\"label\":\"Pension @5%\",\"value\":2305},{\"label\":\"401(k) @5%\",\"value\":61},{\"label\":\"Other @5%\",\"value\":244},{\"label\":\"Defined Benefit @5%\",\"value\":10308}],\"description\":\"Real Income Breakdown (5% Inflation)\"},{\"values\":[{\"label\":\"Social Security @7%\",\"value\":9139},{\"label\":\"Pension @7%\",\"value\":1930},{\"label\":\"401(k) @7%\",\"value\":51},{\"label\":\"Other @7%\",\"value\":203},{\"label\":\"Defined Benefit @7%\",\"value\":8633}],\"description\":\"Real Income Breakdown (7% Inflation)\"}],\"title\":\"Future Income Comparison\"},\"contains_chart\":true}", "module_outputs": {}}
+2025-07-04 11:11:35,958 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-07-04 11:11:35,960 - main - INFO - Lyzr API call completed successfully
+2025-07-04 11:11:35,961 - main - INFO - Received response: {'response': '{"text_response":"<strong>Future Value Analysis</strong>\nAnalyzing your salary’s nominal and real values over 10 years underscores inflation’s bite. With 2% annual growth, your salary rises to <strong>$97,573</strong> nominally. Yet in real terms, that equates to <strong>$59,744</strong> at 5% inflation and <strong>$49,622</strong> at 7%, highlighting a significant purchasing-power gap. *How might you adjust savings or investment strategies to bridge this gap?*\n<strong>Income Composition in Real Terms</strong>\nYour income mix also erodes under inflation. At 5%, Social Security drops to <strong>$10,919</strong>, pensions to <strong>$2,305</strong>, defined benefits to <strong>$10,308</strong>, 401(k) to <strong>$61</strong>, and other sources to <strong>$244</strong>. Under 7%, these fall further. This calls for diversification into inflation-hedged assets and periodic portfolio reviews. *What allocation shifts could help preserve your income streams?*","chart_data":{"type":"pie","datasets":[{"values":[{"label":"Nominal Salary (0% Inflation)","value":97573},{"label":"Real Salary @5%","value":59744},{"label":"Real Salary @7%","value":49622}],"description":"Salary Distribution After 10 Years"},{"values":[{"label":"Social Security @5%","value":10919},{"label":"Pension @5%","value":2305},{"label":"401(k) @5%","value":61},{"label":"Other @5%","value":244},{"label":"Defined Benefit @5%","value":10308}],"description":"Real Income Breakdown (5% Inflation)"},{"values":[{"label":"Social Security @7%","value":9139},{"label":"Pension @7%","value":1930},{"label":"401(k) @7%","value":51},{"label":"Other @7%","value":203},{"label":"Defined Benefit @7%","value":8633}],"description":"Real Income Breakdown (7% Inflation)"}],"title":"Future Income Comparison"},"contains_chart":true}', 'module_outputs': {}}
+2025-07-04 11:11:35,963 - main - INFO - Parsing LLM response with comprehensive format handling
+2025-07-04 11:11:35,965 - main - INFO - Parsing LLM response
+2025-07-04 11:11:35,967 - main - INFO - Raw response length: 1793
+2025-07-04 11:11:35,969 - main - INFO - ✓ Successfully extracted data using regex patterns
+2025-07-04 11:11:35,970 - main - INFO - Response parsed successfully using method: regex_extraction
+2025-07-04 11:11:35,972 - main - INFO - Text response length: 817, Contains chart: True
+2025-07-04 11:11:35,973 - main - INFO - Final parsed response - Text length: 817, Contains chart: True
+2025-07-04 11:11:35,976 - main - INFO - Processing chart data from response
+2025-07-04 11:11:35,978 - main - ERROR - Failed to parse chart data: Expecting ',' delimiter: line 1 column 93 (char 92)
+2025-07-04 11:11:35,981 - main - INFO - Saving message to database
+2025-07-04 11:11:35,982 - main - INFO - Saving message to database - Session ID: d7e146a9-1397-4011-93b2-b7bbb3729606
+2025-07-04 11:11:35,986 - main - INFO - Message saved successfully with MongoDB ID: 6867b6e712753ff8ec227aef
+2025-07-04 11:11:35,988 - main - INFO - Message saved successfully
+2025-07-04 11:11:35,989 - main - INFO - Making chart API call...
+2025-07-04 11:11:43,409 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-04 11:11:43,413 - main - INFO - Chart API response received: <class 'dict'>
+2025-07-04 11:11:43,415 - main - INFO - Raw chart response: ```json
+{
+  "needsChart": true,
+  "explanation": "Pie chart showing purchasing power erosion comparison between 5% and 7% inflation scenarios after 10 years",
+  "chartData": {
+    "type": "pie",
+    "title": "Purchasing Power Impact: 5% vs 7% Inflation After 10 Years",
+    "subtitle": "Based on Pranav's current income and benefit structure",
+    "data": [
+      {"label": "Retained Purchasing Power (5% inflation)", "value": 61.4, "color": "#2563eb"},
+      {"label": "Lost Purchasing Power (5% inflation)", "value": 38.6, "color": "#dc2626"},
+      {"label": "Retained Purchasing Power (7% inflation)", "value": 50.8, "color": "#16a34a"},
+      {"label": "Lost Purchasing Power (7% inflation)", "value": 49.2, "color": "#ea580c"}
+    ],
+    "options": {
+      "showPercentage": true,
+      "showLegend": true,
+      "currency": "USD"
+    }
+  }
+}
+```...
+2025-07-04 11:11:43,418 - main - INFO - ✓ Chart data parsed from markdown code block
+2025-07-04 11:11:43,420 - main - INFO - Chart data structure: <class 'dict'>
+2025-07-04 11:11:43,421 - main - INFO - Chart data keys: ['needsChart', 'explanation', 'chartData']
+2025-07-04 11:11:43,424 - main - INFO - ✓ Chart data has needsChart=True
+2025-07-04 11:11:43,426 - main - INFO - ✓ Chart data has chartData field
+2025-07-04 11:11:43,427 - main - INFO - ✓ Chart has 4 data points
+2025-07-04 11:11:43,429 - main - INFO - Saving message to database - Session ID: d7e146a9-1397-4011-93b2-b7bbb3729606
+2025-07-04 11:11:43,434 - main - INFO - Message saved successfully with MongoDB ID: 6867b6ef12753ff8ec227af0
+2025-07-04 11:11:43,436 - main - INFO - Chart data saved to database successfully
+2025-07-04 11:11:43,438 - main - INFO - Unified retirement chat request completed successfully
+2025-07-07 05:12:36,229 - main - INFO - FastAPI application initialized
+2025-07-07 05:12:36,245 - main - INFO - CORS middleware configured
+2025-07-07 05:12:36,247 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 05:12:36,313 - main - INFO - MongoDB client initialized successfully
+2025-07-07 05:12:36,323 - main - INFO - MongoDB collections configured
+2025-07-07 05:12:36,325 - main - INFO - External API configuration loaded
+2025-07-07 10:47:33,569 - main - INFO - FastAPI application initialized
+2025-07-07 10:47:33,571 - main - INFO - CORS middleware configured
+2025-07-07 10:47:33,573 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 10:47:33,597 - main - INFO - MongoDB client initialized successfully
+2025-07-07 10:47:33,600 - main - INFO - MongoDB collections configured
+2025-07-07 10:47:33,604 - main - INFO - External API configuration loaded
+2025-07-07 10:47:36,378 - main - INFO - FastAPI application initialized
+2025-07-07 10:47:36,380 - main - INFO - CORS middleware configured
+2025-07-07 10:47:36,381 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 10:47:36,400 - main - INFO - MongoDB client initialized successfully
+2025-07-07 10:47:36,402 - main - INFO - MongoDB collections configured
+2025-07-07 10:47:36,404 - main - INFO - External API configuration loaded
+2025-07-07 10:48:32,627 - main - INFO - FastAPI application initialized
+2025-07-07 10:48:32,629 - main - INFO - CORS middleware configured
+2025-07-07 10:48:32,631 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 10:48:32,662 - main - INFO - MongoDB client initialized successfully
+2025-07-07 10:48:32,665 - main - INFO - MongoDB collections configured
+2025-07-07 10:48:32,668 - main - INFO - External API configuration loaded
+2025-07-07 10:48:45,088 - main - INFO - FastAPI application initialized
+2025-07-07 10:48:45,089 - main - INFO - CORS middleware configured
+2025-07-07 10:48:45,091 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-07 10:48:45,110 - main - INFO - MongoDB client initialized successfully
+2025-07-07 10:48:45,112 - main - INFO - MongoDB collections configured
+2025-07-07 10:48:45,114 - main - INFO - External API configuration loaded
