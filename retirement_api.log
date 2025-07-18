@@ -9991,3 +9991,556 @@ This adjustment aligns with your conservative 5% investment return assumption wh
 2025-07-07 11:17:01,025 - main - INFO - External API configuration loaded
 2025-07-07 11:17:01,967 - main - INFO - Retrieving messages for session ID: 7caf72af-885b-4ff9-ade3-338395ee07a7
 2025-07-07 11:17:02,049 - main - INFO - Retrieved 5 messages for session 7caf72af-885b-4ff9-ade3-338395ee07a7
+2025-07-08 06:21:03,789 - main - INFO - FastAPI application initialized
+2025-07-08 06:21:03,791 - main - INFO - CORS middleware configured
+2025-07-08 06:21:03,792 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-08 06:21:03,827 - main - INFO - MongoDB client initialized successfully
+2025-07-08 06:21:03,828 - main - INFO - MongoDB collections configured
+2025-07-08 06:21:03,829 - main - INFO - External API configuration loaded
+2025-07-18 05:37:02,071 - main - INFO - FastAPI application initialized
+2025-07-18 05:37:02,072 - main - INFO - CORS middleware configured
+2025-07-18 05:37:02,073 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-18 05:37:02,122 - main - INFO - MongoDB client initialized successfully
+2025-07-18 05:37:02,123 - main - INFO - MongoDB collections configured
+2025-07-18 05:37:02,124 - main - INFO - External API configuration loaded
+2025-07-18 06:12:02,772 - main - INFO - FastAPI application initialized
+2025-07-18 06:12:02,775 - main - INFO - CORS middleware configured
+2025-07-18 06:12:02,777 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-18 06:12:02,811 - main - INFO - MongoDB client initialized successfully
+2025-07-18 06:12:02,814 - main - INFO - MongoDB collections configured
+2025-07-18 06:12:02,817 - main - INFO - External API configuration loaded
+2025-07-18 06:12:47,940 - main - INFO - FastAPI application initialized
+2025-07-18 06:12:47,941 - main - INFO - CORS middleware configured
+2025-07-18 06:12:47,943 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-18 06:12:47,960 - main - INFO - MongoDB client initialized successfully
+2025-07-18 06:12:47,962 - main - INFO - MongoDB collections configured
+2025-07-18 06:12:47,967 - main - INFO - External API configuration loaded
+2025-07-18 06:15:38,509 - main - INFO - FastAPI application initialized
+2025-07-18 06:15:38,523 - main - INFO - CORS middleware configured
+2025-07-18 06:15:38,539 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-18 06:15:38,678 - main - INFO - MongoDB client initialized successfully
+2025-07-18 06:15:38,694 - main - INFO - MongoDB collections configured
+2025-07-18 06:15:38,703 - main - INFO - External API configuration loaded
+2025-07-18 06:23:12,609 - main - INFO - FastAPI application initialized
+2025-07-18 06:23:12,613 - main - INFO - CORS middleware configured
+2025-07-18 06:23:12,615 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-18 06:23:12,658 - main - INFO - MongoDB client initialized successfully
+2025-07-18 06:23:12,669 - main - INFO - MongoDB collections configured
+2025-07-18 06:23:12,672 - main - INFO - External API configuration loaded
+2025-07-18 06:23:21,651 - main - INFO - Retrieving all users
+2025-07-18 06:23:21,725 - main - INFO - Retrieved 8 users
+2025-07-18 06:26:03,262 - main - INFO - FastAPI application initialized
+2025-07-18 06:26:03,264 - main - INFO - CORS middleware configured
+2025-07-18 06:26:03,267 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-18 06:26:03,289 - main - INFO - MongoDB client initialized successfully
+2025-07-18 06:26:03,292 - main - INFO - MongoDB collections configured
+2025-07-18 06:26:03,296 - main - INFO - External API configuration loaded
+2025-07-18 06:26:15,824 - main - INFO - FastAPI application initialized
+2025-07-18 06:26:15,827 - main - INFO - CORS middleware configured
+2025-07-18 06:26:15,831 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-18 06:26:15,871 - main - INFO - MongoDB client initialized successfully
+2025-07-18 06:26:15,875 - main - INFO - MongoDB collections configured
+2025-07-18 06:26:15,882 - main - INFO - External API configuration loaded
+2025-07-18 06:26:19,652 - main - INFO - Updating new fields for all users
+2025-07-18 06:26:19,690 - main - INFO - User 7c7923ab-928a-41dd-ab72-df35601c066f: gender set to 'None' (kept as is)
+2025-07-18 06:26:19,693 - main - INFO - User 7c7923ab-928a-41dd-ab72-df35601c066f: new_joinee set to 'Yes' (age=40, prev='None')
+2025-07-18 06:26:19,698 - main - INFO - User 7c7923ab-928a-41dd-ab72-df35601c066f: civil_status set to 'Married' (age=40, prev='None')
+2025-07-18 06:26:19,702 - main - INFO - User 7c7923ab-928a-41dd-ab72-df35601c066f: disability set to 'No' (prev='None')
+2025-07-18 06:26:19,709 - main - INFO - User 7c7923ab-928a-41dd-ab72-df35601c066f: death_main set to 'Yes' (prev='None')
+2025-07-18 06:26:19,715 - main - INFO - User 7c7923ab-928a-41dd-ab72-df35601c066f: death_child set to 'Yes' (prev='None')
+2025-07-18 06:26:19,723 - main - INFO - User 7c7923ab-928a-41dd-ab72-df35601c066f: transfer_of_pension set to 'Yes' (prev='None')
+2025-07-18 06:26:19,775 - main - INFO - User 8ab0ad97-2f35-4a22-a401-266ea3393e48: gender set to 'None' (kept as is)
+2025-07-18 06:26:19,778 - main - INFO - User 8ab0ad97-2f35-4a22-a401-266ea3393e48: new_joinee set to 'Yes' (age=40, prev='None')
+2025-07-18 06:26:19,783 - main - INFO - User 8ab0ad97-2f35-4a22-a401-266ea3393e48: civil_status set to 'Married' (age=40, prev='None')
+2025-07-18 06:26:19,786 - main - INFO - User 8ab0ad97-2f35-4a22-a401-266ea3393e48: disability set to 'No' (prev='None')
+2025-07-18 06:26:19,791 - main - INFO - User 8ab0ad97-2f35-4a22-a401-266ea3393e48: death_main set to 'Yes' (prev='None')
+2025-07-18 06:26:19,795 - main - INFO - User 8ab0ad97-2f35-4a22-a401-266ea3393e48: death_child set to 'Yes' (prev='None')
+2025-07-18 06:26:19,803 - main - INFO - User 8ab0ad97-2f35-4a22-a401-266ea3393e48: transfer_of_pension set to 'Yes' (prev='None')
+2025-07-18 06:26:19,810 - main - INFO - User 79d33198-3e35-4abb-bcbb-d51757924d2f: gender set to 'None' (kept as is)
+2025-07-18 06:26:19,814 - main - INFO - User 79d33198-3e35-4abb-bcbb-d51757924d2f: new_joinee set to 'Yes' (age=42, prev='None')
+2025-07-18 06:26:19,818 - main - INFO - User 79d33198-3e35-4abb-bcbb-d51757924d2f: civil_status set to 'Married' (age=42, prev='None')
+2025-07-18 06:26:19,826 - main - INFO - User 79d33198-3e35-4abb-bcbb-d51757924d2f: disability set to 'No' (prev='None')
+2025-07-18 06:26:19,838 - main - INFO - User 79d33198-3e35-4abb-bcbb-d51757924d2f: death_main set to 'Yes' (prev='None')
+2025-07-18 06:26:19,847 - main - INFO - User 79d33198-3e35-4abb-bcbb-d51757924d2f: death_child set to 'Yes' (prev='None')
+2025-07-18 06:26:19,858 - main - INFO - User 79d33198-3e35-4abb-bcbb-d51757924d2f: transfer_of_pension set to 'Yes' (prev='None')
+2025-07-18 06:26:19,871 - main - INFO - User c4c0a923-9e81-41d8-ad60-3ce3897f38c7: gender set to 'None' (kept as is)
+2025-07-18 06:26:19,876 - main - INFO - User c4c0a923-9e81-41d8-ad60-3ce3897f38c7: new_joinee set to 'Yes' (age=43, prev='None')
+2025-07-18 06:26:19,881 - main - INFO - User c4c0a923-9e81-41d8-ad60-3ce3897f38c7: civil_status set to 'Married' (age=43, prev='None')
+2025-07-18 06:26:19,885 - main - INFO - User c4c0a923-9e81-41d8-ad60-3ce3897f38c7: disability set to 'No' (prev='None')
+2025-07-18 06:26:19,896 - main - INFO - User c4c0a923-9e81-41d8-ad60-3ce3897f38c7: death_main set to 'Yes' (prev='None')
+2025-07-18 06:26:19,899 - main - INFO - User c4c0a923-9e81-41d8-ad60-3ce3897f38c7: death_child set to 'Yes' (prev='None')
+2025-07-18 06:26:19,901 - main - INFO - User c4c0a923-9e81-41d8-ad60-3ce3897f38c7: transfer_of_pension set to 'Yes' (prev='None')
+2025-07-18 06:26:19,924 - main - INFO - User 71f94c51-aec1-4707-b04e-6805f1608f83: gender set to 'None' (kept as is)
+2025-07-18 06:26:19,931 - main - INFO - User 71f94c51-aec1-4707-b04e-6805f1608f83: new_joinee set to 'Yes' (age=45, prev='None')
+2025-07-18 06:26:19,935 - main - INFO - User 71f94c51-aec1-4707-b04e-6805f1608f83: civil_status set to 'Married' (age=45, prev='None')
+2025-07-18 06:26:19,942 - main - INFO - User 71f94c51-aec1-4707-b04e-6805f1608f83: disability set to 'No' (prev='None')
+2025-07-18 06:26:19,946 - main - INFO - User 71f94c51-aec1-4707-b04e-6805f1608f83: death_main set to 'Yes' (prev='None')
+2025-07-18 06:26:19,956 - main - INFO - User 71f94c51-aec1-4707-b04e-6805f1608f83: death_child set to 'Yes' (prev='None')
+2025-07-18 06:26:19,965 - main - INFO - User 71f94c51-aec1-4707-b04e-6805f1608f83: transfer_of_pension set to 'Yes' (prev='None')
+2025-07-18 06:26:19,984 - main - INFO - User c3f2a6c1-6e18-4af9-8c98-c62cfcfb303c: gender set to 'None' (kept as is)
+2025-07-18 06:26:19,997 - main - INFO - User c3f2a6c1-6e18-4af9-8c98-c62cfcfb303c: new_joinee set to 'Yes' (age=42, prev='None')
+2025-07-18 06:26:20,012 - main - INFO - User c3f2a6c1-6e18-4af9-8c98-c62cfcfb303c: civil_status set to 'Married' (age=42, prev='None')
+2025-07-18 06:26:20,018 - main - INFO - User c3f2a6c1-6e18-4af9-8c98-c62cfcfb303c: disability set to 'No' (prev='None')
+2025-07-18 06:26:20,024 - main - INFO - User c3f2a6c1-6e18-4af9-8c98-c62cfcfb303c: death_main set to 'Yes' (prev='None')
+2025-07-18 06:26:20,028 - main - INFO - User c3f2a6c1-6e18-4af9-8c98-c62cfcfb303c: death_child set to 'Yes' (prev='None')
+2025-07-18 06:26:20,056 - main - INFO - User c3f2a6c1-6e18-4af9-8c98-c62cfcfb303c: transfer_of_pension set to 'Yes' (prev='None')
+2025-07-18 06:26:20,094 - main - INFO - User 23938568-a003-4be9-8ff4-1a0364156be7: gender set to 'None' (kept as is)
+2025-07-18 06:26:20,118 - main - INFO - User 23938568-a003-4be9-8ff4-1a0364156be7: new_joinee set to 'Yes' (age=42, prev='None')
+2025-07-18 06:26:20,128 - main - INFO - User 23938568-a003-4be9-8ff4-1a0364156be7: civil_status set to 'Married' (age=42, prev='None')
+2025-07-18 06:26:20,146 - main - INFO - User 23938568-a003-4be9-8ff4-1a0364156be7: disability set to 'No' (prev='None')
+2025-07-18 06:26:20,160 - main - INFO - User 23938568-a003-4be9-8ff4-1a0364156be7: death_main set to 'Yes' (prev='None')
+2025-07-18 06:26:20,172 - main - INFO - User 23938568-a003-4be9-8ff4-1a0364156be7: death_child set to 'Yes' (prev='None')
+2025-07-18 06:26:20,183 - main - INFO - User 23938568-a003-4be9-8ff4-1a0364156be7: transfer_of_pension set to 'Yes' (prev='None')
+2025-07-18 06:26:20,202 - main - INFO - User 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1: gender set to 'None' (kept as is)
+2025-07-18 06:26:20,210 - main - INFO - User 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1: new_joinee set to 'Yes' (age=42, prev='None')
+2025-07-18 06:26:20,245 - main - INFO - User 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1: civil_status set to 'Married' (age=42, prev='None')
+2025-07-18 06:26:20,256 - main - INFO - User 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1: disability set to 'No' (prev='None')
+2025-07-18 06:26:20,268 - main - INFO - User 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1: death_main set to 'Yes' (prev='None')
+2025-07-18 06:26:20,282 - main - INFO - User 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1: death_child set to 'Yes' (prev='None')
+2025-07-18 06:26:20,298 - main - INFO - User 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1: transfer_of_pension set to 'Yes' (prev='None')
+2025-07-18 06:26:20,323 - main - INFO - Updated new fields for 8 users
+2025-07-18 07:08:24,765 - main - INFO - Retrieving user profile for ID: ef9d7326-4af1-4809-b641-8ba0150f827d
+2025-07-18 07:08:24,854 - main - INFO - Retrieving sessions, user_id filter: ef9d7326-4af1-4809-b641-8ba0150f827d
+2025-07-18 07:08:24,877 - main - ERROR - HTTP exception: User profile not found
+2025-07-18 07:08:24,930 - main - INFO - Retrieved 0 sessions
+2025-07-18 07:08:24,983 - main - ERROR - Retirement calculation error: 
+2025-07-18 07:08:26,134 - main - INFO - Retrieving user profile for ID: ef9d7326-4af1-4809-b641-8ba0150f827d
+2025-07-18 07:08:26,138 - main - ERROR - HTTP exception: User profile not found
+2025-07-18 07:08:26,140 - main - ERROR - Retirement calculation error: 
+2025-07-18 07:08:28,169 - main - INFO - Retrieving user profile for ID: ef9d7326-4af1-4809-b641-8ba0150f827d
+2025-07-18 07:08:28,176 - main - ERROR - HTTP exception: User profile not found
+2025-07-18 07:08:28,186 - main - ERROR - Retirement calculation error: 
+2025-07-18 07:08:32,199 - main - INFO - Retrieving user profile for ID: ef9d7326-4af1-4809-b641-8ba0150f827d
+2025-07-18 07:08:32,203 - main - ERROR - HTTP exception: User profile not found
+2025-07-18 07:08:32,218 - main - ERROR - Retirement calculation error: 
+2025-07-18 07:08:32,234 - main - INFO - Retrieving sessions, user_id filter: ef9d7326-4af1-4809-b641-8ba0150f827d
+2025-07-18 07:08:32,248 - main - INFO - Retrieved 0 sessions
+2025-07-18 07:08:33,365 - main - INFO - Retrieving all users
+2025-07-18 07:08:33,373 - main - INFO - Retrieved 8 users
+2025-07-18 07:08:33,509 - main - INFO - Retrieving user profile for ID: ef9d7326-4af1-4809-b641-8ba0150f827d
+2025-07-18 07:08:33,517 - main - ERROR - HTTP exception: User profile not found
+2025-07-18 07:08:33,521 - main - ERROR - Retirement calculation error: 
+2025-07-18 07:08:33,539 - main - INFO - Retrieving sessions, user_id filter: ef9d7326-4af1-4809-b641-8ba0150f827d
+2025-07-18 07:08:33,547 - main - INFO - Retrieved 0 sessions
+2025-07-18 07:08:34,794 - main - INFO - Retrieving user profile for ID: ef9d7326-4af1-4809-b641-8ba0150f827d
+2025-07-18 07:08:34,804 - main - ERROR - Retirement calculation error: 
+2025-07-18 07:08:34,813 - main - ERROR - HTTP exception: User profile not found
+2025-07-18 07:08:36,842 - main - INFO - Retrieving user profile for ID: ef9d7326-4af1-4809-b641-8ba0150f827d
+2025-07-18 07:08:36,849 - main - ERROR - Retirement calculation error: 
+2025-07-18 07:08:36,856 - main - ERROR - HTTP exception: User profile not found
+2025-07-18 07:08:40,944 - main - INFO - Retrieving user profile for ID: ef9d7326-4af1-4809-b641-8ba0150f827d
+2025-07-18 07:08:40,947 - main - ERROR - Retirement calculation error: 
+2025-07-18 07:08:40,950 - main - ERROR - HTTP exception: User profile not found
+2025-07-18 07:08:42,621 - main - INFO - Retrieving user profile for ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:08:42,643 - main - INFO - Generating Denmark retirement data for user: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:08:42,665 - main - INFO - Retrieving sessions, user_id filter: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:08:42,686 - main - INFO - Retrieved 2 sessions
+2025-07-18 07:08:42,872 - main - INFO - Retrieving sessions, user_id filter: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:08:42,890 - main - INFO - Retrieved 2 sessions
+2025-07-18 07:08:43,843 - main - INFO - Retrieving user profile for ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:08:43,856 - main - INFO - Generating Denmark retirement data for user: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:08:44,563 - main - INFO - Retrieving all users
+2025-07-18 07:08:44,573 - main - INFO - Retrieved 8 users
+2025-07-18 07:08:44,725 - main - INFO - Retrieving user profile for ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:08:44,735 - main - INFO - Generating Denmark retirement data for user: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:08:44,741 - main - INFO - Retrieving sessions, user_id filter: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:08:44,757 - main - INFO - Retrieved 2 sessions
+2025-07-18 07:09:15,567 - main - INFO - Creating new session for user ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:09:15,581 - main - INFO - Created new session: ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 07:09:15,640 - main - INFO - Retrieving sessions, user_id filter: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:09:15,654 - main - INFO - Retrieved 3 sessions
+2025-07-18 07:09:15,660 - main - INFO - Unified retirement chat request - Session ID: ace6e251-9885-4851-81fb-185054a75d12, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:09:15,663 - main - INFO - Retrieving user profile
+2025-07-18 07:09:15,671 - main - INFO - Retrieving recent chat history
+2025-07-18 07:09:15,688 - main - INFO - Using Denmark-specific agent ID: 685927b4a83b7ec9a60665f9
+2025-07-18 07:09:15,691 - main - INFO - Appending persona instructions for email: danish2@gmail.com
+2025-07-18 07:09:15,696 - main - INFO - Calling Lyzr API with agent ID: 685927b4a83b7ec9a60665f9
+2025-07-18 07:09:15,706 - main - INFO - Starting Lyzr API call - Agent ID: 685927b4a83b7ec9a60665f9, Session ID: ace6e251-9885-4851-81fb-185054a75d12, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:09:15,958 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-07-18 07:09:16,563 - main - INFO - Retrieving messages for session ID: ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 07:09:16,591 - main - INFO - Retrieved 0 messages for session ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 07:09:16,708 - main - INFO - Getting AI preferences for user: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1, session: ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 07:09:16,722 - main - INFO - Retrieving messages for session ID: ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 07:09:16,739 - main - INFO - Retrieved 0 messages for session ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 07:09:16,752 - main - INFO - Starting Lyzr API call - Agent ID: 68519f1ee8762a5908ab2930, Session ID: ace6e251-9885-4851-81fb-185054a75d12, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:09:16,967 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-07-18 07:09:16,976 - main - INFO - Retrieving messages for session ID: ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 07:09:16,999 - main - INFO - Retrieved 0 messages for session ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 07:09:41,289 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-18 07:09:41,292 - main - INFO - Received response with status code: 200
+2025-07-18 07:09:41,295 - main - INFO - Raw Lyzr API response: {"response":"[\n    {\n        \"icon\": \"calculator\",\n        \"title\": \"Optimize Retirement Plan\",\n        \"description\": \"With a high income and a solid 10% contribution rate, you're well-positioned for retirement but may benefit from optimizing your plan. Adjusting your contributions, maximizing catch-up options as you age, or making use of employer match (if available) could further enhance your retirement readiness.\",\n        \"questions\": [\n            \"How can I increase my retirement contributions as I get closer to age 50 to take advantage of catch-up limits?\",\n            \"Is my current 10% contribution rate enough to maintain my desired lifestyle after retirement at 60?\",\n            \"Are there any employer benefits or matching programs I should maximize to boost my retirement savings?\"\n        ]\n    },\n    {\n        \"icon\": \"trending-up\",\n        \"title\": \"Investment Recommendations\",\n        \"description\": \"Your 5.0% assumed investment return is reasonable, but there may be opportunities to improve diversification or fine-tune your portfolio based on your risk tolerance and time horizon. Reviewing and adjusting your asset allocation could help maximize growth while managing risk.\",\n        \"questions\": [\n            \"Should I adjust my asset allocation as I approach retirement to reduce risk while still aiming for growth?\",\n            \"How often should I review or rebalance my investment portfolio to stay on track for my goals?\",\n            \"Are there particular asset classes I should consider now, given my income and retirement timeline?\"\n        ]\n    },\n    {\n        \"icon\": \"lightbulb\",\n        \"title\": \"Smart Insights\",\n        \"description\": \"Starting retirement savings early has given you a strong advantage. Reviewing forecasted future expenses, healthcare needs, and inflation impact will help you set a more accurate retirement target and give you peace of mind that you'll be...
+2025-07-18 07:09:41,297 - main - INFO - Received response: {
+  "response": "[\n    {\n        \"icon\": \"calculator\",\n        \"title\": \"Optimize Retirement Plan\",\n        \"description\": \"With a high income and a solid 10% contribution rate, you're well-positioned for retirement but may benefit from optimizing your plan. Adjusting your contributions, maximizing catch-up options as you age, or making use of employer match (if available) could further enhance your retirement readiness.\",\n        \"questions\": [\n            \"How can I increase my retirement contributions as I get closer to age 50 to take advantage of catch-up limits?\",\n            \"Is my current 10% contribution rate enough to maintain my desired lifestyle after retirement at 60?\",\n            \"Are there any employer benefits or matching programs I should maximize to boost my retirement savings?\"\n        ]\n    },\n    {\n        \"icon\": \"trending-up\",\n        \"title\": \"Investment Recommendations\",\n        \"description\": \"Your 5.0% assumed investment return is reasonable, but there may be opportunities to improve diversification or fine-tune your portfolio based on your risk tolerance and time horizon. Reviewing and adjusting your asset allocation could help maximize growth while managing risk.\",\n        \"questions\": [\n            \"Should I adjust my asset allocation as I approach retirement to reduce risk while still aiming for growth?\",\n            \"How often should I review or rebalance my investment portfolio to stay on track for my goals?\",\n            \"Are there particular asset classes I should consider now, given my income and retirement timeline?\"\n        ]\n    },\n    {\n        \"icon\": \"lightbulb\",\n        \"title\": \"Smart Insights\",\n        \"description\": \"Starting retirement savings early has given you a strong advantage. Reviewing forecasted future expenses, healthcare needs, and inflation impact will help you set a more accurate retirement target and give you peace of mind that you'l...
+2025-07-18 07:09:41,298 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-07-18 07:09:51,544 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-18 07:09:51,549 - main - INFO - Received response with status code: 200
+2025-07-18 07:09:51,552 - main - INFO - Raw Lyzr API response: {"response":"{\"text_response\":\"<strong>Latest Occupational Pension Update for Denmark</strong>  \nHere's a concise summary tailored for you, Rachel:  \n- <strong>Data Sources & Methodology</strong>  \n  • Projections use detailed tax records from Statistics Denmark to model individual asset growth.  \n  • Annual updates ensure accuracy for occupational pensions, with quarterly updates for public pensions. [Source](https://ec.europa.eu/info/sites/default/files/2024-ageing-report-country-fiche-Denmark.pdf)  \n- <strong>Contribution Insights</strong>  \n  • In 2022, occupational and private pension contributions averaged [Figure A.7 data] as a share of wages for ages 16–66.  \n  • For you, at age 60, the projected occupational pension is <strong>DKK 78,553.54</strong>, assuming 5% returns and 2% inflation.  \n- <strong>Key Considerations</strong>  \n  • Annual policy revisions may affect contribution rates.  \n  • Future economic shifts (e.g., inflation >2%) could alter real returns.  \n⚠️ *Educational only – not WTW advice*  \n<strong>How might these annual updates influence your long-term contribution strategy?</strong>\",\"chart_data\":null,\"contains_chart\":false}","module_outputs":{}}
+2025-07-18 07:09:51,554 - main - INFO - Received response: {"response": "{\"text_response\":\"<strong>Latest Occupational Pension Update for Denmark</strong>  \nHere's a concise summary tailored for you, Rachel:  \n- <strong>Data Sources & Methodology</strong>  \n  \u2022 Projections use detailed tax records from Statistics Denmark to model individual asset growth.  \n  \u2022 Annual updates ensure accuracy for occupational pensions, with quarterly updates for public pensions. [Source](https://ec.europa.eu/info/sites/default/files/2024-ageing-report-country-fiche-Denmark.pdf)  \n- <strong>Contribution Insights</strong>  \n  \u2022 In 2022, occupational and private pension contributions averaged [Figure A.7 data] as a share of wages for ages 16\u201366.  \n  \u2022 For you, at age 60, the projected occupational pension is <strong>DKK 78,553.54</strong>, assuming 5% returns and 2% inflation.  \n- <strong>Key Considerations</strong>  \n  \u2022 Annual policy revisions may affect contribution rates.  \n  \u2022 Future economic shifts (e.g., inflation >2%) could alter real returns.  \n\u26a0\ufe0f *Educational only \u2013 not WTW advice*  \n<strong>How might these annual updates influence your long-term contribution strategy?</strong>\",\"chart_data\":null,\"contains_chart\":false}", "module_outputs": {}}
+2025-07-18 07:09:51,557 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-07-18 07:09:51,560 - main - INFO - Lyzr API call completed successfully
+2025-07-18 07:09:51,563 - main - INFO - Received response: {'response': '{"text_response":"<strong>Latest Occupational Pension Update for Denmark</strong>  \nHere\'s a concise summary tailored for you, Rachel:  \n- <strong>Data Sources & Methodology</strong>  \n  • Projections use detailed tax records from Statistics Denmark to model individual asset growth.  \n  • Annual updates ensure accuracy for occupational pensions, with quarterly updates for public pensions. [Source](https://ec.europa.eu/info/sites/default/files/2024-ageing-report-country-fiche-Denmark.pdf)  \n- <strong>Contribution Insights</strong>  \n  • In 2022, occupational and private pension contributions averaged [Figure A.7 data] as a share of wages for ages 16–66.  \n  • For you, at age 60, the projected occupational pension is <strong>DKK 78,553.54</strong>, assuming 5% returns and 2% inflation.  \n- <strong>Key Considerations</strong>  \n  • Annual policy revisions may affect contribution rates.  \n  • Future economic shifts (e.g., inflation >2%) could alter real returns.  \n⚠️ *Educational only – not WTW advice*  \n<strong>How might these annual updates influence your long-term contribution strategy?</strong>","chart_data":null,"contains_chart":false}', 'module_outputs': {}}
+2025-07-18 07:09:51,565 - main - INFO - Parsing LLM response with comprehensive format handling
+2025-07-18 07:09:51,567 - main - INFO - Parsing LLM response
+2025-07-18 07:09:51,569 - main - INFO - Raw response length: 1154
+2025-07-18 07:09:51,573 - main - INFO - ✓ Successfully extracted data using regex patterns
+2025-07-18 07:09:51,575 - main - INFO - Response parsed successfully using method: regex_extraction
+2025-07-18 07:09:51,577 - main - INFO - Text response length: 1015, Contains chart: False
+2025-07-18 07:09:51,580 - main - INFO - Final parsed response - Text length: 1015, Contains chart: False
+2025-07-18 07:09:51,584 - main - INFO - Saving message to database
+2025-07-18 07:09:51,586 - main - INFO - Message saved successfully Negative
+2025-07-18 07:09:51,593 - main - INFO - Making chart API call...
+2025-07-18 07:10:02,736 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-18 07:10:02,738 - main - INFO - Chart API response received: <class 'dict'>
+2025-07-18 07:10:02,739 - main - INFO - Raw chart response: ```json
+{
+  "needsChart": true,
+  "explanation": "Visual representation helps understand the growth trajectory of occupational pension over time",
+  "chartData": {
+    "type": "line",
+    "title": "Your Occupational Pension Growth Projection",
+    "subtitle": "From retirement at age 60 to life expectancy at 90",
+    "data": {
+      "labels": ["60", "65", "70", "75", "80", "85", "90"],
+      "datasets": [
+        {
+          "label": "Occupational Pension Value",
+          "data": [78553.54, 110691.21, 155976.97, 219789.96, 309709.98, 436417.9, 614964.3],
+          "color": "#2563eb",
+          "borderWidth": 3
+        }
+      ]
+    },
+    "options": {
+      "currency": "DKK",
+      "yAxisLabel": "Amount (DKK)",
+      "xAxisLabel": "Age",
+      "showPoints": true,
+      "showGrid": true
+    }
+  }
+}
+```...
+2025-07-18 07:10:02,741 - main - INFO - ✓ Chart data parsed from markdown code block
+2025-07-18 07:10:02,742 - main - INFO - Chart data structure: <class 'dict'>
+2025-07-18 07:10:02,743 - main - INFO - Chart data keys: ['needsChart', 'explanation', 'chartData']
+2025-07-18 07:10:02,744 - main - INFO - ✓ Chart data has needsChart=True
+2025-07-18 07:10:02,745 - main - INFO - ✓ Chart data has chartData field
+2025-07-18 07:10:02,748 - main - INFO - ✓ Chart has 2 data points
+2025-07-18 07:10:02,750 - main - INFO - Saving message to database - Session ID: ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 07:10:02,751 - main - INFO - User message length: 54
+2025-07-18 07:10:02,753 - main - INFO - AI response length: 1015
+2025-07-18 07:10:02,754 - main - INFO - Contains chart: False
+2025-07-18 07:10:02,757 - main - INFO - Chat chart: {'needsChart': True, 'explanation': 'Visual representation helps understand the growth trajectory of occupational pension over time', 'chartData': {'type': 'line', 'title': 'Your Occupational Pension Growth Projection', 'subtitle': 'From retirement at age 60 to life expectancy at 90', 'data': {'labels': ['60', '65', '70', '75', '80', '85', '90'], 'datasets': [{'label': 'Occupational Pension Value', 'data': [78553.54, 110691.21, 155976.97, 219789.96, 309709.98, 436417.9, 614964.3], 'color': '#2563eb', 'borderWidth': 3}]}, 'options': {'currency': 'DKK', 'yAxisLabel': 'Amount (DKK)', 'xAxisLabel': 'Age', 'showPoints': True, 'showGrid': True}}}
+2025-07-18 07:10:02,773 - main - INFO - Message saved successfully with MongoDB ID: 6879f34a6795fc0280810afc
+2025-07-18 07:10:02,774 - main - INFO - Chart data saved to database successfully
+2025-07-18 07:10:02,775 - main - INFO - Unified retirement chat request completed successfully
+2025-07-18 07:15:03,034 - main - INFO - Getting AI preferences for user: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1, session: ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 07:15:03,058 - main - INFO - Starting Lyzr API call - Agent ID: 68519f1ee8762a5908ab2930, Session ID: ace6e251-9885-4851-81fb-185054a75d12, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:15:03,200 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-07-18 07:15:21,286 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-18 07:15:21,299 - main - INFO - Received response with status code: 200
+2025-07-18 07:15:21,301 - main - INFO - Raw Lyzr API response: {"response":"[\n    {\n        \"icon\": \"calculator\",\n        \"title\": \"Optimize Retirement Plan\",\n        \"description\": \"With a current age of 42, a target retirement at 60, a high income, and a 10% contribution rate, now is an ideal time to reassess your retirement plan. Regularly review your occupational pension and consider how annual policy or economic changes (like inflation or contribution limit updates) could affect your targeted outcome, especially given new projections and policy revisions in Denmark.\",\n        \"questions\": [\n            \"How can I update my retirement strategy to account for Denmark's annual policy revisions and changing contribution rates?\",\n            \"Should I consider increasing my contribution rate above 10% to further boost my projected pension income by age 60?\",\n            \"What steps can I take today to ensure my current plan stays on track with projected returns and inflation adjustments?\"\n        ]\n    },\n    {\n        \"icon\": \"trending-up\",\n        \"title\": \"Investment Recommendations\",\n        \"description\": \"Given a 5% investment return assumption, there’s a need to balance growth and safety for your portfolio. Re-assess your investment allocations within your pension accounts, considering changes in risk profile as you get closer to retirement. Annual performance reviews will help maximize your occupational pension's growth.\",\n        \"questions\": [\n            \"How can I tailor my investment strategy within my pension to make the most of a 5% expected return?\",\n            \"Should I adopt a more aggressive or conservative portfolio as I approach retirement at 60?\",\n            \"What investment options in my occupational pension would help hedge against higher-than-expected inflation?\"\n        ]\n    },\n    {\n        \"icon\": \"lightbulb\",\n        \"title\": \"Smart Insights\",\n        \"description\": \"Staying informed on Denmark's occupational pension updat...
+2025-07-18 07:15:21,303 - main - INFO - Received response: {
+  "response": "[\n    {\n        \"icon\": \"calculator\",\n        \"title\": \"Optimize Retirement Plan\",\n        \"description\": \"With a current age of 42, a target retirement at 60, a high income, and a 10% contribution rate, now is an ideal time to reassess your retirement plan. Regularly review your occupational pension and consider how annual policy or economic changes (like inflation or contribution limit updates) could affect your targeted outcome, especially given new projections and policy revisions in Denmark.\",\n        \"questions\": [\n            \"How can I update my retirement strategy to account for Denmark's annual policy revisions and changing contribution rates?\",\n            \"Should I consider increasing my contribution rate above 10% to further boost my projected pension income by age 60?\",\n            \"What steps can I take today to ensure my current plan stays on track with projected returns and inflation adjustments?\"\n        ]\n    },\n    {\n        \"icon\": \"trending-up\",\n        \"title\": \"Investment Recommendations\",\n        \"description\": \"Given a 5% investment return assumption, there\u2019s a need to balance growth and safety for your portfolio. Re-assess your investment allocations within your pension accounts, considering changes in risk profile as you get closer to retirement. Annual performance reviews will help maximize your occupational pension's growth.\",\n        \"questions\": [\n            \"How can I tailor my investment strategy within my pension to make the most of a 5% expected return?\",\n            \"Should I adopt a more aggressive or conservative portfolio as I approach retirement at 60?\",\n            \"What investment options in my occupational pension would help hedge against higher-than-expected inflation?\"\n        ]\n    },\n    {\n        \"icon\": \"lightbulb\",\n        \"title\": \"Smart Insights\",\n        \"description\": \"Staying informed on Denmark's occupational pens...
+2025-07-18 07:15:21,305 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-07-18 07:32:20,636 - main - INFO - Retrieving all users
+2025-07-18 07:32:20,782 - main - INFO - Retrieving sessions, user_id filter: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:32:20,789 - main - INFO - Retrieving user profile for ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:32:20,822 - main - INFO - Generating Denmark retirement data for user: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:32:20,869 - main - INFO - Retrieved 8 users
+2025-07-18 07:32:20,959 - main - INFO - Retrieved 3 sessions
+2025-07-18 07:32:52,858 - main - INFO - Retrieving user profile for ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 07:33:58,414 - main - INFO - Updating user profile for ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 08:16:15,969 - main - INFO - Retrieving sessions, user_id filter: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 08:16:16,153 - main - INFO - Retrieving all users
+2025-07-18 08:16:16,351 - main - INFO - Retrieving user profile for ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 08:16:16,445 - main - INFO - Retrieved 3 sessions
+2025-07-18 08:16:16,525 - main - INFO - Retrieved 8 users
+2025-07-18 08:16:16,965 - main - INFO - Generating Denmark retirement data for user: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 08:29:09,657 - main - INFO - Retrieving all users
+2025-07-18 08:29:09,664 - main - INFO - Retrieving user profile for ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 08:29:09,679 - main - INFO - Retrieved 8 users
+2025-07-18 08:29:09,712 - main - INFO - Generating Denmark retirement data for user: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 08:29:09,792 - main - INFO - Retrieving sessions, user_id filter: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 08:29:09,805 - main - INFO - Retrieved 3 sessions
+2025-07-18 08:49:30,355 - main - INFO - Retrieving all users
+2025-07-18 08:49:30,361 - main - INFO - Retrieving user profile for ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 08:49:30,373 - main - INFO - Generating Denmark retirement data for user: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 08:49:30,389 - main - INFO - Retrieved 8 users
+2025-07-18 08:49:30,458 - main - INFO - Retrieving sessions, user_id filter: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 08:49:30,468 - main - INFO - Retrieved 3 sessions
+2025-07-18 09:04:52,119 - main - INFO - Retrieving all users
+2025-07-18 09:04:52,132 - main - INFO - Retrieving user profile for ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:04:52,139 - main - INFO - Retrieving sessions, user_id filter: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:04:52,160 - main - INFO - Retrieved 8 users
+2025-07-18 09:04:52,177 - main - INFO - Retrieved 3 sessions
+2025-07-18 09:04:52,200 - main - INFO - Generating Denmark retirement data for user: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:05:07,778 - main - INFO - Creating new session for user ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:05:07,791 - main - INFO - Created new session: 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:05:07,843 - main - INFO - Retrieving sessions, user_id filter: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:05:07,861 - main - INFO - Retrieved 4 sessions
+2025-07-18 09:05:07,891 - main - INFO - Pension chat request received - Session ID: 601aebed-3d98-4429-b9bb-8a9700ada341, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:05:07,896 - main - INFO - Retrieving user profile
+2025-07-18 09:05:07,903 - main - INFO - Creating pension prompt
+2025-07-18 09:05:07,912 - main - INFO - Creating pension prompt with user profile data
+2025-07-18 09:05:07,986 - main - INFO - Appending persona instructions for email: danish2@gmail.com
+2025-07-18 09:05:07,993 - main - INFO - Pension prompt created, total length: 7864
+2025-07-18 09:05:07,997 - main - INFO - Pension prompt created successfully
+2025-07-18 09:05:08,018 - main - INFO - Calling Lyzr API for pension planning
+2025-07-18 09:05:08,022 - main - INFO - Starting Lyzr API call - Agent ID: 6850133251da0258f4744a30, Session ID: 601aebed-3d98-4429-b9bb-8a9700ada341, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:05:08,276 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-07-18 09:05:09,828 - main - INFO - Retrieving messages for session ID: 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:05:09,844 - main - INFO - Retrieved 0 messages for session 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:05:09,859 - main - INFO - Getting AI preferences for user: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1, session: ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 09:05:09,871 - main - INFO - Retrieving messages for session ID: 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:05:09,892 - main - INFO - Retrieved 0 messages for session 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:05:09,910 - main - INFO - Starting Lyzr API call - Agent ID: 68519f1ee8762a5908ab2930, Session ID: ace6e251-9885-4851-81fb-185054a75d12, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:05:10,320 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-07-18 09:05:10,344 - main - INFO - Retrieving messages for session ID: 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:05:10,370 - main - INFO - Retrieved 0 messages for session 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:05:15,489 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-18 09:05:15,498 - main - INFO - Received response with status code: 200
+2025-07-18 09:05:15,505 - main - INFO - Raw Lyzr API response: {"response":"```json\n{\n  \"text_response\": \"Increasing your contribution rate above 10% could significantly boost your projected pension income by age 60 if your financial situation allows for it. Considering the power of compound interest, even a small increase in contributions can lead to substantial growth in your pension fund over time. As your current assumption for a 5% investment return indicates, frequent contributions will maximize the compounding effect. However, it's essential to assess your current budget, long-term financial goals, and risk tolerance before increasing your contribution rate.\",\n  \"chart_data\": null,\n  \"contains_chart\": false\n}\n```","module_outputs":{"documents":[{"id":"da2b605e-9de7-4ea5-ba15-e23263f338e1","score":0.76020074,"metadata":{"source":"storage/KB_Forecast_Market_Insights_USA.txt","file_path":"storage/KB_Forecast_Market_Insights_USA.txt","file_name":"KB_Forecast_Market_Insights_USA.txt","file_type":"text/plain","file_size":2087,"creation_date":"2025-06-16","last_modified_date":"2025-06-16","last_accessed_date":"2025-06-16","timestamp":"2025-06-16T12:50:35.889924+00:00"},"text":"## Inflation_Projections_USA (5-40 yr): ### Web Sites: - CBO – Long-Term Budget Outlook hub: [https://www.cbo.gov/topics/long-term-budget-outlook][1] - SSA – 2024 Trustees Report summary:[1] - SSA OASDI projections page:[1] ### Docs / PDFs: - CBO Long-Term Budget Outlook 2024-54 (PDF):[1] - SSA 2024 Trustees Report (PDF):[1] - OECD The Long View: World Economy to 2060 (PDF):[1] ## Healthcare_Cost_Outlook_USA: ### Web Sites: - CMS – National Health Expenditure (NHE) Fact Sheet: [https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/nhe-fact-sheet][1] - CDC – Health-Expenditure FastStats: [https://www.cdc.gov/nchs/fastats/health-expenditures.htm][1] - KFF – Health-Spending Tracker: [https://www.kff.org/health-costs/health-spending/][1] ### Docs / PDFs: - CMS NHE Projections 2023-32 (PDF):[1] - KFF Med...
+2025-07-18 09:05:15,511 - main - INFO - Received response: {
+  "response": "```json\n{\n  \"text_response\": \"Increasing your contribution rate above 10% could significantly boost your projected pension income by age 60 if your financial situation allows for it. Considering the power of compound interest, even a small increase in contributions can lead to substantial growth in your pension fund over time. As your current assumption for a 5% investment return indicates, frequent contributions will maximize the compounding effect. However, it's essential to assess your current budget, long-term financial goals, and risk tolerance before increasing your contribution rate.\",\n  \"chart_data\": null,\n  \"contains_chart\": false\n}\n```",
+  "module_outputs": {
+    "documents": [
+      {
+        "id": "da2b605e-9de7-4ea5-ba15-e23263f338e1",
+        "score": 0.76020074,
+        "metadata": {
+          "source": "storage/KB_Forecast_Market_Insights_USA.txt",
+          "file_path": "storage/KB_Forecast_Market_Insights_USA.txt",
+          "file_name": "KB_Forecast_Market_Insights_USA.txt",
+          "file_type": "text/plain",
+          "file_size": 2087,
+          "creation_date": "2025-06-16",
+          "last_modified_date": "2025-06-16",
+          "last_accessed_date": "2025-06-16",
+          "timestamp": "2025-06-16T12:50:35.889924+00:00"
+        },
+        "text": "## Inflation_Projections_USA (5-40 yr): ### Web Sites: - CBO \u2013 Long-Term Budget Outlook hub: [https://www.cbo.gov/topics/long-term-budget-outlook][1] - SSA \u2013 2024 Trustees Report summary:[1] - SSA OASDI projections page:[1] ### Docs / PDFs: - CBO Long-Term Budget Outlook 2024-54 (PDF):[1] - SSA 2024 Trustees Report (PDF):[1] - OECD The Long View: World Economy to 2060 (PDF):[1] ## Healthcare_Cost_Outlook_USA: ### Web Sites: - CMS \u2013 National Health Expenditure (NHE) Fact Sheet: [https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/nhe-fact-sheet][1] - CDC \u2013 Health-Expenditure FastStats: [https://www.cdc.g...
+2025-07-18 09:05:15,515 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-07-18 09:05:15,520 - main - INFO - Lyzr API call completed successfully
+2025-07-18 09:05:15,527 - main - INFO - Parsing structured response from API
+2025-07-18 09:05:15,545 - main - WARNING - Initial JSON parse failed: Expecting value: line 1 column 1 (char 0), trying to extract from markdown
+2025-07-18 09:05:15,563 - main - INFO - Found JSON in markdown code block
+2025-07-18 09:05:15,568 - main - INFO - Successfully parsed JSON from markdown
+2025-07-18 09:05:15,573 - main - INFO - Parsed response - Text length: 567, Contains chart: False
+2025-07-18 09:05:15,581 - main - INFO - Saving message to database
+2025-07-18 09:05:15,586 - main - INFO - Saving message to database - Session ID: 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:05:15,589 - main - INFO - User message length: 115
+2025-07-18 09:05:15,592 - main - INFO - AI response length: 567
+2025-07-18 09:05:15,597 - main - INFO - Contains chart: False
+2025-07-18 09:05:15,600 - main - INFO - Chat chart: None
+2025-07-18 09:05:15,610 - main - INFO - Message saved successfully with MongoDB ID: 687a0e4b6795fc0280810afe
+2025-07-18 09:05:15,620 - main - INFO - Message saved successfully
+2025-07-18 09:05:15,632 - main - INFO - Pension chat request completed successfully
+2025-07-18 09:05:20,789 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-18 09:05:20,824 - main - INFO - Received response with status code: 200
+2025-07-18 09:05:20,851 - main - INFO - Raw Lyzr API response: {"response":"[\n    {\n        \"icon\": \"calculator\",\n        \"title\": \"Optimize Retirement Plan\",\n        \"description\": \"With your current contribution rate of 10% and a high annual income, you could substantially boost your occupational pension projection by fine-tuning your annual contributions and periodically reviewing your plan as policies and economic conditions change. Incorporating regular revisions based on the latest updates from Statistics Denmark can maximize your long-term security.\",\n        \"questions\": [\n            \"How can I adjust my annual contributions to make the most of potential policy and wage changes over the next 18 years?\",\n            \"What benchmarks should I use each year to determine if my retirement plan remains on track to meet my goals?\",\n            \"Should I consider increasing my contribution rate now to further secure my projected pension at age 60?\"\n        ]\n    },\n    {\n        \"icon\": \"trending-up\",\n        \"title\": \"Investment Recommendations\",\n        \"description\": \"Given a 5% expected return and a long savings window, reviewing asset allocation and considering diversification beyond current occupational and private pension structures could yield better growth. Monitoring inflation and periodically rebalancing your portfolio can also help offset economic uncertainties.\",\n        \"questions\": [\n            \"How can I diversify my pension investments to mitigate the risks of inflation or lower-than-expected returns?\",\n            \"What type of assets should I consider adding to optimize returns without increasing my risk profile too much?\",\n            \"Are there tax-advantaged investment options that could complement my occupational pension plan?\"\n        ]\n    },\n    {\n        \"icon\": \"lightbulb\",\n        \"title\": \"Smart Insights\",\n        \"description\": \"The annual updates and projections from national sources highlight the impact of policy shifts...
+2025-07-18 09:05:20,871 - main - INFO - Received response: {
+  "response": "[\n    {\n        \"icon\": \"calculator\",\n        \"title\": \"Optimize Retirement Plan\",\n        \"description\": \"With your current contribution rate of 10% and a high annual income, you could substantially boost your occupational pension projection by fine-tuning your annual contributions and periodically reviewing your plan as policies and economic conditions change. Incorporating regular revisions based on the latest updates from Statistics Denmark can maximize your long-term security.\",\n        \"questions\": [\n            \"How can I adjust my annual contributions to make the most of potential policy and wage changes over the next 18 years?\",\n            \"What benchmarks should I use each year to determine if my retirement plan remains on track to meet my goals?\",\n            \"Should I consider increasing my contribution rate now to further secure my projected pension at age 60?\"\n        ]\n    },\n    {\n        \"icon\": \"trending-up\",\n        \"title\": \"Investment Recommendations\",\n        \"description\": \"Given a 5% expected return and a long savings window, reviewing asset allocation and considering diversification beyond current occupational and private pension structures could yield better growth. Monitoring inflation and periodically rebalancing your portfolio can also help offset economic uncertainties.\",\n        \"questions\": [\n            \"How can I diversify my pension investments to mitigate the risks of inflation or lower-than-expected returns?\",\n            \"What type of assets should I consider adding to optimize returns without increasing my risk profile too much?\",\n            \"Are there tax-advantaged investment options that could complement my occupational pension plan?\"\n        ]\n    },\n    {\n        \"icon\": \"lightbulb\",\n        \"title\": \"Smart Insights\",\n        \"description\": \"The annual updates and projections from national sources highlight the impact of policy sh...
+2025-07-18 09:05:20,909 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-07-18 09:06:22,093 - main - INFO - Pension chat request received - Session ID: 601aebed-3d98-4429-b9bb-8a9700ada341, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:06:22,099 - main - INFO - Retrieving user profile
+2025-07-18 09:06:22,107 - main - INFO - Creating pension prompt
+2025-07-18 09:06:22,111 - main - INFO - Creating pension prompt with user profile data
+2025-07-18 09:06:22,114 - main - INFO - Appending persona instructions for email: danish2@gmail.com
+2025-07-18 09:06:22,117 - main - INFO - Pension prompt created, total length: 7858
+2025-07-18 09:06:22,119 - main - INFO - Pension prompt created successfully
+2025-07-18 09:06:22,121 - main - INFO - Calling Lyzr API for pension planning
+2025-07-18 09:06:22,124 - main - INFO - Starting Lyzr API call - Agent ID: 6850133251da0258f4744a30, Session ID: 601aebed-3d98-4429-b9bb-8a9700ada341, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:06:22,272 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-07-18 09:06:29,397 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-18 09:06:29,411 - main - INFO - Received response with status code: 200
+2025-07-18 09:06:29,424 - main - INFO - Raw Lyzr API response: {"response":"```json\n{\n  \"text_response\": \"Recurring policy revisions can significantly impact your projected pension by altering contribution limits, taxation rules, or benefits calculations. It's crucial to watch for changes such as adjustments in taxation of retirement income, inflation adjustments in benefits, changes in contribution limits, and any alterations in payout structures. These revisions could directly affect your take-home pension income or the strategy you need to employ leading up to retirement. Regularly reviewing updates from the IRS regarding retirement accounts, staying informed on Social Security benefits adjustments, and consulting with a financial planner for a detailed review are good practices to ensure your pension plan aligns with current regulations and maximizes your benefits.\",\n  \"chart_data\": null,\n  \"contains_chart\": false\n}\n```","module_outputs":{"documents":[{"id":"da2b605e-9de7-4ea5-ba15-e23263f338e1","score":0.7629445,"metadata":{"source":"storage/KB_Forecast_Market_Insights_USA.txt","file_path":"storage/KB_Forecast_Market_Insights_USA.txt","file_name":"KB_Forecast_Market_Insights_USA.txt","file_type":"text/plain","file_size":2087,"creation_date":"2025-06-16","last_modified_date":"2025-06-16","last_accessed_date":"2025-06-16","timestamp":"2025-06-16T12:50:35.889924+00:00"},"text":"## Inflation_Projections_USA (5-40 yr): ### Web Sites: - CBO – Long-Term Budget Outlook hub: [https://www.cbo.gov/topics/long-term-budget-outlook][1] - SSA – 2024 Trustees Report summary:[1] - SSA OASDI projections page:[1] ### Docs / PDFs: - CBO Long-Term Budget Outlook 2024-54 (PDF):[1] - SSA 2024 Trustees Report (PDF):[1] - OECD The Long View: World Economy to 2060 (PDF):[1] ## Healthcare_Cost_Outlook_USA: ### Web Sites: - CMS – National Health Expenditure (NHE) Fact Sheet: [https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/nhe-fact-sheet][1] - CDC – Health-Expenditure FastStats: [https://...
+2025-07-18 09:06:29,442 - main - INFO - Received response: {
+  "response": "```json\n{\n  \"text_response\": \"Recurring policy revisions can significantly impact your projected pension by altering contribution limits, taxation rules, or benefits calculations. It's crucial to watch for changes such as adjustments in taxation of retirement income, inflation adjustments in benefits, changes in contribution limits, and any alterations in payout structures. These revisions could directly affect your take-home pension income or the strategy you need to employ leading up to retirement. Regularly reviewing updates from the IRS regarding retirement accounts, staying informed on Social Security benefits adjustments, and consulting with a financial planner for a detailed review are good practices to ensure your pension plan aligns with current regulations and maximizes your benefits.\",\n  \"chart_data\": null,\n  \"contains_chart\": false\n}\n```",
+  "module_outputs": {
+    "documents": [
+      {
+        "id": "da2b605e-9de7-4ea5-ba15-e23263f338e1",
+        "score": 0.7629445,
+        "metadata": {
+          "source": "storage/KB_Forecast_Market_Insights_USA.txt",
+          "file_path": "storage/KB_Forecast_Market_Insights_USA.txt",
+          "file_name": "KB_Forecast_Market_Insights_USA.txt",
+          "file_type": "text/plain",
+          "file_size": 2087,
+          "creation_date": "2025-06-16",
+          "last_modified_date": "2025-06-16",
+          "last_accessed_date": "2025-06-16",
+          "timestamp": "2025-06-16T12:50:35.889924+00:00"
+        },
+        "text": "## Inflation_Projections_USA (5-40 yr): ### Web Sites: - CBO \u2013 Long-Term Budget Outlook hub: [https://www.cbo.gov/topics/long-term-budget-outlook][1] - SSA \u2013 2024 Trustees Report summary:[1] - SSA OASDI projections page:[1] ### Docs / PDFs: - CBO Long-Term Budget Outlook 2024-54 (PDF):[1] - SSA 2024 Trustees Report (PDF):[1] - OECD The Long View: World Economy to 2060 (PDF):[1] ## Healthcare_Cost_Outlook_USA: ### Web Sites: - CMS \u2013 National Health E...
+2025-07-18 09:06:29,493 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-07-18 09:06:29,536 - main - INFO - Lyzr API call completed successfully
+2025-07-18 09:06:29,573 - main - INFO - Parsing structured response from API
+2025-07-18 09:06:29,630 - main - WARNING - Initial JSON parse failed: Expecting value: line 1 column 1 (char 0), trying to extract from markdown
+2025-07-18 09:06:29,664 - main - INFO - Found JSON in markdown code block
+2025-07-18 09:06:29,737 - main - INFO - Successfully parsed JSON from markdown
+2025-07-18 09:06:29,810 - main - INFO - Parsed response - Text length: 775, Contains chart: False
+2025-07-18 09:06:29,870 - main - INFO - Saving message to database
+2025-07-18 09:06:29,922 - main - INFO - Saving message to database - Session ID: 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:06:29,984 - main - INFO - User message length: 109
+2025-07-18 09:06:30,013 - main - INFO - AI response length: 775
+2025-07-18 09:06:30,041 - main - INFO - Contains chart: False
+2025-07-18 09:06:30,059 - main - INFO - Chat chart: None
+2025-07-18 09:06:30,121 - main - INFO - Message saved successfully with MongoDB ID: 687a0e966795fc0280810aff
+2025-07-18 09:06:30,150 - main - INFO - Message saved successfully
+2025-07-18 09:06:30,165 - main - INFO - Pension chat request completed successfully
+2025-07-18 09:06:34,434 - main - INFO - Pension chat request received - Session ID: 601aebed-3d98-4429-b9bb-8a9700ada341, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:06:34,436 - main - INFO - Retrieving user profile
+2025-07-18 09:06:34,443 - main - INFO - Creating pension prompt
+2025-07-18 09:06:34,446 - main - INFO - Creating pension prompt with user profile data
+2025-07-18 09:06:34,450 - main - INFO - Appending persona instructions for email: danish2@gmail.com
+2025-07-18 09:06:34,453 - main - INFO - Pension prompt created, total length: 7867
+2025-07-18 09:06:34,457 - main - INFO - Pension prompt created successfully
+2025-07-18 09:06:34,462 - main - INFO - Calling Lyzr API for pension planning
+2025-07-18 09:06:34,470 - main - INFO - Starting Lyzr API call - Agent ID: 6850133251da0258f4744a30, Session ID: 601aebed-3d98-4429-b9bb-8a9700ada341, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:06:35,030 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-07-18 09:06:48,562 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-18 09:06:48,565 - main - INFO - Received response with status code: 200
+2025-07-18 09:06:48,568 - main - INFO - Raw Lyzr API response: {"response":"```json\n{\n  \"text_response\": \"To adjust your annual contributions effectively over the next 18 years, consider a flexible approach that aligns with potential policy changes, wage adjustments, and your financial goals. Here are strategies to optimize your contributions: \n1. <strong>Monitor Policy Changes</strong>: Stay informed about legislative changes affecting retirement accounts, tax deductions, and contribution limits. These changes can impact your saving strategy significantly. \n2. <strong>Increase Contributions Gradually</strong>: Consider gradually increasing your contribution rate yearly. For example, if you start with a 10% contribution, increase it by 1% each year until you reach or exceed the maximum allowed contribution. \n3. <strong>Adjust for Wage Growth</strong>: As your salary grows, increase your contributions proportionally. This ensures that your savings grow along with your income, maximizing the impact of compounding interest over time. \n4. <strong>Review Investment Performance</strong>: Periodically review the performance of your investment portfolio and adjust allocations if necessary to better align with your risk tolerance and time horizon. \n5. <strong>Utilize Employer Match</strong>: If your employer offers a matching contribution, ensure you contribute enough to receive the full match, as this is essentially free money for your retirement savings. \n6. <strong>Consider Inflation</strong>: Remember that the value of money changes over time due to inflation. Keep your contributions sufficient to maintain purchasing power by considering inflation-adjusted increments. \nOverall, regular financial reviews and adjustments based on personal circumstances and economic conditions form a robust strategy for optimizing your pension contributions. \nVisualizing these annual adjustments in a chart can be beneficial to grasp the long-term impact on projected retirement income.\",\n  \"chart_data\": null,\n  \"contains_chart\": fals...
+2025-07-18 09:06:48,571 - main - INFO - Received response: {
+  "response": "```json\n{\n  \"text_response\": \"To adjust your annual contributions effectively over the next 18 years, consider a flexible approach that aligns with potential policy changes, wage adjustments, and your financial goals. Here are strategies to optimize your contributions: \n1. <strong>Monitor Policy Changes</strong>: Stay informed about legislative changes affecting retirement accounts, tax deductions, and contribution limits. These changes can impact your saving strategy significantly. \n2. <strong>Increase Contributions Gradually</strong>: Consider gradually increasing your contribution rate yearly. For example, if you start with a 10% contribution, increase it by 1% each year until you reach or exceed the maximum allowed contribution. \n3. <strong>Adjust for Wage Growth</strong>: As your salary grows, increase your contributions proportionally. This ensures that your savings grow along with your income, maximizing the impact of compounding interest over time. \n4. <strong>Review Investment Performance</strong>: Periodically review the performance of your investment portfolio and adjust allocations if necessary to better align with your risk tolerance and time horizon. \n5. <strong>Utilize Employer Match</strong>: If your employer offers a matching contribution, ensure you contribute enough to receive the full match, as this is essentially free money for your retirement savings. \n6. <strong>Consider Inflation</strong>: Remember that the value of money changes over time due to inflation. Keep your contributions sufficient to maintain purchasing power by considering inflation-adjusted increments. \nOverall, regular financial reviews and adjustments based on personal circumstances and economic conditions form a robust strategy for optimizing your pension contributions. \nVisualizing these annual adjustments in a chart can be beneficial to grasp the long-term impact on projected retirement income.\",\n  \"chart_data\": null,\n  \"contains_chart\": ...
+2025-07-18 09:06:48,573 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-07-18 09:06:48,575 - main - INFO - Lyzr API call completed successfully
+2025-07-18 09:06:48,577 - main - INFO - Parsing structured response from API
+2025-07-18 09:06:48,579 - main - WARNING - Initial JSON parse failed: Expecting value: line 1 column 1 (char 0), trying to extract from markdown
+2025-07-18 09:06:48,581 - main - INFO - Found JSON in markdown code block
+2025-07-18 09:06:48,584 - main - ERROR - Failed to parse JSON from markdown: Invalid control character at: line 2 column 261 (char 262)
+2025-07-18 09:06:48,585 - main - INFO - Using default text response as parsed response was empty
+2025-07-18 09:06:48,586 - main - INFO - Parsed response - Text length: 77, Contains chart: False
+2025-07-18 09:06:48,597 - main - INFO - Saving message to database
+2025-07-18 09:06:48,605 - main - INFO - Saving message to database - Session ID: 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:06:48,608 - main - INFO - User message length: 118
+2025-07-18 09:06:48,612 - main - INFO - AI response length: 77
+2025-07-18 09:06:48,618 - main - INFO - Contains chart: False
+2025-07-18 09:06:48,625 - main - INFO - Chat chart: None
+2025-07-18 09:06:48,636 - main - INFO - Message saved successfully with MongoDB ID: 687a0ea86795fc0280810b00
+2025-07-18 09:06:48,642 - main - INFO - Message saved successfully
+2025-07-18 09:06:48,644 - main - INFO - Pension chat request completed successfully
+2025-07-18 09:07:00,233 - main - INFO - Retrieving all users
+2025-07-18 09:07:00,245 - main - INFO - Retrieved 8 users
+2025-07-18 09:07:00,406 - main - INFO - Retrieving user profile for ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:07:00,425 - main - INFO - Generating Denmark retirement data for user: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:07:00,436 - main - INFO - Retrieving sessions, user_id filter: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:07:00,459 - main - INFO - Retrieved 4 sessions
+2025-07-18 09:07:01,413 - main - INFO - Retrieving messages for session ID: 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:07:01,478 - main - INFO - Getting AI preferences for user: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1, session: ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 09:07:01,489 - main - INFO - Retrieved 3 messages for session 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:07:01,495 - main - INFO - Retrieving messages for session ID: ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 09:07:01,501 - main - INFO - Retrieving messages for session ID: 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:07:01,521 - main - INFO - Retrieved 1 messages for session ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 09:07:01,539 - main - INFO - Retrieving messages for session ID: ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 09:07:01,553 - main - INFO - Retrieving messages for session ID: 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:07:01,560 - main - INFO - Retrieving messages for session ID: ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 09:07:01,565 - main - INFO - Retrieved 3 messages for session 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:07:01,570 - main - INFO - Starting Lyzr API call - Agent ID: 68519f1ee8762a5908ab2930, Session ID: ace6e251-9885-4851-81fb-185054a75d12, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:07:01,790 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-07-18 09:07:01,800 - main - INFO - Retrieved 1 messages for session ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 09:07:01,803 - main - INFO - Retrieved 3 messages for session 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:07:01,809 - main - INFO - Retrieved 1 messages for session ace6e251-9885-4851-81fb-185054a75d12
+2025-07-18 09:07:18,444 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-18 09:07:18,449 - main - INFO - Received response with status code: 200
+2025-07-18 09:07:18,450 - main - INFO - Raw Lyzr API response: {"response":"[\n    {\n        \"icon\": \"calculator\",\n        \"title\": \"Optimize Retirement Plan\",\n        \"description\": \"With a current income of $550,000 and a contribution rate of 10%, you have a strong base for your occupational and private pension savings. However, with regular policy and economic shifts (such as changes to contribution rates and inflation projections), you should ensure your plan is optimized annually for both growth and tax efficiency.\",\n        \"questions\": [\n            \"How can I adjust my annual contribution strategy to maximize my retirement outcome, considering potential changes to policy or inflation?\",\n            \"Should I increase my contribution rate above 10% as I approach age 60 to boost my final pension value?\",\n            \"How will changes in Denmark’s occupational pension rules impact my retirement savings between now and retirement age?\"\n        ]\n    },\n    {\n        \"icon\": \"trending-up\",\n        \"title\": \"Investment Recommendations\",\n        \"description\": \"With a projected 5% investment return, your pension savings are on track, but market volatility and inflation could affect your real returns. Diversifying your investment portfolio and periodically reviewing asset allocations can help you stay on course and potentially improve long-term outcomes.\",\n        \"questions\": [\n            \"How can I diversify my occupational and private pension investments to better withstand market fluctuations?\",\n            \"What allocation adjustments should I consider as I get closer to retirement age?\",\n            \"Are there specific Danish or global investment products that align with my retirement timeline and risk tolerance?\"\n        ]\n    },\n    {\n        \"icon\": \"lightbulb\",\n        \"title\": \"Smart Insights\",\n        \"description\": \"Annual policy updates and evolving economic conditions can directly affect your occupational pension value and real purchasing ...
+2025-07-18 09:07:18,453 - main - INFO - Received response: {
+  "response": "[\n    {\n        \"icon\": \"calculator\",\n        \"title\": \"Optimize Retirement Plan\",\n        \"description\": \"With a current income of $550,000 and a contribution rate of 10%, you have a strong base for your occupational and private pension savings. However, with regular policy and economic shifts (such as changes to contribution rates and inflation projections), you should ensure your plan is optimized annually for both growth and tax efficiency.\",\n        \"questions\": [\n            \"How can I adjust my annual contribution strategy to maximize my retirement outcome, considering potential changes to policy or inflation?\",\n            \"Should I increase my contribution rate above 10% as I approach age 60 to boost my final pension value?\",\n            \"How will changes in Denmark\u2019s occupational pension rules impact my retirement savings between now and retirement age?\"\n        ]\n    },\n    {\n        \"icon\": \"trending-up\",\n        \"title\": \"Investment Recommendations\",\n        \"description\": \"With a projected 5% investment return, your pension savings are on track, but market volatility and inflation could affect your real returns. Diversifying your investment portfolio and periodically reviewing asset allocations can help you stay on course and potentially improve long-term outcomes.\",\n        \"questions\": [\n            \"How can I diversify my occupational and private pension investments to better withstand market fluctuations?\",\n            \"What allocation adjustments should I consider as I get closer to retirement age?\",\n            \"Are there specific Danish or global investment products that align with my retirement timeline and risk tolerance?\"\n        ]\n    },\n    {\n        \"icon\": \"lightbulb\",\n        \"title\": \"Smart Insights\",\n        \"description\": \"Annual policy updates and evolving economic conditions can directly affect your occupational pension value and real pu...
+2025-07-18 09:07:18,455 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-07-18 09:08:37,245 - main - INFO - Pension chat request received - Session ID: 601aebed-3d98-4429-b9bb-8a9700ada341, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:08:37,249 - main - INFO - Retrieving user profile
+2025-07-18 09:08:37,325 - main - INFO - Creating pension prompt
+2025-07-18 09:08:37,355 - main - INFO - Creating pension prompt with user profile data
+2025-07-18 09:08:37,368 - main - INFO - Appending persona instructions for email: danish2@gmail.com
+2025-07-18 09:08:37,377 - main - INFO - Pension prompt created, total length: 7829
+2025-07-18 09:08:37,380 - main - INFO - Pension prompt created successfully
+2025-07-18 09:08:37,384 - main - INFO - Calling Lyzr API for pension planning
+2025-07-18 09:08:37,393 - main - INFO - Starting Lyzr API call - Agent ID: 6850133251da0258f4744a30, Session ID: 601aebed-3d98-4429-b9bb-8a9700ada341, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:08:37,811 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-07-18 09:08:49,212 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-18 09:08:49,254 - main - INFO - Received response with status code: 200
+2025-07-18 09:08:49,308 - main - INFO - Raw Lyzr API response: {"response":"```json\n{\n  \"text_response\": \"As you approach retirement age, it's wise to adjust your investment allocations to reduce risk and enhance income stability. Consider the following adjustments: \n1. <strong>Shift to Conservative Investments</strong>: Gradually move a portion of your portfolio from stocks to bonds or other fixed-income assets to minimize volatility. Target-date funds can automatically adjust this for you as you near retirement. \n2. <strong>Increase Cash Holdings</strong>: Build up your cash reserves to cover several years' worth of expenses. This provides a buffer to avoid withdrawing from investments during market downturns. \n3. <strong>Monitor Diversification</strong>: Ensure your portfolio remains well-diversified across asset classes and sectors to mitigate risk. \n4. <strong>Allocate for Inflation Protection</strong>: Include assets like Treasury Inflation-Protected Securities (TIPS) or dividend-paying stocks that can provide income that grows with inflation. \n5. <strong>Consider Income-Producing Assets</strong>: Focus on assets that provide steady income, such as dividend-paying stocks, real estate investment trusts (REITs), and annuities. \n6. <strong>Review and Rebalance</strong>: Regularly review your portfolio to align with your risk tolerance and retirement timeline, making necessary adjustments. \nThese strategies can help you secure your savings and ensure a steady income stream throughout retirement.\",\n  \"chart_data\": null,\n  \"contains_chart\": false\n}\n```","module_outputs":{"documents":[{"id":"da2b605e-9de7-4ea5-ba15-e23263f338e1","score":0.76249206,"metadata":{"source":"storage/KB_Forecast_Market_Insights_USA.txt","file_path":"storage/KB_Forecast_Market_Insights_USA.txt","file_name":"KB_Forecast_Market_Insights_USA.txt","file_type":"text/plain","file_size":2087,"creation_date":"2025-06-16","last_modified_date":"2025-06-16","last_accessed_date":"2025-06-16","timestamp":"2025-06-16T12:50:35.889924+00:00"},"text...
+2025-07-18 09:08:49,357 - main - INFO - Received response: {
+  "response": "```json\n{\n  \"text_response\": \"As you approach retirement age, it's wise to adjust your investment allocations to reduce risk and enhance income stability. Consider the following adjustments: \n1. <strong>Shift to Conservative Investments</strong>: Gradually move a portion of your portfolio from stocks to bonds or other fixed-income assets to minimize volatility. Target-date funds can automatically adjust this for you as you near retirement. \n2. <strong>Increase Cash Holdings</strong>: Build up your cash reserves to cover several years' worth of expenses. This provides a buffer to avoid withdrawing from investments during market downturns. \n3. <strong>Monitor Diversification</strong>: Ensure your portfolio remains well-diversified across asset classes and sectors to mitigate risk. \n4. <strong>Allocate for Inflation Protection</strong>: Include assets like Treasury Inflation-Protected Securities (TIPS) or dividend-paying stocks that can provide income that grows with inflation. \n5. <strong>Consider Income-Producing Assets</strong>: Focus on assets that provide steady income, such as dividend-paying stocks, real estate investment trusts (REITs), and annuities. \n6. <strong>Review and Rebalance</strong>: Regularly review your portfolio to align with your risk tolerance and retirement timeline, making necessary adjustments. \nThese strategies can help you secure your savings and ensure a steady income stream throughout retirement.\",\n  \"chart_data\": null,\n  \"contains_chart\": false\n}\n```",
+  "module_outputs": {
+    "documents": [
+      {
+        "id": "da2b605e-9de7-4ea5-ba15-e23263f338e1",
+        "score": 0.76249206,
+        "metadata": {
+          "source": "storage/KB_Forecast_Market_Insights_USA.txt",
+          "file_path": "storage/KB_Forecast_Market_Insights_USA.txt",
+          "file_name": "KB_Forecast_Market_Insights_USA.txt",
+          "file_type": "text/plain",
+          "file_size": 2087,
+          "creation_date": "2025-06-16...
+2025-07-18 09:08:49,407 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-07-18 09:08:49,442 - main - INFO - Lyzr API call completed successfully
+2025-07-18 09:08:49,464 - main - INFO - Parsing structured response from API
+2025-07-18 09:08:49,496 - main - WARNING - Initial JSON parse failed: Expecting value: line 1 column 1 (char 0), trying to extract from markdown
+2025-07-18 09:08:49,526 - main - INFO - Found JSON in markdown code block
+2025-07-18 09:08:49,563 - main - ERROR - Failed to parse JSON from markdown: Invalid control character at: line 2 column 182 (char 183)
+2025-07-18 09:08:49,576 - main - INFO - Using default text response as parsed response was empty
+2025-07-18 09:08:49,595 - main - INFO - Parsed response - Text length: 77, Contains chart: False
+2025-07-18 09:08:49,615 - main - INFO - Saving message to database
+2025-07-18 09:08:49,658 - main - INFO - Saving message to database - Session ID: 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:08:49,676 - main - INFO - User message length: 80
+2025-07-18 09:08:49,689 - main - INFO - AI response length: 77
+2025-07-18 09:08:49,712 - main - INFO - Contains chart: False
+2025-07-18 09:08:49,722 - main - INFO - Chat chart: None
+2025-07-18 09:08:49,932 - main - INFO - Message saved successfully with MongoDB ID: 687a0f216795fc0280810b01
+2025-07-18 09:08:50,003 - main - INFO - Message saved successfully
+2025-07-18 09:08:50,195 - main - INFO - Pension chat request completed successfully
+2025-07-18 09:09:02,382 - main - INFO - FastAPI application initialized
+2025-07-18 09:09:02,384 - main - INFO - CORS middleware configured
+2025-07-18 09:09:02,387 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-18 09:09:02,425 - main - INFO - MongoDB client initialized successfully
+2025-07-18 09:09:02,434 - main - INFO - MongoDB collections configured
+2025-07-18 09:09:02,440 - main - INFO - External API configuration loaded
+2025-07-18 09:09:22,105 - main - INFO - FastAPI application initialized
+2025-07-18 09:09:22,106 - main - INFO - CORS middleware configured
+2025-07-18 09:09:22,108 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-18 09:09:22,126 - main - INFO - MongoDB client initialized successfully
+2025-07-18 09:09:22,128 - main - INFO - MongoDB collections configured
+2025-07-18 09:09:22,131 - main - INFO - External API configuration loaded
+2025-07-18 09:09:41,988 - main - INFO - FastAPI application initialized
+2025-07-18 09:09:41,990 - main - INFO - CORS middleware configured
+2025-07-18 09:09:41,992 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-18 09:09:42,017 - main - INFO - MongoDB client initialized successfully
+2025-07-18 09:09:42,022 - main - INFO - MongoDB collections configured
+2025-07-18 09:09:42,027 - main - INFO - External API configuration loaded
+2025-07-18 09:10:34,020 - main - INFO - FastAPI application initialized
+2025-07-18 09:10:34,021 - main - INFO - CORS middleware configured
+2025-07-18 09:10:34,024 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-18 09:10:34,047 - main - INFO - MongoDB client initialized successfully
+2025-07-18 09:10:34,054 - main - INFO - MongoDB collections configured
+2025-07-18 09:10:34,058 - main - INFO - External API configuration loaded
+2025-07-18 09:10:38,435 - main - INFO - FastAPI application initialized
+2025-07-18 09:10:38,440 - main - INFO - CORS middleware configured
+2025-07-18 09:10:38,442 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-18 09:10:38,464 - main - INFO - MongoDB client initialized successfully
+2025-07-18 09:10:38,466 - main - INFO - MongoDB collections configured
+2025-07-18 09:10:38,468 - main - INFO - External API configuration loaded
+2025-07-18 09:13:51,050 - main - INFO - Getting AI preferences for user: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1, session: 601aebed-3d98-4429-b9bb-8a9700ada341
+2025-07-18 09:13:51,155 - main - INFO - Starting Lyzr API call - Agent ID: 68519f1ee8762a5908ab2930, Session ID: 601aebed-3d98-4429-b9bb-8a9700ada341, User ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:13:51,435 - main - INFO - Making HTTP request to: https://agent-prod.studio.lyzr.ai/v3/inference/chat/
+2025-07-18 09:14:05,296 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-18 09:14:05,299 - main - INFO - Received response with status code: 200
+2025-07-18 09:14:05,302 - main - INFO - Raw Lyzr API response: {"response":"[\n  {\n    \"icon\": \"calculator\",\n    \"title\": \"Optimize Retirement Plan\",\n    \"description\": \"With an 18-year horizon and a high current income, optimizing your retirement plan is crucial. You can potentially boost your future pension by systematically increasing your contribution rate above 10% and aligning your plan to anticipated wage growth or policy changes. Regular plan adjustments ensure your contributions and projected returns match your actual financial situation and evolving retirement landscape.\",\n    \"questions\": [\n      \"How much would increasing my contribution rate to 12% or 15% affect my projected pension by age 60?\",\n      \"Should I set up automatic contribution increases tied to my salary raises to maximize my savings?\",\n      \"How often should I review and update my retirement plan to adapt to policy or income changes?\"\n    ]\n  },\n  {\n    \"icon\": \"trending-up\",\n    \"title\": \"Investment Recommendations\",\n    \"description\": \"Maximizing a consistent 5% return over nearly two decades requires a strategic asset allocation. As you approach retirement, transitioning from high-growth investments to more stable, income-focused assets can manage risk without sacrificing security. Evaluate your current investment mix to ensure it evolves with your timeline and risk appetite.\",\n    \"questions\": [\n      \"What is the ideal allocation between stocks, bonds, and other assets for my stage in retirement planning?\",\n      \"How can I gradually shift my investments to lower risk options as I get closer to 60?\",\n      \"Are there specific asset classes or funds I should consider to maintain a 5% or higher annual return?\"\n    ]\n  },\n  {\n    \"icon\": \"lightbulb\",\n    \"title\": \"Smart Insights\",\n    \"description\": \"Annual policy changes and wage fluctuations can meaningfully impact your retirement outcome. By proactively adjusting contribution levels and staying informed about regulatory u...
+2025-07-18 09:14:05,304 - main - INFO - Received response: {
+  "response": "[\n  {\n    \"icon\": \"calculator\",\n    \"title\": \"Optimize Retirement Plan\",\n    \"description\": \"With an 18-year horizon and a high current income, optimizing your retirement plan is crucial. You can potentially boost your future pension by systematically increasing your contribution rate above 10% and aligning your plan to anticipated wage growth or policy changes. Regular plan adjustments ensure your contributions and projected returns match your actual financial situation and evolving retirement landscape.\",\n    \"questions\": [\n      \"How much would increasing my contribution rate to 12% or 15% affect my projected pension by age 60?\",\n      \"Should I set up automatic contribution increases tied to my salary raises to maximize my savings?\",\n      \"How often should I review and update my retirement plan to adapt to policy or income changes?\"\n    ]\n  },\n  {\n    \"icon\": \"trending-up\",\n    \"title\": \"Investment Recommendations\",\n    \"description\": \"Maximizing a consistent 5% return over nearly two decades requires a strategic asset allocation. As you approach retirement, transitioning from high-growth investments to more stable, income-focused assets can manage risk without sacrificing security. Evaluate your current investment mix to ensure it evolves with your timeline and risk appetite.\",\n    \"questions\": [\n      \"What is the ideal allocation between stocks, bonds, and other assets for my stage in retirement planning?\",\n      \"How can I gradually shift my investments to lower risk options as I get closer to 60?\",\n      \"Are there specific asset classes or funds I should consider to maintain a 5% or higher annual return?\"\n    ]\n  },\n  {\n    \"icon\": \"lightbulb\",\n    \"title\": \"Smart Insights\",\n    \"description\": \"Annual policy changes and wage fluctuations can meaningfully impact your retirement outcome. By proactively adjusting contribution levels and staying informed about regulato...
+2025-07-18 09:14:05,306 - main - INFO - Response data keys: ['response', 'module_outputs']
+2025-07-18 09:15:18,024 - main - INFO - Retrieving all users
+2025-07-18 09:15:18,067 - main - INFO - Retrieving user profile for ID: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:15:18,072 - main - INFO - Retrieved 8 users
+2025-07-18 09:15:18,092 - main - INFO - Retrieving sessions, user_id filter: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:15:18,100 - main - INFO - Generating Denmark retirement data for user: 64a5a02a-99d7-4d3f-9bac-077ce8a8e7a1
+2025-07-18 09:15:18,113 - main - INFO - Retrieved 4 sessions
+2025-07-18 09:35:10,759 - main - INFO - FastAPI application initialized
+2025-07-18 09:35:10,762 - main - INFO - CORS middleware configured
+2025-07-18 09:35:10,765 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-18 09:35:10,839 - main - INFO - MongoDB client initialized successfully
+2025-07-18 09:35:10,851 - main - INFO - MongoDB collections configured
+2025-07-18 09:35:10,853 - main - INFO - External API configuration loaded

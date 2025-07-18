@@ -82,6 +82,14 @@ class UserProfile(BaseModel):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
     ai_retirement_data: Optional[List[Dict]] = None
+    # New fields
+    gender: Optional[str] = None  # Male or Female
+    new_joinee: Optional[str] = None  # Yes or No
+    civil_status: Optional[str] = None  # Single or Married
+    disability: Optional[str] = None  # Yes or No
+    death_main: Optional[str] = None  # Yes or No
+    death_child: Optional[str] = None  # Yes or No
+    transfer_of_pension: Optional[str] = None  # Yes or No
 
 class UserProfileCreate(BaseModel):
     name: str
@@ -104,6 +112,14 @@ class UserProfileCreate(BaseModel):
     inflation: float = 0.02  # New field for inflation rate
     beneficiary_included: bool = False  # New field
     beneficiary_life_expectancy: Optional[int] = None
+    # New fields
+    gender: Optional[str] = None  # Male or Female
+    new_joinee: Optional[str] = None  # Yes or No
+    civil_status: Optional[str] = None  # Single or Married
+    disability: Optional[str] = None  # Yes or No
+    death_main: Optional[str] = None  # Yes or No
+    death_child: Optional[str] = None  # Yes or No
+    transfer_of_pension: Optional[str] = None  # Yes or No
 
 
 class UserProfileUpdate(BaseModel):
@@ -127,6 +143,14 @@ class UserProfileUpdate(BaseModel):
     inflation: Optional[float] = None
     beneficiary_included: Optional[bool] = None
     beneficiary_life_expectancy: Optional[int] = None
+    # New fields
+    gender: Optional[str] = None  # Male or Female
+    new_joinee: Optional[str] = None  # Yes or No
+    civil_status: Optional[str] = None  # Single or Married
+    disability: Optional[str] = None  # Yes or No
+    death_main: Optional[str] = None  # Yes or No
+    death_child: Optional[str] = None  # Yes or No
+    transfer_of_pension: Optional[str] = None  # Yes or No
 
     
 class UserProfileResponse(BaseModel):
@@ -155,6 +179,14 @@ class UserProfileResponse(BaseModel):
     beneficiary_life_expectancy: Optional[int]
     retirement_data: List[Dict]
     ai_retirement_data: Optional[List[Dict]] = None
+    # New fields
+    gender: Optional[str] = None  # Male or Female
+    new_joinee: Optional[str] = None  # Yes or No
+    civil_status: Optional[str] = None  # Single or Married
+    disability: Optional[str] = None  # Yes or No
+    death_main: Optional[str] = None  # Yes or No
+    death_child: Optional[str] = None  # Yes or No
+    transfer_of_pension: Optional[str] = None  # Yes or No
 
 class AIPreferencesRequest(BaseModel):
     user_id: str
@@ -367,6 +399,14 @@ def create_pension_prompt(user_message: str, user_profile: dict):
         "salaryGrowth": user_profile['salary_growth'],
         "investmentReturn": user_profile['investment_return'],
         "inflation": user_profile['inflation'],
+        # New fields
+        "gender": user_profile.get('gender', None),
+        "new_joinee": user_profile.get('new_joinee', None),
+        "civil_status": user_profile.get('civil_status', None),
+        "disability": user_profile.get('disability', None),
+        "death_main": user_profile.get('death_main', None),
+        "death_child": user_profile.get('death_child', None),
+        "transfer_of_pension": user_profile.get('transfer_of_pension', None),
     }
     
     # Get existing pension data from profile
@@ -1048,6 +1088,13 @@ async def chat_retirement_unified(request: ChatRequest):
             **USER PROFILE (Denmark):**
             - Name: {user_profile.get('name', 'User')}
             - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
+            - Gender: {user_profile.get('gender', '')}
+            - New Joinee: {user_profile.get('new_joinee', '')}
+            - Civil Status: {user_profile.get('civil_status', '')}
+            - Disability: {user_profile.get('disability', '')}
+            - Death Main: {user_profile.get('death_main', '')}
+            - Death Child: {user_profile.get('death_child', '')}
+            - Transfer of Pension: {user_profile.get('transfer_of_pension', '')}
             - Income: DKK {user_profile.get('income', 500000):,} | Growth: {normalize_rate(user_profile.get('salary_growth', 0.02))*100}%
             - Investment Return: {normalize_rate(user_profile.get('investment_return', 0.05))*100}% | Inflation: {normalize_rate(user_profile.get('inflation', 0.02))*100}%
             - Contribution Rate: {normalize_rate(user_profile.get('contribution_rate', 0.1))*100}%
@@ -1072,6 +1119,13 @@ async def chat_retirement_unified(request: ChatRequest):
             **USER PROFILE:**
             - Name: {user_profile.get('name', 'User')}
             - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
+            - Gender: {user_profile.get('gender', '')}
+            - New Joinee: {user_profile.get('new_joinee', '')}
+            - Civil Status: {user_profile.get('civil_status', '')}
+            - Disability: {user_profile.get('disability', '')}
+            - Death Main: {user_profile.get('death_main', '')}
+            - Death Child: {user_profile.get('death_child', '')}
+            - Transfer of Pension: {user_profile.get('transfer_of_pension', '')}
             - Income: ${user_profile.get('income', 70000):,} | Growth: {normalize_rate(user_profile.get('salary_growth', 0.02))*100}%
             - Investment Return: {normalize_rate(user_profile.get('investment_return', 0.05))*100}% | Inflation: {normalize_rate(user_profile.get('inflation', 0.02))*100}%
             - Social Security: ${user_profile.get('social_security_base', 18000):,} | Pension: ${user_profile.get('pension_base', 800):,}
@@ -2211,7 +2265,15 @@ async def create_user_profile(request: UserProfileCreate):
             "created_at": datetime.utcnow(),
             "updated_at": datetime.utcnow(),
             "retirement_data": [],
-            "ai_retirement_data": None
+            "ai_retirement_data": None,
+            # New fields
+            "gender": request.gender,
+            "new_joinee": request.new_joinee,
+            "civil_status": request.civil_status,
+            "disability": request.disability,
+            "death_main": request.death_main,
+            "death_child": request.death_child,
+            "transfer_of_pension": request.transfer_of_pension,
         }
         
         result = await user_profiles_collection.insert_one(user_doc)
@@ -2469,6 +2531,56 @@ async def health_check():
         logger.error(f"Health check failed: {str(e)}")
         result = {"status": "unhealthy", "database": "disconnected", "error": str(e)}
         return result
+
+# Add a new API endpoint to update the new fields for all users
+@app.post("/update-all-user-fields")
+async def update_all_user_fields():
+    """Update new fields for all users based on specified logic"""
+    logger.info("Updating new fields for all users")
+    try:
+        cursor = user_profiles_collection.find({})
+        updated_count = 0
+        async for user in cursor:
+            update_data = {}
+            user_id = user.get("user_id")
+            age = user.get("current_age", 0)
+            # Gender: keep empty for existing users
+            prev_gender = user.get("gender", None)
+            update_data["gender"] = prev_gender
+            logger.info(f"User {user_id}: gender set to '{prev_gender}' (kept as is)")
+            # New joinee: Yes if age > 35, else No
+            prev_new_joinee = user.get("new_joinee", None)
+            new_joinee = "Yes" if age > 35 else "No"
+            update_data["new_joinee"] = new_joinee
+            logger.info(f"User {user_id}: new_joinee set to '{new_joinee}' (age={age}, prev='{prev_new_joinee}')")
+            # Civil Status: Married if age > 35, else Single
+            prev_civil_status = user.get("civil_status", None)
+            civil_status = "Married" if age > 35 else "Single"
+            update_data["civil_status"] = civil_status
+            logger.info(f"User {user_id}: civil_status set to '{civil_status}' (age={age}, prev='{prev_civil_status}')")
+            # Disability: No for existing users
+            prev_disability = user.get("disability", None)
+            update_data["disability"] = "No"
+            logger.info(f"User {user_id}: disability set to 'No' (prev='{prev_disability}')")
+            # Death Main: Yes for existing users
+            prev_death_main = user.get("death_main", None)
+            update_data["death_main"] = "Yes"
+            logger.info(f"User {user_id}: death_main set to 'Yes' (prev='{prev_death_main}')")
+            # Death Child: Yes for existing users
+            prev_death_child = user.get("death_child", None)
+            update_data["death_child"] = "Yes"
+            logger.info(f"User {user_id}: death_child set to 'Yes' (prev='{prev_death_child}')")
+            # Transfer of Pension: Yes for existing users
+            prev_transfer_of_pension = user.get("transfer_of_pension", None)
+            update_data["transfer_of_pension"] = "Yes"
+            logger.info(f"User {user_id}: transfer_of_pension set to 'Yes' (prev='{prev_transfer_of_pension}')")
+            await user_profiles_collection.update_one({"user_id": user_id}, {"$set": update_data})
+            updated_count += 1
+        logger.info(f"Updated new fields for {updated_count} users")
+        return {"message": f"Updated new fields for {updated_count} users"}
+    except Exception as e:
+        logger.error(f"Error updating all user fields: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     logger.info("Starting application server")
