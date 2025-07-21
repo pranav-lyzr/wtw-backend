@@ -16,6 +16,12 @@ import sys
 from bson import ObjectId
 import asyncio
 import re
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import smtplib
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Configure logging
 # logging.disable(logging.CRITICAL)
@@ -1087,6 +1093,7 @@ async def chat_retirement_unified(request: ChatRequest):
             master_prompt = f"""
             **USER PROFILE (Denmark):**
             - Name: {user_profile.get('name', 'User')}
+            - Email: {user_profile.get('email', '')}
             - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
             - Gender: {user_profile.get('gender', '')}
             - New Joinee: {user_profile.get('new_joinee', '')}
@@ -1118,6 +1125,7 @@ async def chat_retirement_unified(request: ChatRequest):
             master_prompt = f"""
             **USER PROFILE:**
             - Name: {user_profile.get('name', 'User')}
+            - Email: {user_profile.get('email', '')}
             - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
             - Gender: {user_profile.get('gender', '')}
             - New Joinee: {user_profile.get('new_joinee', '')}
@@ -1951,21 +1959,20 @@ async def chat_retirement(request: ChatRequest):
         prompt = f"""
         User Profile:
         - Name: {user_profile.get('name', 'User')}
-        - Current Age: {user_profile.get('current_age', 30)}
-        - Retirement Age: {user_profile.get('retirement_age', 65)}
-        - Current Income: ${user_profile.get('income', 700):,}
-        - Salary Growth Rate: {user_profile.get('salary_growth', 0.02)*100}%
-        - Investment Return Rate: {user_profile.get('investment_return', 0.05)*100}%
-        - Contribution Rate: {user_profile.get('contribution_rate', 0.1)*100}%
-        - Inflation Rate: {user_profile.get('inflation', 0.02)*100}%
-        - Beneficiary Included: {user_profile.get('beneficiary_included', False)}
-        - Beneficiary Life Expectancy: {user_profile.get('beneficiary_life_expectancy', 'Not specified')}
-        - Social Security Base: ${user_profile.get('social_security_base', 18000):,}
-        - Pension Base: ${user_profile.get('pension_base', 800):,}
-        - 401k Base: ${user_profile.get('four01k_base', 100):,}
-        - Other Investments Base: ${user_profile.get('other_base', 400):,}
-        - Defined Benefit Base: ${user_profile.get('defined_benefit_base', 14000):,}
-        - Defined Benefit Yearly Increase: ${user_profile.get('defined_benefit_yearly_increase', 300):,}
+        - Email: {user_profile.get('email', '')}
+        - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
+        - Gender: {user_profile.get('gender', '')}
+        - New Joinee: {user_profile.get('new_joinee', '')}
+        - Civil Status: {user_profile.get('civil_status', '')}
+        - Disability: {user_profile.get('disability', '')}
+        - Death Main: {user_profile.get('death_main', '')}
+        - Death Child: {user_profile.get('death_child', '')}
+        - Transfer of Pension: {user_profile.get('transfer_of_pension', '')}
+        - Income: ${user_profile.get('income', 70000):,} | Growth: {normalize_rate(user_profile.get('salary_growth', 0.02))*100}%
+        - Investment Return: {normalize_rate(user_profile.get('investment_return', 0.05))*100}% | Inflation: {normalize_rate(user_profile.get('inflation', 0.02))*100}%
+        - Social Security: ${user_profile.get('social_security_base', 18000):,} | Pension: ${user_profile.get('pension_base', 800):,}
+        - 401k: ${user_profile.get('four01k_base', 100):,} | Other: ${user_profile.get('other_base', 400):,}
+        - Defined Benefit: ${user_profile.get('defined_benefit_base', 14000):,} (+${user_profile.get('defined_benefit_yearly_increase', 300):,}/year)
         
         User Question: {request.message}
         
@@ -2065,21 +2072,20 @@ async def chat_retirement_stream(request: ChatRequest):
         prompt = f"""
         User Profile:
         - Name: {user_profile.get('name', 'User')}
-        - Current Age: {user_profile.get('current_age', 30)}
-        - Retirement Age: {user_profile.get('retirement_age', 65)}
-        - Current Income: ${user_profile.get('income', 700):,}
-        - Salary Growth Rate: {user_profile.get('salary_growth', 0.02)*100}%
-        - Investment Return Rate: {user_profile.get('investment_return', 0.05)*100}%
-        - Contribution Rate: {user_profile.get('contribution_rate', 0.1)*100}%
-        - Inflation Rate: {user_profile.get('inflation', 0.02)*100}%
-        - Beneficiary Included: {user_profile.get('beneficiary_included', False)}
-        - Beneficiary Life Expectancy: {user_profile.get('beneficiary_life_expectancy', 'Not specified')}
-        - Social Security Base: ${user_profile.get('social_security_base', 18000):,}
-        - Pension Base: ${user_profile.get('pension_base', 800):,}
-        - 401k Base: ${user_profile.get('four01k_base', 100):,}
-        - Other Investments Base: ${user_profile.get('other_base', 400):,}
-        - Defined Benefit Base: ${user_profile.get('defined_benefit_base', 14000):,}
-        - Defined Benefit Yearly Increase: ${user_profile.get('defined_benefit_yearly_increase', 300):,}
+        - Email: {user_profile.get('email', '')}
+        - Age: {user_profile.get('current_age', 30)} → Retirement: {user_profile.get('retirement_age', 65)}
+        - Gender: {user_profile.get('gender', '')}
+        - New Joinee: {user_profile.get('new_joinee', '')}
+        - Civil Status: {user_profile.get('civil_status', '')}
+        - Disability: {user_profile.get('disability', '')}
+        - Death Main: {user_profile.get('death_main', '')}
+        - Death Child: {user_profile.get('death_child', '')}
+        - Transfer of Pension: {user_profile.get('transfer_of_pension', '')}
+        - Income: ${user_profile.get('income', 700):,} | Growth: {user_profile.get('salary_growth', 0.02)*100}%
+        - Investment Return: {user_profile.get('investment_return', 0.05)*100}% | Inflation: {user_profile.get('inflation', 0.02)*100}%
+        - Social Security: ${user_profile.get('social_security_base', 18000):,} | Pension: ${user_profile.get('pension_base', 800):,}
+        - 401k: ${user_profile.get('four01k_base', 100):,} | Other: ${user_profile.get('other_base', 400):,}
+        - Defined Benefit: ${user_profile.get('defined_benefit_base', 14000):,} (+${user_profile.get('defined_benefit_yearly_increase', 300):,}/year)
         
         User Question: {request.message}
         
@@ -2581,6 +2587,96 @@ async def update_all_user_fields():
     except Exception as e:
         logger.error(f"Error updating all user fields: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+# --- Email Models ---
+class EmailSendRequest(BaseModel):
+    subject: str
+    body: str
+
+class EmailRecord(BaseModel):
+    id: str
+    subject: str
+    body: str
+    identity: str
+    to: str
+    sent_at: datetime
+    smtp_status: str
+    smtp_response: Optional[str] = None
+
+class EmailResponse(BaseModel):
+    id: str = Field(alias="_id")
+    subject: str
+    body: str
+    identity: str
+    to: str
+    sent_at: str
+    smtp_status: str
+    smtp_response: Optional[str] = None
+
+    class Config:
+        populate_by_name = True
+
+# --- Email DB Collection ---
+email_collection = db.emails
+
+# --- SMTP Credentials (from env) ---
+SMTP_HOST = os.getenv('SMTP_HOST', 'email-smtp.us-east-1.amazonaws.com')
+SMTP_PORT = int(os.getenv('SMTP_PORT', '587'))
+SMTP_USER = os.getenv('SMTP_USER')
+SMTP_PASS = os.getenv('SMTP_PASS')
+DEFAULT_FROM = os.getenv('DEFAULT_FROM', 'wtw@ca.lyzr.app')
+DEFAULT_TO = os.getenv('DEFAULT_TO', 'pranav@lyzr.ai')
+
+# --- Email Sending Logic ---
+def send_email_smtp(subject: str, body: str) -> (str, str):
+    msg = MIMEMultipart()
+    msg['From'] = DEFAULT_FROM
+    msg['To'] = DEFAULT_TO
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body, 'plain'))
+    try:
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USER, SMTP_PASS)
+            response = server.sendmail(DEFAULT_FROM, DEFAULT_TO, msg.as_string())
+        return ("success", str(response))
+    except Exception as e:
+        return ("error", str(e))
+
+# --- API: Send Email ---
+@app.post("/send-email", tags=["email"])
+async def send_email_api(request: EmailSendRequest):
+    status, smtp_response = send_email_smtp(request.subject, request.body)
+    record = {
+        "id": str(uuid.uuid4()),
+        "subject": request.subject,
+        "body": request.body,
+        "identity": DEFAULT_FROM,
+        "to": DEFAULT_TO,
+        "sent_at": datetime.utcnow(),
+        "smtp_status": status,
+        "smtp_response": smtp_response
+    }
+    await email_collection.insert_one(record)
+    return {"status": status, "smtp_response": smtp_response, "email_id": record["id"]}
+
+# --- API: Fetch All Emails ---
+@app.get("/emails", tags=["email"])
+async def get_all_emails():
+    emails = []
+    cursor = email_collection.find({}).sort("sent_at", -1)
+    async for email in cursor:
+        # Convert ObjectId to string and remove _id field
+        email["_id"] = str(email["_id"])  # Convert ObjectId to string
+        email["id"] = str(email.get("id", email["_id"]))  # Use custom id or _id
+        del email["_id"]  # Remove the _id field to avoid conflicts
+        
+        # Handle datetime serialization
+        if isinstance(email.get("sent_at"), datetime):
+            email["sent_at"] = email["sent_at"].isoformat()
+            
+        emails.append(email)
+    return emails
 
 if __name__ == "__main__":
     logger.info("Starting application server")
