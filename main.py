@@ -219,6 +219,11 @@ class ChatCompResponse(BaseModel):
     session_id: str
     structured_data: Optional[dict] = None
 
+class ProfileMonitoringResponse(BaseModel):
+    response: str
+    session_id: str
+    recommendations: Optional[Dict[str, Any]] = None
+
 # FastAPI app
 app = FastAPI(title="Retirement Planning API", version="1.0.0")
 logger.info("FastAPI application initialized")
@@ -1622,6 +1627,120 @@ async def chat_retirement_unified(request: ChatRequest):
         logger.error(f"Unexpected error in unified retirement chat: {str(e)}")
         logger.error(f"Error type: {type(e).__name__}")
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")    
+
+
+@app.post("/Profile-Monitoring", response_model=ProfileMonitoringResponse)
+async def profile_monitoring(request: AIPreferencesRequest):
+    """Monitor user profile and provide recommendations based on conversation history and profile data"""
+    logger.info(f"Profile monitoring request for user: {request.user_id}, session: {request.session_id}")
+    
+    try:
+        # Retrieve user profile
+        user_profile = await user_profiles_collection.find_one({"user_id": request.user_id})
+        if not user_profile:
+            raise HTTPException(status_code=404, detail="User profile not found")
+        
+        # Convert ObjectId and datetimes for JSON serialization
+        user_profile = convert_object_ids(user_profile)
+        user_profile = convert_datetimes(user_profile)
+        
+        # Get chat history
+        chat_history = await get_user_chat_history(request.user_id, request.session_id)
+        
+        # Prepare prompt with user profile and conversation history
+        prompt = f"""
+        **User Profile:**
+        - Name: {user_profile.get('name', 'User')}
+        - Email: {user_profile.get('email', '')}
+        - Current Age: {user_profile.get('current_age', 30)}
+        - Retirement Age: {user_profile.get('retirement_age', 65)}
+        - Income: ${user_profile.get('income', 70000):,}
+        - Salary Growth: {normalize_rate(user_profile.get('salary_growth', 0.02))*100}%
+        - Investment Return: {normalize_rate(user_profile.get('investment_return', 0.05))*100}%
+        - Inflation: {normalize_rate(user_profile.get('inflation', 0.02))*100}%
+        - Contribution Rate: {normalize_rate(user_profile.get('contribution_rate', 0.1))*100}%
+        - Country: {user_profile.get('country', 'USA')}
+        - Gender: {user_profile.get('gender', '')}
+        - New Joinee: {user_profile.get('new_joinee', '')}
+        - Civil Status: {user_profile.get('civil_status', '')}
+        - Disability: {user_profile.get('disability', '')}
+        - Death Main: {user_profile.get('death_main', '')}
+        - Death Child: {user_profile.get('death_child', '')}
+        - Transfer of Pension: {user_profile.get('transfer_of_pension', '')}
+        - Beneficiary Included: {user_profile.get('beneficiary_included', False)}
+        - Beneficiary Life Expectancy: {user_profile.get('beneficiary_life_expectancy', 'Not specified')}
+        
+        **Conversation History:**
+        {chat_history}
+        
+        """
+        
+        # Apply persona-specific instructions
+        prompt = append_persona_instructions(user_profile.get('email'), prompt)
+        
+        # Call Lyzr API
+        lyzr_api_key = "sk-default-fwThPbmS31sO4pkjt1NDjSC8pcKdFfGm"
+        lyzr_url = "https://agent-prod.studio.lyzr.ai/v3/inference/chat/"
+        agent_id = "6880a90e62cdeeff787093ce"
+        session_id = "6880a90e62cdeeff787093ce-oe59hs7pth"
+        
+        payload = {
+            "user_id": "workspace1@wtw.com",
+            "agent_id": agent_id,
+            "session_id": session_id,
+            "message": prompt
+        }
+        headers = {
+            "Content-Type": "application/json",
+            "x-api-key": lyzr_api_key
+        }
+        
+        logger.info(f"Calling Lyzr API for profile monitoring, agent_id: {agent_id}")
+        async with httpx.AsyncClient(timeout=600.0) as client:
+            response = await client.post(lyzr_url, json=payload, headers=headers)
+            response.raise_for_status()
+            response_data = response.json()
+        
+        # Parse response
+        text_response = ""
+        recommendations = None
+        try:
+            structured_response = json.loads(response_data.get("response", "{}"))
+            text_response = structured_response.get("text_response", "No recommendations provided.")
+            # Replace <strong> and </strong> with **
+            if isinstance(text_response, str):
+                text_response = text_response.replace('<strong>', '**').replace('</strong>', '**')
+            recommendations = structured_response.get("recommendations")
+        except json.JSONDecodeError:
+            logger.warning("Failed to parse JSON response, using raw response")
+            text_response = response_data.get("response", "No recommendations provided.")
+            # Replace <strong> and </strong> with **
+            if isinstance(text_response, str):
+                text_response = text_response.replace('<strong>', '**').replace('</strong>', '**')
+        
+        # Save interaction to database
+        await save_message(
+            session_id=request.session_id,
+            user_message="[Profile Monitoring Request]",
+            ai_response=text_response,
+            chart_data=recommendations,
+            contains_chart=False
+        )
+        
+        return ProfileMonitoringResponse(
+            response=text_response,
+            session_id=request.session_id,
+            recommendations=recommendations
+        )
+    
+    except HTTPException as http_error:
+        logger.error(f"HTTP exception in profile monitoring: {http_error.detail}")
+        raise
+    except Exception as e:
+        logger.error(f"Unexpected error in profile monitoring: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 
 @app.post("/chat_pension", response_model=ChatResponse)
 async def chat_pension(request: ChatRequest):
