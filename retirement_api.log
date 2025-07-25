@@ -10792,3 +10792,207 @@ This adjustment aligns with your conservative 5% investment return assumption wh
 2025-07-23 09:49:05,040 - main - INFO - External API configuration loaded
 2025-07-23 09:53:24,082 - main - INFO - Profile monitoring request for user: 83a710fc-ecf8-4488-893f-18d3ac3164b4, session: 3aa565b3-b7a4-47c7-ba36-1c57d39aae87
 2025-07-23 09:53:24,319 - main - ERROR - HTTP exception in profile monitoring: User profile not found
+2025-07-23 10:35:17,966 - main - INFO - Retrieving all users
+2025-07-23 10:35:18,017 - main - INFO - Retrieved 8 users
+2025-07-23 10:35:35,386 - main - INFO - Retrieving sessions, user_id filter: 71f94c51-aec1-4707-b04e-6805f1608f83
+2025-07-23 10:35:35,461 - main - INFO - Retrieved 1 sessions
+2025-07-23 10:35:52,990 - main - INFO - Profile monitoring request for user: 71f94c51-aec1-4707-b04e-6805f1608f83, session: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:35:53,032 - main - INFO - Appending persona instructions for email: shortbulletpoints@gmail.com
+2025-07-23 10:35:53,035 - main - INFO - Calling Lyzr API for profile monitoring, agent_id: 6880a90e62cdeeff787093ce
+2025-07-23 10:43:37,005 - main - INFO - Profile monitoring request for user: 71f94c51-aec1-4707-b04e-6805f1608f83, session: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:43:37,023 - main - INFO - Appending persona instructions for email: shortbulletpoints@gmail.com
+2025-07-23 10:43:37,024 - main - INFO - Calling Lyzr API for profile monitoring, agent_id: 6880a90e62cdeeff787093ce
+2025-07-23 10:43:51,008 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-23 10:43:51,014 - main - WARNING - Failed to parse JSON response, using raw response
+2025-07-23 10:43:51,016 - main - INFO - Saving message to database - Session ID: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:43:51,019 - main - INFO - User message length: 28
+2025-07-23 10:43:51,024 - main - INFO - AI response length: 2707
+2025-07-23 10:43:51,026 - main - INFO - Contains chart: False
+2025-07-23 10:43:51,028 - main - INFO - Chat chart: None
+2025-07-23 10:43:51,051 - main - INFO - Message saved successfully with MongoDB ID: 6880bce78b56d56f96e72bda
+2025-07-23 10:44:55,940 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 502 Bad Gateway"
+2025-07-23 10:44:55,945 - main - ERROR - Unexpected error in profile monitoring: Server error '502 Bad Gateway' for url 'https://agent-prod.studio.lyzr.ai/v3/inference/chat/'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502
+2025-07-23 10:45:26,579 - main - INFO - FastAPI application initialized
+2025-07-23 10:45:26,580 - main - INFO - CORS middleware configured
+2025-07-23 10:45:26,582 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-23 10:45:26,596 - main - INFO - MongoDB client initialized successfully
+2025-07-23 10:45:26,597 - main - INFO - MongoDB collections configured
+2025-07-23 10:45:26,601 - main - INFO - External API configuration loaded
+2025-07-23 10:45:46,786 - main - INFO - FastAPI application initialized
+2025-07-23 10:45:46,787 - main - INFO - CORS middleware configured
+2025-07-23 10:45:46,790 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-23 10:45:46,804 - main - INFO - MongoDB client initialized successfully
+2025-07-23 10:45:46,807 - main - INFO - MongoDB collections configured
+2025-07-23 10:45:46,808 - main - INFO - External API configuration loaded
+2025-07-23 10:45:54,170 - main - INFO - Profile monitoring request for user: 71f94c51-aec1-4707-b04e-6805f1608f83, session: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:45:54,206 - main - INFO - Appending persona instructions for email: shortbulletpoints@gmail.com
+2025-07-23 10:45:54,210 - main - INFO - Calling Lyzr API for profile monitoring, agent_id: 6880a90e62cdeeff787093ce
+2025-07-23 10:45:59,265 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-23 10:45:59,268 - main - WARNING - No valid JSON block found in response.
+2025-07-23 10:45:59,270 - main - INFO - Saving message to database - Session ID: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:45:59,271 - main - INFO - User message length: 28
+2025-07-23 10:45:59,272 - main - INFO - AI response length: 565
+2025-07-23 10:45:59,273 - main - INFO - Contains chart: False
+2025-07-23 10:45:59,275 - main - INFO - Chat chart: None
+2025-07-23 10:45:59,279 - main - INFO - Message saved successfully with MongoDB ID: 6880bd673ea5f69c8370000c
+2025-07-23 10:47:43,158 - main - INFO - FastAPI application initialized
+2025-07-23 10:47:43,165 - main - INFO - CORS middleware configured
+2025-07-23 10:47:43,170 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-23 10:47:43,366 - main - INFO - MongoDB client initialized successfully
+2025-07-23 10:47:43,369 - main - INFO - MongoDB collections configured
+2025-07-23 10:47:43,375 - main - INFO - External API configuration loaded
+2025-07-23 10:47:44,876 - main - INFO - Profile monitoring request for user: 71f94c51-aec1-4707-b04e-6805f1608f83, session: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:47:44,906 - main - INFO - Appending persona instructions for email: shortbulletpoints@gmail.com
+2025-07-23 10:47:44,910 - main - INFO - Calling Lyzr API for profile monitoring, agent_id: 6880a90e62cdeeff787093ce
+2025-07-23 10:47:52,461 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-23 10:47:52,465 - main - ERROR - Failed to parse JSON from response: Expecting value: line 1 column 1 (char 0)
+2025-07-23 10:47:52,466 - main - ERROR - Raw response: - Schedule a Comprehensive Planning Meeting to discuss increasing pension income and adjusting investment strategies towards higher risk options.
+- Identify key gaps such as not having a beneficiary for life expectancy; consider revising term life and acquiring critical illness coverage.
+- Use PKS (Pension & Investment Advisory) services to evaluate additional contributions and explore riskier investment avenues for growth potential.
+- Assessment indicates medium urgency; action is recommended within two weeks.
+- Prepare by compiling current investment portfolio, pension statements, and financial goals ahead of the meeting.
+2025-07-23 10:47:52,481 - main - ERROR - Unexpected error in profile monitoring: 1 validation error for ProfileMonitoringResponse
+response
+  Input should be a valid string [type=string_type, input_value={'error': 'Failed to pars...up_timeline': 'Unknown'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.5/v/string_type
+2025-07-23 10:50:46,996 - main - INFO - FastAPI application initialized
+2025-07-23 10:50:46,998 - main - INFO - CORS middleware configured
+2025-07-23 10:50:46,999 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-23 10:50:47,022 - main - INFO - MongoDB client initialized successfully
+2025-07-23 10:50:47,024 - main - INFO - MongoDB collections configured
+2025-07-23 10:50:47,025 - main - INFO - External API configuration loaded
+2025-07-23 10:50:50,844 - main - INFO - FastAPI application initialized
+2025-07-23 10:50:50,847 - main - INFO - CORS middleware configured
+2025-07-23 10:50:50,849 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-23 10:50:50,867 - main - INFO - MongoDB client initialized successfully
+2025-07-23 10:50:50,869 - main - INFO - MongoDB collections configured
+2025-07-23 10:50:50,871 - main - INFO - External API configuration loaded
+2025-07-23 10:50:56,901 - main - INFO - Profile monitoring request for user: 71f94c51-aec1-4707-b04e-6805f1608f83, session: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:50:56,939 - main - INFO - Appending persona instructions for email: shortbulletpoints@gmail.com
+2025-07-23 10:50:56,942 - main - INFO - Calling Lyzr API for profile monitoring, agent_id: 6880a90e62cdeeff787093ce
+2025-07-23 10:51:29,241 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-23 10:51:29,244 - main - ERROR - Failed to parse JSON from response: Expecting value: line 1 column 1 (char 0)
+2025-07-23 10:51:29,245 - main - ERROR - Raw response: - Schedule a Comprehensive Planning Meeting to enhance pension income and adjust investment strategy.
+- Address key gap: no beneficiary in life expectancy, prompting a review of term life and critical illness options.
+- Use PKS advisory for increased contributions and higher-risk investments aimed at growth.
+- Medium urgency with a two-week follow-up needed; prepare investment portfolio and pension documents beforehand.
+2025-07-23 10:52:10,881 - main - INFO - FastAPI application initialized
+2025-07-23 10:52:10,882 - main - INFO - CORS middleware configured
+2025-07-23 10:52:10,884 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-23 10:52:10,907 - main - INFO - MongoDB client initialized successfully
+2025-07-23 10:52:10,909 - main - INFO - MongoDB collections configured
+2025-07-23 10:52:10,912 - main - INFO - External API configuration loaded
+2025-07-23 10:52:14,511 - main - INFO - Profile monitoring request for user: 71f94c51-aec1-4707-b04e-6805f1608f83, session: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:52:14,553 - main - INFO - Appending persona instructions for email: shortbulletpoints@gmail.com
+2025-07-23 10:52:14,558 - main - INFO - Calling Lyzr API for profile monitoring, agent_id: 6880a90e62cdeeff787093ce
+2025-07-23 10:52:18,858 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-23 10:52:18,862 - main - ERROR - Unexpected error in profile monitoring: name 'res' is not defined
+2025-07-23 10:52:57,147 - main - INFO - Profile monitoring request for user: 71f94c51-aec1-4707-b04e-6805f1608f83, session: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:52:57,155 - main - INFO - Appending persona instructions for email: shortbulletpoints@gmail.com
+2025-07-23 10:52:57,158 - main - INFO - Calling Lyzr API for profile monitoring, agent_id: 6880a90e62cdeeff787093ce
+2025-07-23 10:53:03,737 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-23 10:53:03,741 - main - ERROR - Unexpected error in profile monitoring: name 'res' is not defined
+2025-07-23 10:53:14,802 - main - INFO - FastAPI application initialized
+2025-07-23 10:53:14,804 - main - INFO - CORS middleware configured
+2025-07-23 10:53:14,806 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-23 10:53:14,823 - main - INFO - MongoDB client initialized successfully
+2025-07-23 10:53:14,825 - main - INFO - MongoDB collections configured
+2025-07-23 10:53:14,827 - main - INFO - External API configuration loaded
+2025-07-23 10:53:20,667 - main - INFO - FastAPI application initialized
+2025-07-23 10:53:20,668 - main - INFO - CORS middleware configured
+2025-07-23 10:53:20,670 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-23 10:53:20,686 - main - INFO - MongoDB client initialized successfully
+2025-07-23 10:53:20,688 - main - INFO - MongoDB collections configured
+2025-07-23 10:53:20,690 - main - INFO - External API configuration loaded
+2025-07-23 10:53:26,927 - main - INFO - FastAPI application initialized
+2025-07-23 10:53:26,929 - main - INFO - CORS middleware configured
+2025-07-23 10:53:26,931 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-23 10:53:26,959 - main - INFO - MongoDB client initialized successfully
+2025-07-23 10:53:26,969 - main - INFO - MongoDB collections configured
+2025-07-23 10:53:26,979 - main - INFO - External API configuration loaded
+2025-07-23 10:53:31,801 - main - INFO - Profile monitoring request for user: 71f94c51-aec1-4707-b04e-6805f1608f83, session: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:53:31,831 - main - INFO - Appending persona instructions for email: shortbulletpoints@gmail.com
+2025-07-23 10:53:31,842 - main - INFO - Calling Lyzr API for profile monitoring, agent_id: 6880a90e62cdeeff787093ce
+2025-07-23 10:53:36,622 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-23 10:53:36,624 - main - ERROR - Failed to parse JSON from response: Expecting value: line 1 column 1 (char 0)
+2025-07-23 10:53:36,626 - main - ERROR - Raw response: - Plan a Comprehensive Planning Meeting to discuss increasing pension income and modifying your investment strategy for more growth opportunities.
+- Address key gaps, such as the missing beneficiary for life expectancy, and evaluate term life and critical illness coverage options.
+- Utilize PKS advisory services to explore higher-risk investment strategies and consider supplementary pension contributions.
+- The analysis suggests medium urgency, recommending action within two weeks.
+- Ensure all necessary documents, including the current investment portfolio and pension statement, are ready for the meeting.
+2025-07-23 10:53:57,212 - main - INFO - Profile monitoring request for user: 71f94c51-aec1-4707-b04e-6805f1608f83, session: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:53:57,220 - main - INFO - Appending persona instructions for email: shortbulletpoints@gmail.com
+2025-07-23 10:53:57,222 - main - INFO - Calling Lyzr API for profile monitoring, agent_id: 6880a90e62cdeeff787093ce
+2025-07-23 10:54:03,415 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-23 10:54:03,420 - main - ERROR - Failed to parse JSON from response: Expecting value: line 1 column 1 (char 0)
+2025-07-23 10:54:03,421 - main - ERROR - Raw response: - Recommend a 60-min Comprehensive Planning Meeting (video via Teams) with PKS to optimize your pension and investment strategy.  
+- Key gap: no beneficiary is designated—review term life coverage and consider standalone critical illness protection.  
+- Action items: increase pension contributions and shift to growth-oriented funds for higher return potential.  
+- Urgency: Medium – schedule and follow up within two weeks.  
+- Preparation: bring your latest pension statement and current investment portfolio summary.
+2025-07-23 10:56:45,447 - main - INFO - Profile monitoring request for user: 71f94c51-aec1-4707-b04e-6805f1608f83, session: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:56:45,460 - main - INFO - Appending persona instructions for email: shortbulletpoints@gmail.com
+2025-07-23 10:56:45,462 - main - INFO - Calling Lyzr API for profile monitoring, agent_id: 6880a90e62cdeeff787093ce
+2025-07-23 10:56:53,017 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-23 10:56:53,020 - main - ERROR - Failed to parse JSON from response: Expecting value: line 1 column 1 (char 0)
+2025-07-23 10:56:53,022 - main - ERROR - Raw response: - Gap: No beneficiary listed – add a beneficiary to secure death benefits for dependents.  
+- Insurance: Recommend term life insurance and a standalone critical-illness policy.  
+- Meeting: 60-min PKS comprehensive planning via video; book at book.wtw-usa.com or +1-555-0102.  
+- Next steps: Medium urgency, follow up within 2 weeks; prepare your pension statement and investment portfolio.
+2025-07-23 10:57:09,537 - main - INFO - FastAPI application initialized
+2025-07-23 10:57:09,538 - main - INFO - CORS middleware configured
+2025-07-23 10:57:09,540 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-23 10:57:09,556 - main - INFO - MongoDB client initialized successfully
+2025-07-23 10:57:09,558 - main - INFO - MongoDB collections configured
+2025-07-23 10:57:09,561 - main - INFO - External API configuration loaded
+2025-07-23 10:57:13,611 - main - INFO - Profile monitoring request for user: 71f94c51-aec1-4707-b04e-6805f1608f83, session: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:57:13,667 - main - INFO - Appending persona instructions for email: shortbulletpoints@gmail.com
+2025-07-23 10:57:13,672 - main - INFO - Calling Lyzr API for profile monitoring, agent_id: 6880a90e62cdeeff787093ce
+2025-07-23 10:57:18,961 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-23 10:57:18,967 - main - ERROR - Failed to parse JSON from response: Expecting value: line 1 column 1 (char 0)
+2025-07-23 10:57:18,969 - main - ERROR - Raw response: - Identified gap: No beneficiary designated—review term life and add a beneficiary to secure coverage.  
+- Recommend adding standalone critical-illness coverage for enhanced protection.  
+- Schedule a 60-minute Comprehensive Planning Meeting (video) via PKS to optimize pension contributions and adjust your investment mix for growth.  
+- Prepare by gathering your latest pension statement, investment portfolio summary, and list of financial goals.  
+- Medium urgency: book within two weeks to align changes with your retirement timeline.
+2025-07-23 10:58:08,264 - main - INFO - FastAPI application initialized
+2025-07-23 10:58:08,265 - main - INFO - CORS middleware configured
+2025-07-23 10:58:08,267 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-23 10:58:08,286 - main - INFO - MongoDB client initialized successfully
+2025-07-23 10:58:08,290 - main - INFO - MongoDB collections configured
+2025-07-23 10:58:08,299 - main - INFO - External API configuration loaded
+2025-07-23 10:58:14,208 - main - INFO - FastAPI application initialized
+2025-07-23 10:58:14,210 - main - INFO - CORS middleware configured
+2025-07-23 10:58:14,212 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-23 10:58:14,225 - main - INFO - MongoDB client initialized successfully
+2025-07-23 10:58:14,227 - main - INFO - MongoDB collections configured
+2025-07-23 10:58:14,229 - main - INFO - External API configuration loaded
+2025-07-23 10:58:14,555 - main - INFO - Profile monitoring request for user: 71f94c51-aec1-4707-b04e-6805f1608f83, session: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:58:14,582 - main - INFO - Appending persona instructions for email: shortbulletpoints@gmail.com
+2025-07-23 10:58:14,589 - main - INFO - Calling Lyzr API for profile monitoring, agent_id: 6880a90e62cdeeff787093ce
+2025-07-23 10:58:20,868 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-23 10:58:20,872 - main - WARNING - Failed to parse JSON response, using raw response
+2025-07-23 10:58:20,873 - main - INFO - Saving message to database - Session ID: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:58:20,876 - main - INFO - User message length: 28
+2025-07-23 10:58:20,877 - main - INFO - AI response length: 421
+2025-07-23 10:58:20,879 - main - INFO - Contains chart: False
+2025-07-23 10:58:20,880 - main - INFO - Chat chart: None
+2025-07-23 10:58:20,885 - main - INFO - Message saved successfully with MongoDB ID: 6880c04c07171298418a8d3e
+2025-07-23 10:58:40,011 - main - INFO - Profile monitoring request for user: 71f94c51-aec1-4707-b04e-6805f1608f83, session: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:58:40,033 - main - INFO - Appending persona instructions for email: shortbulletpoints@gmail.com
+2025-07-23 10:58:40,042 - main - INFO - Calling Lyzr API for profile monitoring, agent_id: 6880a90e62cdeeff787093ce
+2025-07-23 10:58:43,243 - httpx - INFO - HTTP Request: POST https://agent-prod.studio.lyzr.ai/v3/inference/chat/ "HTTP/1.1 200 OK"
+2025-07-23 10:58:43,247 - main - WARNING - Failed to parse JSON response, using raw response
+2025-07-23 10:58:43,249 - main - INFO - Saving message to database - Session ID: a989c248-f442-4d1c-98a5-45c75e4ba846
+2025-07-23 10:58:43,251 - main - INFO - User message length: 28
+2025-07-23 10:58:43,253 - main - INFO - AI response length: 432
+2025-07-23 10:58:43,254 - main - INFO - Contains chart: False
+2025-07-23 10:58:43,257 - main - INFO - Chat chart: None
+2025-07-23 10:58:43,264 - main - INFO - Message saved successfully with MongoDB ID: 6880c06307171298418a8d3f
+2025-07-24 06:11:18,934 - main - INFO - FastAPI application initialized
+2025-07-24 06:11:18,935 - main - INFO - CORS middleware configured
+2025-07-24 06:11:18,936 - main - INFO - MongoDB URL configured: mongodb://mongodb:27017
+2025-07-24 06:11:18,983 - main - INFO - MongoDB client initialized successfully
+2025-07-24 06:11:18,984 - main - INFO - MongoDB collections configured
+2025-07-24 06:11:18,985 - main - INFO - External API configuration loaded

@@ -796,7 +796,17 @@ def append_persona_instructions(email: Optional[str], prompt: str) -> str:
         """
     elif email == "naiveuser@gmail.com":
         persona_instruction = """
-        Provide a detailed response and explain all technical terms in simple language, assuming the user has no prior financial knowledge.
+        **Response Style: Financially Naive User**
+        - Provide detailed, step-by-step explanations using simple, everyday language
+        - Explain all financial terms and concepts as if speaking to someone with no financial background
+        - Use analogies and real-world examples to make complex concepts understandable
+        - Focus on education and understanding rather than just providing answers
+        - Break down complex calculations into simple steps
+        - Provide context for why certain financial decisions matter
+        - Use bullet points and clear structure to make information digestible
+        - Avoid jargon - if you must use financial terms, immediately explain them in simple terms
+        - Emphasize the "why" behind recommendations, not just the "what"
+        - Be encouraging and supportive, acknowledging that financial planning can be overwhelming
         """
     elif email == "shortbulletpoints@gmail.com":
         persona_instruction = """
@@ -822,6 +832,21 @@ def append_persona_instructions(email: Optional[str], prompt: str) -> str:
         - Explain concepts as if speaking to someone with no financial background. Explain financial works when required.
         - Keep the response friendly and approachable.
         - Example: Instead of "asset allocation," say "how your money is split between different investments."
+        """
+    elif "naive" in email.lower():
+        persona_instruction = """
+        **Response Style: Financially Naive User**
+        - Provide detailed, step-by-step explanations using simple, everyday language
+        - Explain all financial terms and concepts as if speaking to someone with no financial background
+        - Use analogies and real-world examples to make complex concepts understandable
+        - Focus on education and understanding rather than just providing answers
+        - Break down complex calculations into simple steps
+        - Provide context for why certain financial decisions matter
+        - Use bullet points and clear structure to make information digestible
+        - Avoid jargon - if you must use financial terms, immediately explain them in simple terms
+        - Emphasize the "why" behind recommendations, not just the "what"
+        - Be encouraging and supportive, acknowledging that financial planning can be overwhelming
+        - Prioritize explanatory text over complex visualizations unless specifically requested
         """
     elif "financepro" in email:
         persona_instruction = """
@@ -1475,133 +1500,177 @@ async def chat_retirement_unified(request: ChatRequest):
 
         # --- ADDITIONAL LYZR CALLS FOR CHARTS ---
         chat_chart = None
-        try:
-            # Determine which additional call to make based on country
-            lyzr_chart_api_key = "sk-default-fwThPbmS31sO4pkjt1NDjSC8pcKdFfGm"
-            lyzr_chart_url = "https://agent-prod.studio.lyzr.ai/v3/inference/chat/"
-            if country == 'denmark':
-                chart_agent_id = "68679f0f3a9ed747d209f9a8"
-                chart_session_id = "68679f0f3a9ed747d209f9a8-gbrg1op7lwd"
-            else:
-                chart_agent_id = "68679ff43a9ed747d209f9cf"
-                chart_session_id = "68679ff43a9ed747d209f9cf-1pe8o6qimu7"
-            
-            chart_payload = {
-                "user_id": "workspace1@wtw.com",
-                "agent_id": chart_agent_id,
-                "session_id": chart_session_id,
-                "message": master_prompt
-            }
-            chart_headers = {
-                "Content-Type": "application/json",
-                "x-api-key": lyzr_chart_api_key
-            }
-            
-            logger.info("Making chart API call...")
-            async with httpx.AsyncClient() as chart_client:
-                chart_resp = await chart_client.post(
-                    lyzr_chart_url,
-                    json=chart_payload,
-                    headers=chart_headers,
-                    timeout=600.0
-                )
-                chart_resp.raise_for_status()
-                chart_json = chart_resp.json()
-                logger.info(f"Chart API response received: {type(chart_json)}")
+        
+        # Check user's financial literacy level and graph request
+        user_email = user_profile.get('email', '')
+        is_naive_user = is_financially_naive_user(user_email)
+        has_graph_keywords = check_for_graph_keywords(request.message)
+        
+        logger.info(f"User email: {user_email}")
+        logger.info(f"Is naive user: {is_naive_user}")
+        logger.info(f"Has graph keywords: {has_graph_keywords}")
+        logger.info(f"User message: {request.message}")
+        
+        if has_graph_keywords:
+            logger.info("✓ Graph keywords detected in user message")
+        else:
+            logger.info("✗ No graph keywords detected in user message")
+        
+        # Determine if we should call the chart API
+        should_call_chart_api = True
+        
+        if is_naive_user:
+            # For naive users, only call chart API if they explicitly ask for graphs
+            should_call_chart_api = has_graph_keywords
+            logger.info(f"Naive user detected - Chart API call: {'YES' if should_call_chart_api else 'NO'}")
+        else:
+            # For financially literate users, always call chart API (existing behavior)
+            logger.info("Financially literate user - Chart API call: YES")
+        
+        if should_call_chart_api:
+            try:
+                # Determine which additional call to make based on country
+                lyzr_chart_api_key = "sk-default-fwThPbmS31sO4pkjt1NDjSC8pcKdFfGm"
+                lyzr_chart_url = "https://agent-prod.studio.lyzr.ai/v3/inference/chat/"
+                if country == 'denmark':
+                    chart_agent_id = "68679f0f3a9ed747d209f9a8"
+                    chart_session_id = "68679f0f3a9ed747d209f9a8-gbrg1op7lwd"
+                else:
+                    chart_agent_id = "68679ff43a9ed747d209f9cf"
+                    chart_session_id = "68679ff43a9ed747d209f9cf-1pe8o6qimu7"
                 
-                # Extract and parse the chart response
-                chat_chart = None
-                if isinstance(chart_json, dict) and "response" in chart_json:
-                    raw_chart_resp = chart_json["response"]
-                    logger.info(f"Raw chart response: {raw_chart_resp}...")
+                chart_payload = {
+                    "user_id": "workspace1@wtw.com",
+                    "agent_id": chart_agent_id,
+                    "session_id": chart_session_id,
+                    "message": master_prompt
+                }
+                chart_headers = {
+                    "Content-Type": "application/json",
+                    "x-api-key": lyzr_chart_api_key
+                }
+                
+                logger.info("Making chart API call...")
+                async with httpx.AsyncClient() as chart_client:
+                    chart_resp = await chart_client.post(
+                        lyzr_chart_url,
+                        json=chart_payload,
+                        headers=chart_headers,
+                        timeout=600.0
+                    )
+                    chart_resp.raise_for_status()
+                    chart_json = chart_resp.json()
+                    logger.info(f"Chart API response received: {type(chart_json)}")
                     
-                    # Try multiple parsing strategies
-                    try:
-                        # Strategy 1: Direct JSON parsing
-                        chat_chart = json.loads(raw_chart_resp)
-                        logger.info("✓ Chart data parsed as direct JSON", chat_chart)
-                    except json.JSONDecodeError:
-                        # Strategy 2: Extract from markdown code block
-                        import re
-                        json_pattern = r'```(?:json)?\s*([\s\S]*?)\s*```'
-                        match = re.search(json_pattern, raw_chart_resp, re.IGNORECASE)
-                        if match:
-                            try:
-                                chat_chart = json.loads(match.group(1).strip())
-                                logger.info("✓ Chart data parsed from markdown code block")
-                            except json.JSONDecodeError:
-                                logger.warning("Failed to parse JSON from markdown block")
+                    # Extract and parse the chart response
+                    chat_chart = None
+                    if isinstance(chart_json, dict) and "response" in chart_json:
+                        raw_chart_resp = chart_json["response"]
+                        logger.info(f"Raw chart response: {raw_chart_resp}...")
                         
-                        # Strategy 3: Extract JSON object pattern
-                        if not chat_chart:
-                            json_obj_pattern = r'\{[\s\S]*\}'
-                            match = re.search(json_obj_pattern, raw_chart_resp, re.DOTALL)
+                        # Try multiple parsing strategies
+                        try:
+                            # Strategy 1: Direct JSON parsing
+                            chat_chart = json.loads(raw_chart_resp)
+                            logger.info("✓ Chart data parsed as direct JSON", chat_chart)
+                        except json.JSONDecodeError:
+                            # Strategy 2: Extract from markdown code block
+                            import re
+                            json_pattern = r'```(?:json)?\s*([\s\S]*?)\s*```'
+                            match = re.search(json_pattern, raw_chart_resp, re.IGNORECASE)
                             if match:
                                 try:
-                                    chat_chart = json.loads(match.group(0).strip())
-                                    logger.info("✓ Chart data parsed from JSON object pattern")
+                                    chat_chart = json.loads(match.group(1).strip())
+                                    logger.info("✓ Chart data parsed from markdown code block")
                                 except json.JSONDecodeError:
-                                    logger.warning("Failed to parse JSON object pattern")
-                else:
-                    # Try to use the entire response as chart data
-                    if isinstance(chart_json, dict):
-                        chat_chart = chart_json
-                        logger.info("Using entire response as chart data")
-                
-                # Validate chart data structure
-                if chat_chart:
-                    logger.info(f"Chart data structure: {type(chat_chart)}")
-                    if isinstance(chat_chart, dict):
-                        logger.info(f"Chart data keys: {list(chat_chart.keys())}")
-                        
-                        # Check if it has the expected structure
-                        if 'needsChart' in chat_chart and chat_chart.get('needsChart'):
-                            logger.info("✓ Chart data has needsChart=True")
-                            if 'chartData' in chat_chart:
-                                logger.info("✓ Chart data has chartData field")
-                                chart_data_field = chat_chart['chartData']
-                                if isinstance(chart_data_field, dict) and 'data' in chart_data_field:
-                                    logger.info(f"✓ Chart has {len(chart_data_field['data'])} data points")
-                                else:
-                                    logger.warning("Chart data field doesn't have expected 'data' array")
-                            else:
-                                logger.warning("Chart data missing 'chartData' field")
-                        else:
-                            logger.info("Chart data indicates no chart needed or missing needsChart field")
+                                    logger.warning("Failed to parse JSON from markdown block")
+                            
+                            # Strategy 3: Extract JSON object pattern
+                            if not chat_chart:
+                                json_obj_pattern = r'\{[\s\S]*\}'
+                                match = re.search(json_obj_pattern, raw_chart_resp, re.DOTALL)
+                                if match:
+                                    try:
+                                        chat_chart = json.loads(match.group(0).strip())
+                                        logger.info("✓ Chart data parsed from JSON object pattern")
+                                    except json.JSONDecodeError:
+                                        logger.warning("Failed to parse JSON object pattern")
                     else:
-                        logger.warning(f"Chart data is not a dict: {type(chat_chart)}")
-                else:
-                    logger.warning("No chart data extracted from response")
-
-                print("chat_chart",chat_chart)
+                        # Try to use the entire response as chart data
+                        if isinstance(chart_json, dict):
+                            chat_chart = chart_json
+                            logger.info("Using entire response as chart data")
                     
-                
-                try:
-                    print("saving messages ")
-                    await save_message(
-                        session_id=request.session_id,
-                        user_message=request.message,
-                        ai_response=text_response,
-                        chart_data=database_chart_data,
-                        contains_chart=contains_chart,
-                        chat_chart= chat_chart
-                    )
-                    # await save_message(
-                    #     session_id=request.session_id,
-                    #     user_message="[System] Chart API call",
-                    #     ai_response="[Chart Data]",
-                    #     chart_data=chat_chart,
-                    #     chat_chart= chat_chart
-                    #     contains_chart=True
-                    # )
-                    logger.info("Chart data saved to database successfully")
-                except Exception as save_error:
-                    logger.error(f"Error saving chart data to database: {str(save_error)}")
-                
-        except Exception as chart_api_exc:
-            logger.error(f"Error in additional chart Lyzr API call: {str(chart_api_exc)}")
-            logger.error(f"Chart API error type: {type(chart_api_exc).__name__}")
-            chat_chart = None
+                    # Validate chart data structure
+                    if chat_chart:
+                        logger.info(f"Chart data structure: {type(chat_chart)}")
+                        if isinstance(chat_chart, dict):
+                            logger.info(f"Chart data keys: {list(chat_chart.keys())}")
+                            
+                            # Check if it has the expected structure
+                            if 'needsChart' in chat_chart and chat_chart.get('needsChart'):
+                                logger.info("✓ Chart data has needsChart=True")
+                                if 'chartData' in chat_chart:
+                                    logger.info("✓ Chart data has chartData field")
+                                    chart_data_field = chat_chart['chartData']
+                                    if isinstance(chart_data_field, dict) and 'data' in chart_data_field:
+                                        logger.info(f"✓ Chart has {len(chart_data_field['data'])} data points")
+                                    else:
+                                        logger.warning("Chart data field doesn't have expected 'data' array")
+                                else:
+                                    logger.warning("Chart data missing 'chartData' field")
+                            else:
+                                logger.info("Chart data indicates no chart needed or missing needsChart field")
+                        else:
+                            logger.warning(f"Chart data is not a dict: {type(chat_chart)}")
+                    else:
+                        logger.warning("No chart data extracted from response")
+
+                    print("chat_chart",chat_chart)
+                        
+                    
+                    try:
+                        print("saving messages ")
+                        await save_message(
+                            session_id=request.session_id,
+                            user_message=request.message,
+                            ai_response=text_response,
+                            chart_data=database_chart_data,
+                            contains_chart=contains_chart,
+                            chat_chart= chat_chart
+                        )
+                        # await save_message(
+                        #     session_id=request.session_id,
+                        #     user_message="[System] Chart API call",
+                        #     ai_response="[Chart Data]",
+                        #     chart_data=chat_chart,
+                        #     chat_chart= chat_chart
+                        #     contains_chart=True
+                        # )
+                        logger.info("Chart data saved to database successfully")
+                    except Exception as save_error:
+                        logger.error(f"Error saving chart data to database: {str(save_error)}")
+                    
+            except Exception as chart_api_exc:
+                logger.error(f"Error in additional chart Lyzr API call: {str(chart_api_exc)}")
+                logger.error(f"Chart API error type: {type(chart_api_exc).__name__}")
+                chat_chart = None
+        else:
+            logger.info("Skipping chart API call for naive user without graph keywords")
+            logger.info("Providing text-only response to focus on explanations for financially naive user")
+            try:
+                print("saving messages without chart data")
+                await save_message(
+                    session_id=request.session_id,
+                    user_message=request.message,
+                    ai_response=text_response,
+                    chart_data=database_chart_data,
+                    contains_chart=contains_chart,
+                    chat_chart=None
+                )
+                logger.info("Message saved without chart data - focusing on explanatory text for naive user")
+            except Exception as save_error:
+                logger.error(f"Error saving message to database: {str(save_error)}")
 
         # Add chat_chart to response
         response = {
@@ -2796,6 +2865,52 @@ async def get_all_emails():
             
         emails.append(email)
     return emails
+
+def check_for_graph_keywords(message: str) -> bool:
+    """Check if user message contains graph/chart related keywords"""
+    import re
+    
+    # Keywords that indicate user wants to see graphs/charts
+    graph_keywords = [
+        r'\bgraph\b', r'\bchart\b', r'\bplot\b', r'\bvisualization\b', r'\bvisual\b',
+        r'\bshow\s+me\b', r'\bdisplay\b', r'\bsee\b', r'\bview\b', r'\bpresent\b',
+        r'\bdiagram\b', r'\bfigure\b', r'\bimage\b', r'\bpicture\b', r'\bdraw\b',
+        r'\bcreate\s+(a\s+)?(graph|chart|plot)\b', r'\bgenerate\s+(a\s+)?(graph|chart|plot)\b',
+        r'\bretirement\s+(graph|chart|plot)\b', r'\bincome\s+(graph|chart|plot)\b',
+        r'\bprojection\s+(graph|chart|plot)\b', r'\bforecast\s+(graph|chart|plot)\b',
+        r'\bcan\s+you\s+(show|display|create|generate)\b', r'\bwould\s+you\s+(show|display|create|generate)\b',
+        r'\bplease\s+(show|display|create|generate)\b', r'\bI\s+want\s+to\s+see\b',
+        r'\bI\s+would\s+like\s+to\s+see\b', r'\bcan\s+I\s+see\b', r'\bcould\s+I\s+see\b',
+        r'\bretirement\s+projection\b', r'\bincome\s+projection\b', r'\bfinancial\s+projection\b',
+        r'\bbreakdown\b', r'\banalysis\b', r'\bcomparison\b', r'\boverview\b', r'\bsummary\b',
+        r'\bdata\s+visualization\b', r'\bdata\s+chart\b', r'\bdata\s+graph\b'
+    ]
+    
+    message_lower = message.lower()
+    
+    for pattern in graph_keywords:
+        if re.search(pattern, message_lower, re.IGNORECASE):
+            return True
+    
+    return False
+
+def is_financially_naive_user(email: Optional[str]) -> bool:
+    """Check if user is financially naive based on email"""
+    if not email:
+        return False
+    
+    email_lower = email.lower()
+    naive_indicators = [
+        'naive', 'naiveuser', 'beginner', 'newbie', 'novice', 
+        'plainlanguage', 'simple', 'basic', 'starter', 'learning',
+        'student', 'firsttime', 'newcomer', 'amateur'
+    ]
+    
+    for indicator in naive_indicators:
+        if indicator in email_lower:
+            return True
+    
+    return False
 
 if __name__ == "__main__":
     logger.info("Starting application server")
