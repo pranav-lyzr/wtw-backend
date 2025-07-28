@@ -242,7 +242,7 @@ app.add_middleware(
 logger.info("CORS middleware configured")
 
 # MongoDB connection
-MONGODB_URL = os.getenv("MONGODB_URL", "mongodb+srv://shorya:rAMyZAYRizr6oHvy@cluster0.y2xsivu.mongodb.net/")
+MONGODB_URL = os.getenv("MONGODB_URL", "mongodb://localhost:27017")
 logger.info(f"MongoDB URL configured: {MONGODB_URL}")
 
 try:
