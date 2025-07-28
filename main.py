@@ -20,6 +20,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import smtplib
 from dotenv import load_dotenv
+import json_repair
 
 load_dotenv()
 
@@ -49,6 +50,7 @@ class ChatResponse(BaseModel):
     chart_data: Optional[Dict[str, Any]] = None
     contains_chart: bool = False
     chat_chart: Optional[Dict[str, Any]] = None
+    profile_monitoring: Optional[Any] = None
 
 
 class SessionCreate(BaseModel):
@@ -71,6 +73,7 @@ class MessageResponse(BaseModel):
     contains_chart: bool = False
     timestamp: datetime
     chat_chart: Optional[Dict[str, Any]] = None
+    profile_monitoring: Optional[Any] = None
 
 class UserProfile(BaseModel):
     user_id: str
@@ -239,7 +242,7 @@ app.add_middleware(
 logger.info("CORS middleware configured")
 
 # MongoDB connection
-MONGODB_URL = os.getenv("MONGODB_URL", "mongodb://localhost:27017")
+MONGODB_URL = os.getenv("MONGODB_URL", "mongodb+srv://shorya:rAMyZAYRizr6oHvy@cluster0.y2xsivu.mongodb.net/")
 logger.info(f"MongoDB URL configured: {MONGODB_URL}")
 
 try:
@@ -512,7 +515,7 @@ async def save_ai_retirement_data(user_id: str, ai_retirement_data: List[Dict]):
         logger.error(f"Error saving AI retirement data: {str(e)}")
         raise
     
-async def save_message(session_id: str, user_message: str, ai_response: str, chart_data: Optional[Dict[str, Any]] = None, contains_chart: bool = False, chat_chart: Optional[Dict[str, Any]] = None):
+async def save_message(session_id: str, user_message: str, ai_response: str, chart_data: Optional[Dict[str, Any]] = None, contains_chart: bool = False, chat_chart: Optional[Dict[str, Any]] = None, profile_monitoring: Optional[Dict[str, Any]] = None):
     """Save a message to the database"""
     logger.info(f"Saving message to database - Session ID: {session_id}")
     logger.info(f"User message length: {len(user_message)}")
@@ -529,6 +532,7 @@ async def save_message(session_id: str, user_message: str, ai_response: str, cha
             "chart_data": chart_data,
             "contains_chart": contains_chart,
             "chat_chart": chat_chart,
+            "profile_monitoring": profile_monitoring,
             "timestamp": datetime.utcnow()
         }
         
@@ -1526,7 +1530,20 @@ async def chat_retirement_unified(request: ChatRequest):
         else:
             # For financially literate users, always call chart API (existing behavior)
             logger.info("Financially literate user - Chart API call: YES")
-        
+        monitoring_agent_raw_response = await call_lyzr_api(
+            session_id=request.session_id,
+            agent_id='6880a90e62cdeeff787093ce',
+            user_id=user_email,
+            message=master_prompt
+        )
+        logger.info("Montioring agent response")
+        logger.info(monitoring_agent_raw_response)
+        print(monitoring_agent_raw_response['response'])
+        # Add chat_chart to response
+        try:
+            monitoring_agent_json_response = json_repair.loads(monitoring_agent_raw_response['response'])
+        except json.JSONDecodeError:
+            monitoring_agent_json_response = {}
         if should_call_chart_api:
             try:
                 # Determine which additional call to make based on country
@@ -1637,7 +1654,8 @@ async def chat_retirement_unified(request: ChatRequest):
                             ai_response=text_response,
                             chart_data=database_chart_data,
                             contains_chart=contains_chart,
-                            chat_chart= chat_chart
+                            chat_chart= chat_chart,
+                            profile_monitoring=monitoring_agent_json_response
                         )
                         # await save_message(
                         #     session_id=request.session_id,
@@ -1666,13 +1684,14 @@ async def chat_retirement_unified(request: ChatRequest):
                     ai_response=text_response,
                     chart_data=database_chart_data,
                     contains_chart=contains_chart,
-                    chat_chart=None
+                    chat_chart=None,
+                    profile_monitoring=monitoring_agent_json_response
                 )
                 logger.info("Message saved without chart data - focusing on explanatory text for naive user")
             except Exception as save_error:
                 logger.error(f"Error saving message to database: {str(save_error)}")
 
-        # Add chat_chart to response
+
         response = {
             "response": text_response,
             "session_id": request.session_id,
@@ -1681,7 +1700,8 @@ async def chat_retirement_unified(request: ChatRequest):
             "raw_api_response": raw_api_response,
             "chat_chart": chat_chart
         }
-        
+        if monitoring_agent_json_response:
+            response['profile_monitoring'] = monitoring_agent_json_response
         print("final response",response)
 
         # --- END ADDITIONAL LYZR CALLS ---
@@ -1846,8 +1866,9 @@ async def chat_pension(request: ChatRequest):
         contains_chart = False
 
         try:
+            import json_repair
             # First attempt to parse the entire response as JSON
-            structured_response = json.loads(api_response["response"])
+            structured_response = json_repair.loads(api_response["response"])
             logger.info("Successfully parsed JSON response directly")
             text_response = structured_response.get("text_response", "")
             # Replace <strong> and </strong> with **
@@ -2915,4 +2936,4 @@ def is_financially_naive_user(email: Optional[str]) -> bool:
 if __name__ == "__main__":
     logger.info("Starting application server")
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=800) 
+    uvicorn.run(app, host="0.0.0.0", port=8000)
