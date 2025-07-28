@@ -2,3 +2,6 @@ __pycache__
 .env
 retirement_api.log
 test.py
+.venv
+.vscode
+.idea
