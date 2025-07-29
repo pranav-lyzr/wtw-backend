@@ -1230,7 +1230,6 @@ async def chat_retirement_unified(request: ChatRequest):
                     pass  # Move to next strategy
 
                 # Strategy 2: Extract JSON from markdown code blocks
-                import re
                 json_pattern = r'```(?:json)?\s*([\s\S]*?)\s*```'
                 matches = re.findall(json_pattern, response_content, re.IGNORECASE)
                 if matches:
@@ -1536,13 +1535,31 @@ async def chat_retirement_unified(request: ChatRequest):
             user_id=user_email,
             message=master_prompt
         )
-        logger.info("Montioring agent response")
-        logger.info(monitoring_agent_raw_response)
-        print(monitoring_agent_raw_response['response'])
+        logger.info()
+        logger.info(f"Monitoring agent response {monitoring_agent_raw_response}")
+        # print(monitoring_agent_raw_response['response'])
         # Add chat_chart to response
-        try:
-            monitoring_agent_json_response = json_repair.loads(monitoring_agent_raw_response['response'])
-        except json.JSONDecodeError:
+        pattern = r"```json\n(.*?)\n```"
+
+        # Search for the pattern in the string
+        match = re.search(pattern, monitoring_agent_raw_response['response'], re.DOTALL)
+        if match:
+            # Extract the captured group (the JSON string)
+            json_string = match.group(1)
+
+            try:
+                # Load the cleaned string into a Python dictionary
+                monitoring_agent_json_response = json_repair.loads(json_string)
+
+                # Print the resulting dictionary
+                logger.info("Successfully parsed JSON into a dictionary: for profile monitoring")
+                logger.info(f"Parsed Monitoring agent response{monitoring_agent_json_response}")
+
+            except json.JSONDecodeError as e:
+                logger.info(f"Error decoding JSON: {e}")
+                monitoring_agent_json_response = {}
+        else:
+            logger.info("No JSON block found in the response.")
             monitoring_agent_json_response = {}
         if should_call_chart_api:
             try:
@@ -1592,7 +1609,6 @@ async def chat_retirement_unified(request: ChatRequest):
                             logger.info("✓ Chart data parsed as direct JSON", chat_chart)
                         except json.JSONDecodeError:
                             # Strategy 2: Extract from markdown code block
-                            import re
                             json_pattern = r'```(?:json)?\s*([\s\S]*?)\s*```'
                             match = re.search(json_pattern, raw_chart_resp, re.IGNORECASE)
                             if match:
@@ -1879,7 +1895,6 @@ async def chat_pension(request: ChatRequest):
         except json.JSONDecodeError as json_error:
             logger.warning(f"Initial JSON parse failed: {str(json_error)}, trying to extract from markdown")
             # Try to extract JSON from markdown code block
-            import re
             json_match = re.search(r'```json\s*([\s\S]*?)\s*```', api_response["response"])
             if json_match:
                 logger.info("Found JSON in markdown code block")
@@ -2109,7 +2124,6 @@ async def compare_retirement_projection(request: LyzrChatRequest):
         logger.info(f"Received response from Lyzr, length: {len(raw_response)}")
 
         # Try to extract structured JSON from markdown block
-        import re
         structured_data = None
         
         # First try to find JSON in markdown code blocks
@@ -2889,7 +2903,6 @@ async def get_all_emails():
 
 def check_for_graph_keywords(message: str) -> bool:
     """Check if user message contains graph/chart related keywords"""
-    import re
     
     # Keywords that indicate user wants to see graphs/charts
     graph_keywords = [
