@@ -1535,7 +1535,6 @@ async def chat_retirement_unified(request: ChatRequest):
             user_id=user_email,
             message=master_prompt
         )
-        logger.info()
         logger.info(f"Monitoring agent response {monitoring_agent_raw_response}")
         # print(monitoring_agent_raw_response['response'])
         # Add chat_chart to response
