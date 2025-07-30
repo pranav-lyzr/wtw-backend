@@ -260,7 +260,7 @@ user_profiles_collection = db.user_profiles
 logger.info("MongoDB collections configured")
 
 # External API configuration
-LYZR_API_KEY = "sk-default-gx2ux63PhW8Fmpt7gS5uPgff7BlEl81L"
+LYZR_API_KEY = "sk-default-fwThPbmS31sO4pkjt1NDjSC8pcKdFfGm"
 LYZR_BASE_URL = "https://agent-prod.studio.lyzr.ai/v3/inference/chat/"
 PENSION_AGENT_ID = "6850133251da0258f4744a30"
 RETIREMENT_AGENT_ID = "6846d27f62d8a0cca7618607"
