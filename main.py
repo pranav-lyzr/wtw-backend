@@ -257,6 +257,7 @@ except Exception as e:
 sessions_collection = db.sessions
 messages_collection = db.messages
 user_profiles_collection = db.user_profiles
+feedback_collection = db.feedback
 logger.info("MongoDB collections configured")
 
 # External API configuration
@@ -1117,6 +1118,21 @@ async def chat_retirement_unified(request: ChatRequest):
             })
         recent_messages.reverse()
 
+        # Fetch approved feedback for the user
+        logger.info("Fetching approved feedback for user")
+        approved_feedback = await get_user_approved_feedback(request.user_id)
+        feedback_prompt_section = format_feedback_for_prompt(approved_feedback)
+        logger.info(f"Found {len(approved_feedback)} approved feedback items for user")
+        
+        if approved_feedback:
+            logger.info("Including approved feedback in master prompt for personalized responses")
+            # Log graph preferences from feedback
+            graph_preferences = [f.get('graph') for f in approved_feedback if f.get('graph') is not None]
+            if graph_preferences:
+                logger.info(f"User graph preferences from feedback: {graph_preferences}")
+        else:
+            logger.info("No approved feedback found for user")
+
         # Determine agent ID based on country
         agent_id = "6851461baf3ce50cc6e2e4b3"  # Default master agent for USA
         if country == 'denmark':
@@ -1150,6 +1166,8 @@ async def chat_retirement_unified(request: ChatRequest):
             - Pension Graph Data: {json.dumps(latest_retirement_data)}
             - Recent Conversations: {json.dumps(recent_messages, default=str)}
 
+            {feedback_prompt_section}
+
             **USER QUESTION:** {request.message}
 
             Provide personalized response for this specific Danish user with exact calculations. Keep the response more analytical   
@@ -1178,6 +1196,8 @@ async def chat_retirement_unified(request: ChatRequest):
             - Form Data: {json.dumps(form_data)}
             - Pension Graph Data: {json.dumps(latest_retirement_data)}
             - Recent Conversations: {json.dumps(recent_messages, default=str)}
+
+            {feedback_prompt_section}
 
             **USER QUESTION:** {request.message}
 
@@ -1519,10 +1539,25 @@ async def chat_retirement_unified(request: ChatRequest):
         else:
             logger.info("✗ No graph keywords detected in user message")
         
+        # Check if user has approved feedback indicating graph preference
+        user_graph_preference = None
+        for feedback in approved_feedback:
+            if feedback.get('graph') is False:
+                user_graph_preference = False
+                logger.info("User has approved feedback indicating graph preference: FALSE")
+                break
+            elif feedback.get('graph') is True:
+                user_graph_preference = True
+                logger.info("User has approved feedback indicating graph preference: TRUE")
+        
         # Determine if we should call the chart API
         should_call_chart_api = True
         
-        if is_naive_user:
+        # If user has explicitly set graph preference to false, respect that
+        if user_graph_preference is False:
+            should_call_chart_api = False
+            logger.info("User has approved feedback with graph=FALSE - Chart API call: NO")
+        elif is_naive_user:
             # For naive users, only call chart API if they explicitly ask for graphs
             should_call_chart_api = has_graph_keywords
             logger.info(f"Naive user detected - Chart API call: {'YES' if should_call_chart_api else 'NO'}")
@@ -1688,9 +1723,24 @@ async def chat_retirement_unified(request: ChatRequest):
                 logger.error(f"Error in additional chart Lyzr API call: {str(chart_api_exc)}")
                 logger.error(f"Chart API error type: {type(chart_api_exc).__name__}")
                 chat_chart = None
+                # Save message without chart data when chart API fails
+                try:
+                    await save_message(
+                        session_id=request.session_id,
+                        user_message=request.message,
+                        ai_response=text_response,
+                        chart_data=database_chart_data,
+                        contains_chart=contains_chart,
+                        chat_chart=None,
+                        profile_monitoring=monitoring_agent_json_response
+                    )
+                    logger.info("Message saved without chart data due to chart API failure")
+                except Exception as save_error:
+                    logger.error(f"Error saving message to database after chart API failure: {str(save_error)}")
         else:
-            logger.info("Skipping chart API call for naive user without graph keywords")
-            logger.info("Providing text-only response to focus on explanations for financially naive user")
+            logger.info("Skipping chart API call - user preference or naive user without graph keywords")
+            logger.info("Providing text-only response")
+            chat_chart = None  # Ensure chat_chart is null when chart API is not called
             try:
                 print("saving messages without chart data")
                 await save_message(
@@ -1702,7 +1752,7 @@ async def chat_retirement_unified(request: ChatRequest):
                     chat_chart=None,
                     profile_monitoring=monitoring_agent_json_response
                 )
-                logger.info("Message saved without chart data - focusing on explanatory text for naive user")
+                logger.info("Message saved without chart data - respecting user preferences")
             except Exception as save_error:
                 logger.error(f"Error saving message to database: {str(save_error)}")
 
@@ -1713,7 +1763,7 @@ async def chat_retirement_unified(request: ChatRequest):
             "chart_data": chart_data,
             "contains_chart": contains_chart,
             "raw_api_response": raw_api_response,
-            "chat_chart": chat_chart
+            "chat_chart": chat_chart  # This will be None when chart API is not called or fails
         }
         if monitoring_agent_json_response:
             response['profile_monitoring'] = monitoring_agent_json_response
@@ -2841,6 +2891,40 @@ class EmailResponse(BaseModel):
 # --- Email DB Collection ---
 email_collection = db.emails
 
+# --- Feedback Models ---
+class FeedbackRequest(BaseModel):
+    query: str
+    response: str
+    feedback: str
+    graph: Optional[bool] = None  # null, true, or false
+
+class FeedbackResponse(BaseModel):
+    id: str
+    user_id: str
+    query: str
+    response: str
+    feedback: str
+    graph: Optional[bool] = None
+    status: str = "pending"  # pending, approved, rejected
+    created_at: datetime
+    updated_at: datetime
+
+class FeedbackListResponse(BaseModel):
+    id: str
+    user_id: str
+    user_name: Optional[str] = None
+    user_email: Optional[str] = None
+    query: str
+    response: str
+    feedback: str
+    graph: Optional[bool] = None
+    status: str
+    created_at: datetime
+    updated_at: datetime
+
+class FeedbackReviewRequest(BaseModel):
+    action: str  # "accept" or "reject"
+
 # --- SMTP Credentials (from env) ---
 SMTP_HOST = os.getenv('SMTP_HOST', 'email-smtp.us-east-1.amazonaws.com')
 SMTP_PORT = int(os.getenv('SMTP_PORT', '587'))
@@ -2944,6 +3028,163 @@ def is_financially_naive_user(email: Optional[str]) -> bool:
             return True
     
     return False
+
+async def get_user_approved_feedback(user_id: str) -> List[Dict]:
+    """Fetch all approved feedback for a specific user"""
+    try:
+        feedback_list = []
+        cursor = feedback_collection.find({
+            "user_id": user_id,
+            "status": "approved"
+        }).sort("created_at", -1)
+        
+        async for feedback in cursor:
+            feedback_list.append({
+                "query": feedback["query"],
+                "response": feedback["response"],
+                "feedback": feedback["feedback"],
+                "graph": feedback.get("graph")
+            })
+        
+        logger.info(f"Retrieved {len(feedback_list)} approved feedback items for user {user_id}")
+        return feedback_list
+        
+    except Exception as e:
+        logger.error(f"Error fetching approved feedback for user {user_id}: {str(e)}")
+        return []
+
+def format_feedback_for_prompt(feedback_list: List[Dict]) -> str:
+    """Format approved feedback into a string for inclusion in master prompt"""
+    if not feedback_list:
+        return ""
+    
+    feedback_sections = []
+    for i, feedback in enumerate(feedback_list, 1):
+        section = f"""
+**USER FEEDBACK #{i}:**
+- Query: {feedback['query']}
+- AI Response: {feedback['response']}
+- User Feedback: {feedback['feedback']}
+- Graph Preference: {feedback.get('graph', 'Not specified')}
+"""
+        feedback_sections.append(section)
+    
+    return "\n".join(feedback_sections)
+
+# --- Feedback APIs ---
+@app.post("/feedback/{user_id}", response_model=FeedbackResponse, tags=["feedback"])
+async def submit_feedback(user_id: str, request: FeedbackRequest):
+    """Submit feedback from user"""
+    logger.info(f"Submitting feedback for user: {user_id}")
+    
+    try:
+        # Verify user exists
+        user_profile = await user_profiles_collection.find_one({"user_id": user_id})
+        if not user_profile:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        feedback_doc = {
+            "id": str(uuid.uuid4()),
+            "user_id": user_id,
+            "query": request.query,
+            "response": request.response,
+            "feedback": request.feedback,
+            "graph": request.graph,
+            "status": "pending",
+            "created_at": datetime.utcnow(),
+            "updated_at": datetime.utcnow()
+        }
+        
+        result = await feedback_collection.insert_one(feedback_doc)
+        logger.info(f"Feedback saved successfully with ID: {feedback_doc['id']}")
+        
+        return FeedbackResponse(**feedback_doc)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error submitting feedback: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to submit feedback: {str(e)}")
+
+@app.get("/feedback", response_model=List[FeedbackListResponse], tags=["feedback"])
+async def get_all_feedback():
+    """Fetch all feedback with user details"""
+    logger.info("Fetching all feedback")
+    
+    try:
+        feedback_list = []
+        cursor = feedback_collection.find({}).sort("created_at", -1)
+        
+        async for feedback in cursor:
+            # Get user details
+            user_profile = await user_profiles_collection.find_one({"user_id": feedback["user_id"]})
+            user_name = user_profile.get("name") if user_profile else None
+            user_email = user_profile.get("email") if user_profile else None
+            
+            feedback_item = {
+                "id": feedback["id"],
+                "user_id": feedback["user_id"],
+                "user_name": user_name,
+                "user_email": user_email,
+                "query": feedback["query"],
+                "response": feedback["response"],
+                "feedback": feedback["feedback"],
+                "graph": feedback.get("graph"),
+                "status": feedback["status"],
+                "created_at": feedback["created_at"],
+                "updated_at": feedback["updated_at"]
+            }
+            feedback_list.append(feedback_item)
+        
+        logger.info(f"Retrieved {len(feedback_list)} feedback items")
+        return feedback_list
+        
+    except Exception as e:
+        logger.error(f"Error fetching feedback: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to fetch feedback: {str(e)}")
+
+@app.put("/review/{feedback_id}/{action}", tags=["feedback"])
+async def review_feedback(feedback_id: str, action: str):
+    """Admin review feedback - accept or reject"""
+    logger.info(f"Reviewing feedback {feedback_id} with action: {action}")
+    
+    try:
+        # Validate action
+        if action not in ["accept", "reject"]:
+            raise HTTPException(status_code=400, detail="Action must be 'accept' or 'reject'")
+        
+        # Find feedback
+        feedback = await feedback_collection.find_one({"id": feedback_id})
+        if not feedback:
+            raise HTTPException(status_code=404, detail="Feedback not found")
+        
+        # Update status
+        new_status = "approved" if action == "accept" else "rejected"
+        update_data = {
+            "status": new_status,
+            "updated_at": datetime.utcnow()
+        }
+        
+        result = await feedback_collection.update_one(
+            {"id": feedback_id},
+            {"$set": update_data}
+        )
+        
+        if result.modified_count == 0:
+            raise HTTPException(status_code=500, detail="Failed to update feedback status")
+        
+        logger.info(f"Feedback {feedback_id} {action}ed successfully")
+        return {
+            "message": f"Feedback {action}ed successfully",
+            "feedback_id": feedback_id,
+            "status": new_status
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error reviewing feedback: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to review feedback: {str(e)}")
 
 if __name__ == "__main__":
     logger.info("Starting application server")
