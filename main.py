@@ -1122,6 +1122,11 @@ async def chat_retirement_unified(request: ChatRequest):
         logger.info("Fetching approved feedback for user")
         approved_feedback = await get_user_approved_feedback(request.user_id)
         feedback_prompt_section = format_feedback_for_prompt(approved_feedback)
+        
+        # Generate custom response type prompt based on user preferences
+        response_type_preferences = [f.get('response_type_preference', 'Simple Explanation') for f in approved_feedback]
+        custom_response_prompt = generate_response_type_prompt(response_type_preferences)
+        
         logger.info(f"Found {len(approved_feedback)} approved feedback items for user")
         
         if approved_feedback:
@@ -1130,6 +1135,11 @@ async def chat_retirement_unified(request: ChatRequest):
             graph_preferences = [f.get('graph') for f in approved_feedback if f.get('graph') is not None]
             if graph_preferences:
                 logger.info(f"User graph preferences from feedback: {graph_preferences}")
+            
+            # Log response type preferences
+            if response_type_preferences:
+                logger.info(f"User response type preferences: {response_type_preferences}")
+                logger.info(f"Using custom response prompt for: {response_type_preferences[-1]}")
         else:
             logger.info("No approved feedback found for user")
 
@@ -1168,6 +1178,8 @@ async def chat_retirement_unified(request: ChatRequest):
 
             {feedback_prompt_section}
 
+            {custom_response_prompt}
+
             **USER QUESTION:** {request.message}
 
             Provide personalized response for this specific Danish user with exact calculations. Keep the response more analytical   
@@ -1198,6 +1210,8 @@ async def chat_retirement_unified(request: ChatRequest):
             - Recent Conversations: {json.dumps(recent_messages, default=str)}
 
             {feedback_prompt_section}
+
+            {custom_response_prompt}
 
             **USER QUESTION:** {request.message}
 
@@ -2896,6 +2910,8 @@ class FeedbackRequest(BaseModel):
     query: str
     response: str
     feedback: str
+    feedback_type: str  # "Positive", "Needs Improvement", "General Suggestion"
+    response_type_preference: str  # "Technical Response", "Simple Explanation", "Detailed Analysis", etc.
     graph: Optional[bool] = None  # null, true, or false
 
 class FeedbackResponse(BaseModel):
@@ -2904,6 +2920,8 @@ class FeedbackResponse(BaseModel):
     query: str
     response: str
     feedback: str
+    feedback_type: str
+    response_type_preference: str
     graph: Optional[bool] = None
     status: str = "pending"  # pending, approved, rejected
     created_at: datetime
@@ -2917,6 +2935,8 @@ class FeedbackListResponse(BaseModel):
     query: str
     response: str
     feedback: str
+    feedback_type: str
+    response_type_preference: str
     graph: Optional[bool] = None
     status: str
     created_at: datetime
@@ -3043,6 +3063,8 @@ async def get_user_approved_feedback(user_id: str) -> List[Dict]:
                 "query": feedback["query"],
                 "response": feedback["response"],
                 "feedback": feedback["feedback"],
+                "feedback_type": feedback.get("feedback_type", "General Suggestion"),
+                "response_type_preference": feedback.get("response_type_preference", "Simple Explanation"),
                 "graph": feedback.get("graph")
             })
         
@@ -3065,11 +3087,61 @@ def format_feedback_for_prompt(feedback_list: List[Dict]) -> str:
 - Query: {feedback['query']}
 - AI Response: {feedback['response']}
 - User Feedback: {feedback['feedback']}
+- Feedback Type: {feedback.get('feedback_type', 'General Suggestion')}
+- Response Type Preference: {feedback.get('response_type_preference', 'Simple Explanation')}
 - Graph Preference: {feedback.get('graph', 'Not specified')}
 """
         feedback_sections.append(section)
     
     return "\n".join(feedback_sections)
+
+def generate_response_type_prompt(response_type_preferences: List[str]) -> str:
+    """Generate custom prompt based on user's response type preferences"""
+    if not response_type_preferences:
+        return ""
+    
+    # Get the most recent preference (last in the list)
+    latest_preference = response_type_preferences[-1]
+    
+    prompt_mappings = {
+        "Technical Response": """
+**RESPONSE STYLE INSTRUCTION:**
+Provide a technical, detailed response with specific calculations, formulas, and professional terminology. 
+Include precise numbers, percentages, and technical explanations. Use industry-standard financial terms.
+""",
+        "Simple Explanation": """
+**RESPONSE STYLE INSTRUCTION:**
+Provide a simple, easy-to-understand explanation using plain language. 
+Avoid complex financial jargon. Use analogies and everyday examples to explain concepts.
+Break down complex ideas into simple steps.
+""",
+        "Detailed Analysis": """
+**RESPONSE STYLE INSTRUCTION:**
+Provide a comprehensive, detailed analysis with multiple perspectives and scenarios.
+Include pros and cons, risk factors, and alternative approaches. 
+Present information in a structured, analytical format with clear sections.
+""",
+        "Actionable Advice": """
+**RESPONSE STYLE INSTRUCTION:**
+Focus on providing specific, actionable advice and next steps.
+Include concrete recommendations, timelines, and priority actions.
+Make suggestions practical and implementable for the user's situation.
+""",
+        "Educational Content": """
+**RESPONSE STYLE INSTRUCTION:**
+Provide educational content that teaches the user about retirement planning concepts.
+Include explanations of terms, background information, and learning resources.
+Structure the response as a learning experience with clear educational objectives.
+""",
+        "Comparative Analysis": """
+**RESPONSE STYLE INSTRUCTION:**
+Provide a comparative analysis of different options, strategies, or scenarios.
+Include side-by-side comparisons, trade-offs, and relative advantages.
+Present information in a structured comparison format.
+"""
+    }
+    
+    return prompt_mappings.get(latest_preference, "")
 
 # --- Feedback APIs ---
 @app.post("/feedback/{user_id}", response_model=FeedbackResponse, tags=["feedback"])
@@ -3089,6 +3161,8 @@ async def submit_feedback(user_id: str, request: FeedbackRequest):
             "query": request.query,
             "response": request.response,
             "feedback": request.feedback,
+            "feedback_type": request.feedback_type,
+            "response_type_preference": request.response_type_preference,
             "graph": request.graph,
             "status": "pending",
             "created_at": datetime.utcnow(),
@@ -3104,6 +3178,7 @@ async def submit_feedback(user_id: str, request: FeedbackRequest):
         raise
     except Exception as e:
         logger.error(f"Error submitting feedback: {str(e)}")
+        logger.error(f"Error type: {type(e).__name__}")
         raise HTTPException(status_code=500, detail=f"Failed to submit feedback: {str(e)}")
 
 @app.get("/feedback", response_model=List[FeedbackListResponse], tags=["feedback"])
@@ -3129,6 +3204,8 @@ async def get_all_feedback():
                 "query": feedback["query"],
                 "response": feedback["response"],
                 "feedback": feedback["feedback"],
+                "feedback_type": feedback.get("feedback_type", "General Suggestion"),
+                "response_type_preference": feedback.get("response_type_preference", "Simple Explanation"),
                 "graph": feedback.get("graph"),
                 "status": feedback["status"],
                 "created_at": feedback["created_at"],
@@ -3141,6 +3218,7 @@ async def get_all_feedback():
         
     except Exception as e:
         logger.error(f"Error fetching feedback: {str(e)}")
+        logger.error(f"Error type: {type(e).__name__}")
         raise HTTPException(status_code=500, detail=f"Failed to fetch feedback: {str(e)}")
 
 @app.put("/review/{feedback_id}/{action}", tags=["feedback"])
