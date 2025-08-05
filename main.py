@@ -3223,13 +3223,13 @@ async def get_all_feedback():
 
 @app.put("/review/{feedback_id}/{action}", tags=["feedback"])
 async def review_feedback(feedback_id: str, action: str):
-    """Admin review feedback - accept or reject"""
+    """Admin review feedback - accept, reject, or approve for master agent change"""
     logger.info(f"Reviewing feedback {feedback_id} with action: {action}")
     
     try:
         # Validate action
-        if action not in ["accept", "reject"]:
-            raise HTTPException(status_code=400, detail="Action must be 'accept' or 'reject'")
+        if action not in ["accept", "reject", "approve_master"]:
+            raise HTTPException(status_code=400, detail="Action must be 'accept', 'reject', or 'approve_master'")
         
         # Find feedback
         feedback = await feedback_collection.find_one({"id": feedback_id})
@@ -3237,7 +3237,13 @@ async def review_feedback(feedback_id: str, action: str):
             raise HTTPException(status_code=404, detail="Feedback not found")
         
         # Update status
-        new_status = "approved" if action == "accept" else "rejected"
+        if action == "accept":
+            new_status = "approved"
+        elif action == "reject":
+            new_status = "rejected"
+        else:  # approve_master
+            new_status = "approved_master"
+        
         update_data = {
             "status": new_status,
             "updated_at": datetime.utcnow()
@@ -3263,6 +3269,46 @@ async def review_feedback(feedback_id: str, action: str):
     except Exception as e:
         logger.error(f"Error reviewing feedback: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to review feedback: {str(e)}")
+
+@app.get("/master-agent-feedback", response_model=List[FeedbackListResponse], tags=["feedback"])
+async def get_master_agent_feedback():
+    """Fetch all feedback approved for master agent changes"""
+    logger.info("Fetching master agent feedback")
+    
+    try:
+        feedback_list = []
+        cursor = feedback_collection.find({"status": "approved_master"}).sort("created_at", -1)
+        
+        async for feedback in cursor:
+            # Get user details
+            user_profile = await user_profiles_collection.find_one({"user_id": feedback["user_id"]})
+            user_name = user_profile.get("name") if user_profile else None
+            user_email = user_profile.get("email") if user_profile else None
+            
+            feedback_item = {
+                "id": feedback["id"],
+                "user_id": feedback["user_id"],
+                "user_name": user_name,
+                "user_email": user_email,
+                "query": feedback["query"],
+                "response": feedback["response"],
+                "feedback": feedback["feedback"],
+                "feedback_type": feedback.get("feedback_type", "General Suggestion"),
+                "response_type_preference": feedback.get("response_type_preference", "Simple Explanation"),
+                "graph": feedback.get("graph"),
+                "status": feedback["status"],
+                "created_at": feedback["created_at"],
+                "updated_at": feedback["updated_at"]
+            }
+            feedback_list.append(feedback_item)
+        
+        logger.info(f"Retrieved {len(feedback_list)} master agent feedback items")
+        return feedback_list
+        
+    except Exception as e:
+        logger.error(f"Error fetching master agent feedback: {str(e)}")
+        logger.error(f"Error type: {type(e).__name__}")
+        raise HTTPException(status_code=500, detail=f"Failed to fetch master agent feedback: {str(e)}")
 
 if __name__ == "__main__":
     logger.info("Starting application server")
