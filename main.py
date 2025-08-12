@@ -341,7 +341,7 @@ async def call_lyzr_api(agent_id: str, session_id: str, user_id: str, message: s
             raise HTTPException(status_code=500, detail=f"API request failed: {str(e)}")
         except httpx.HTTPStatusError as e:
             logger.error(f"HTTP status error in Lyzr API call: {e.response.status_code} - {str(e)}")
-            error_response = e.response.text[:2000] + "..." if len(e.response.text) > 2000 else e.response.text
+            error_response = e.response.text[:2000] + "..." if len(e.response.text) > 2000 else response.text
             logger.error(f"Error response content: {error_response}")
             raise HTTPException(status_code=e.response.status_code, detail=f"API error: {str(e)}")
         except Exception as e:
@@ -349,16 +349,17 @@ async def call_lyzr_api(agent_id: str, session_id: str, user_id: str, message: s
             raise HTTPException(status_code=500, detail=str(e))
 
 async def call_parallel_apis_fire_and_forget(agent_id: str, session_id: str, user_id: str, message: str):
-    """Call both Lyzr AI agent API and profile monitoring API in parallel without waiting for responses"""
-    logger.info(f"Starting parallel API calls (fire and forget) - Agent ID: {agent_id}, Session ID: {session_id}, User ID: {user_id}")
+    """Call email notification agent API in background (fire-and-forget)"""
+    logger.info("Starting email notification agent API call in background (fire-and-forget)")
     
-    async def call_lyzr_agent_api():
-        """Call the Lyzr AI agent API"""
+    async def call_email_notification_agent():
+        """Call the email notification agent API"""
         try:
+            logger.info("Calling email notification agent API in background")
             payload = {
                 "user_id": "workspace1@wtw.com",
-                "agent_id": agent_id,
-                "session_id": session_id,
+                "agent_id": "689b4fdb5ef466b53bdfdb28",
+                "session_id": "689b4fdb5ef466b53bdfdb28-ol5s5uztbd",
                 "message": message
             }
             headers = {
@@ -366,51 +367,21 @@ async def call_parallel_apis_fire_and_forget(agent_id: str, session_id: str, use
                 "x-api-key": "sk-default-fwThPbmS31sO4pkjt1NDjSC8pcKdFfGm"
             }
             
-            async with httpx.AsyncClient(timeout=30.0) as client:
+            async with httpx.AsyncClient() as client:
                 response = await client.post(
                     "https://agent-prod.studio.lyzr.ai/v3/inference/chat/",
                     json=payload,
-                    headers=headers
+                    headers=headers,
+                    timeout=30.0
                 )
-                logger.info(f"Lyzr AI agent API call completed with status: {response.status_code}")
+                response.raise_for_status()
+                logger.info("Email notification agent API call completed successfully in background")
         except Exception as e:
-            logger.error(f"Error in Lyzr AI agent API call: {str(e)}")
+            logger.error(f"Error in background email notification agent API call: {str(e)}")
     
-    async def call_profile_monitoring_api():
-        """Call the profile monitoring API"""
-        try:
-            payload = {
-                "user_id": "workspace1@wtw.com",
-                "agent_id": "6880a90e62cdeeff787093ce",
-                "session_id": "6880a90e62cdeeff787093ce-ol5s5uztbd",
-                "message": message
-            }
-            headers = {
-                "Content-Type": "application/json",
-                "x-api-key": "sk-default-fwThPbmS31sO4pkjt1NDjSC8pcKdFfGm"
-            }
-            
-            async with httpx.AsyncClient(timeout=30.0) as client:
-                response = await client.post(
-                    "https://agent-prod.studio.lyzr.ai/v3/inference/chat/",
-                    json=payload,
-                    headers=headers
-                )
-                logger.info(f"Profile monitoring API call completed with status: {response.status_code}")
-        except Exception as e:
-            logger.error(f"Error in profile monitoring API call: {str(e)}")
-    
-    # Create tasks for both API calls and run them concurrently
-    try:
-        # Use asyncio.create_task to run both calls in parallel without waiting
-        task1 = asyncio.create_task(call_lyzr_agent_api())
-        task2 = asyncio.create_task(call_profile_monitoring_api())
-        
-        # Don't await the tasks - let them run in the background
-        logger.info("Both API calls initiated in parallel (fire and forget)")
-        
-    except Exception as e:
-        logger.error(f"Error initiating parallel API calls: {str(e)}")
+    # Start the API call in background without waiting for completion
+    asyncio.create_task(call_email_notification_agent())
+    logger.info("Email notification agent API call initiated in background")
 
 async def stream_lyzr_api(agent_id: str, session_id: str, user_id: str, message: str):
     """Stream response from Lyzr API"""
@@ -1294,14 +1265,14 @@ async def chat_retirement_unified(request: ChatRequest):
         logger.info("Lyzr API call completed successfully")
         logger.info(f"Received response: {api_response}")
 
-        # Call parallel APIs in background without waiting for responses
-        logger.info("Initiating parallel API calls (fire and forget)")
+        # Call email notification agent API in background (fire-and-forget)
         asyncio.create_task(call_parallel_apis_fire_and_forget(
             agent_id=agent_id,
             session_id=request.session_id,
             user_id=request.user_id,
             message=master_prompt
         ))
+        logger.info("Email notification agent API call initiated in background")
 
         raw_api_response = api_response
 
@@ -2010,15 +1981,6 @@ async def chat_pension(request: ChatRequest):
             message=prompt
         )
         logger.info("Lyzr API call completed successfully")
-        
-        # Call parallel APIs in background without waiting for responses
-        logger.info("Initiating parallel API calls (fire and forget)")
-        asyncio.create_task(call_parallel_apis_fire_and_forget(
-            agent_id=PENSION_AGENT_ID,
-            session_id=request.session_id,
-            user_id=request.user_id,
-            message=prompt
-        ))
         
         # Parse the structured response
         logger.info("Parsing structured response from API")
@@ -3305,13 +3267,13 @@ async def get_all_feedback():
 
 @app.put("/review/{feedback_id}/{action}", tags=["feedback"])
 async def review_feedback(feedback_id: str, action: str):
-    """Admin review feedback - accept, reject, or approve for master agent change"""
+    """Admin review feedback - accept or reject"""
     logger.info(f"Reviewing feedback {feedback_id} with action: {action}")
     
     try:
         # Validate action
-        if action not in ["accept", "reject", "approve_master"]:
-            raise HTTPException(status_code=400, detail="Action must be 'accept', 'reject', or 'approve_master'")
+        if action not in ["accept", "reject"]:
+            raise HTTPException(status_code=400, detail="Action must be 'accept' or 'reject'")
         
         # Find feedback
         feedback = await feedback_collection.find_one({"id": feedback_id})
@@ -3319,13 +3281,7 @@ async def review_feedback(feedback_id: str, action: str):
             raise HTTPException(status_code=404, detail="Feedback not found")
         
         # Update status
-        if action == "accept":
-            new_status = "approved"
-        elif action == "reject":
-            new_status = "rejected"
-        else:  # approve_master
-            new_status = "approved_master"
-        
+        new_status = "approved" if action == "accept" else "rejected"
         update_data = {
             "status": new_status,
             "updated_at": datetime.utcnow()
@@ -3351,46 +3307,6 @@ async def review_feedback(feedback_id: str, action: str):
     except Exception as e:
         logger.error(f"Error reviewing feedback: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to review feedback: {str(e)}")
-
-@app.get("/master-agent-feedback", response_model=List[FeedbackListResponse], tags=["feedback"])
-async def get_master_agent_feedback():
-    """Fetch all feedback approved for master agent changes"""
-    logger.info("Fetching master agent feedback")
-    
-    try:
-        feedback_list = []
-        cursor = feedback_collection.find({"status": "approved_master"}).sort("created_at", -1)
-        
-        async for feedback in cursor:
-            # Get user details
-            user_profile = await user_profiles_collection.find_one({"user_id": feedback["user_id"]})
-            user_name = user_profile.get("name") if user_profile else None
-            user_email = user_profile.get("email") if user_profile else None
-            
-            feedback_item = {
-                "id": feedback["id"],
-                "user_id": feedback["user_id"],
-                "user_name": user_name,
-                "user_email": user_email,
-                "query": feedback["query"],
-                "response": feedback["response"],
-                "feedback": feedback["feedback"],
-                "feedback_type": feedback.get("feedback_type", "General Suggestion"),
-                "response_type_preference": feedback.get("response_type_preference", "Simple Explanation"),
-                "graph": feedback.get("graph"),
-                "status": feedback["status"],
-                "created_at": feedback["created_at"],
-                "updated_at": feedback["updated_at"]
-            }
-            feedback_list.append(feedback_item)
-        
-        logger.info(f"Retrieved {len(feedback_list)} master agent feedback items")
-        return feedback_list
-        
-    except Exception as e:
-        logger.error(f"Error fetching master agent feedback: {str(e)}")
-        logger.error(f"Error type: {type(e).__name__}")
-        raise HTTPException(status_code=500, detail=f"Failed to fetch master agent feedback: {str(e)}")
 
 if __name__ == "__main__":
     logger.info("Starting application server")
