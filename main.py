@@ -348,6 +348,70 @@ async def call_lyzr_api(agent_id: str, session_id: str, user_id: str, message: s
             logger.error(f"Unexpected error in Lyzr API call: {str(e)}", exc_info=True)
             raise HTTPException(status_code=500, detail=str(e))
 
+async def call_parallel_apis_fire_and_forget(agent_id: str, session_id: str, user_id: str, message: str):
+    """Call both Lyzr AI agent API and profile monitoring API in parallel without waiting for responses"""
+    logger.info(f"Starting parallel API calls (fire and forget) - Agent ID: {agent_id}, Session ID: {session_id}, User ID: {user_id}")
+    
+    async def call_lyzr_agent_api():
+        """Call the Lyzr AI agent API"""
+        try:
+            payload = {
+                "user_id": "workspace1@wtw.com",
+                "agent_id": agent_id,
+                "session_id": session_id,
+                "message": message
+            }
+            headers = {
+                "Content-Type": "application/json",
+                "x-api-key": "sk-default-fwThPbmS31sO4pkjt1NDjSC8pcKdFfGm"
+            }
+            
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                response = await client.post(
+                    "https://agent-prod.studio.lyzr.ai/v3/inference/chat/",
+                    json=payload,
+                    headers=headers
+                )
+                logger.info(f"Lyzr AI agent API call completed with status: {response.status_code}")
+        except Exception as e:
+            logger.error(f"Error in Lyzr AI agent API call: {str(e)}")
+    
+    async def call_profile_monitoring_api():
+        """Call the profile monitoring API"""
+        try:
+            payload = {
+                "user_id": "workspace1@wtw.com",
+                "agent_id": "6880a90e62cdeeff787093ce",
+                "session_id": "6880a90e62cdeeff787093ce-ol5s5uztbd",
+                "message": message
+            }
+            headers = {
+                "Content-Type": "application/json",
+                "x-api-key": "sk-default-fwThPbmS31sO4pkjt1NDjSC8pcKdFfGm"
+            }
+            
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                response = await client.post(
+                    "https://agent-prod.studio.lyzr.ai/v3/inference/chat/",
+                    json=payload,
+                    headers=headers
+                )
+                logger.info(f"Profile monitoring API call completed with status: {response.status_code}")
+        except Exception as e:
+            logger.error(f"Error in profile monitoring API call: {str(e)}")
+    
+    # Create tasks for both API calls and run them concurrently
+    try:
+        # Use asyncio.create_task to run both calls in parallel without waiting
+        task1 = asyncio.create_task(call_lyzr_agent_api())
+        task2 = asyncio.create_task(call_profile_monitoring_api())
+        
+        # Don't await the tasks - let them run in the background
+        logger.info("Both API calls initiated in parallel (fire and forget)")
+        
+    except Exception as e:
+        logger.error(f"Error initiating parallel API calls: {str(e)}")
+
 async def stream_lyzr_api(agent_id: str, session_id: str, user_id: str, message: str):
     """Stream response from Lyzr API"""
     logger.info(f"Starting Lyzr API stream - Agent ID: {agent_id}, Session ID: {session_id}, User ID: {user_id}")
@@ -1230,6 +1294,15 @@ async def chat_retirement_unified(request: ChatRequest):
         logger.info("Lyzr API call completed successfully")
         logger.info(f"Received response: {api_response}")
 
+        # Call parallel APIs in background without waiting for responses
+        logger.info("Initiating parallel API calls (fire and forget)")
+        asyncio.create_task(call_parallel_apis_fire_and_forget(
+            agent_id=agent_id,
+            session_id=request.session_id,
+            user_id=request.user_id,
+            message=master_prompt
+        ))
+
         raw_api_response = api_response
 
         
@@ -1937,6 +2010,15 @@ async def chat_pension(request: ChatRequest):
             message=prompt
         )
         logger.info("Lyzr API call completed successfully")
+        
+        # Call parallel APIs in background without waiting for responses
+        logger.info("Initiating parallel API calls (fire and forget)")
+        asyncio.create_task(call_parallel_apis_fire_and_forget(
+            agent_id=PENSION_AGENT_ID,
+            session_id=request.session_id,
+            user_id=request.user_id,
+            message=prompt
+        ))
         
         # Parse the structured response
         logger.info("Parsing structured response from API")
